@@ -60,6 +60,8 @@ fun LoginView() {
 
     val emailFocusRequester = FocusRequester()
 
+    val teste = "aa"
+
     Column (
         modifier = Modifier.fillMaxSize()
     ) {
