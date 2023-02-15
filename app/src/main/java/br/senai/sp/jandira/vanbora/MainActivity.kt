@@ -5,10 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -60,7 +57,6 @@ fun LoginView() {
 
     val emailFocusRequester = FocusRequester()
 
-    val teste = "aa"
 
     Column (
         modifier = Modifier.fillMaxSize()
@@ -86,7 +82,7 @@ fun LoginView() {
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Image(
-                painter = painterResource(id = R.drawable.bola), 
+                painter = painterResource(id = R.drawable.bola),
                 contentDescription = "")
             Text(
                 text = stringResource(id = R.string.entre_conta),
@@ -101,15 +97,28 @@ fun LoginView() {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 4.dp)
-                    .focusRequester(emailFocusRequester)
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp)
+                    .focusRequester(emailFocusRequester),
+                label = { Text(text = stringResource(id = R.string.insira_email) )}
             )
 
         }
+        OutlinedTextField(
+            value = senhaState, onValueChange = {
+
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, start = 52.dp, end = 52.dp)
+                .focusRequester(emailFocusRequester),
+            label = { Text(text = stringResource(id = R.string.insira_senha)) }
+        )
+
+    }
+
 
         //Footer - Criar cotnat/loogin com o google
         Column(){
 
         }
     }
-}
