@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Vanbora</string>
-    <string name="entre_conta">Entre na sua conta</string>
-    <string name="insira_email">E-mail</string>
-    <string name="insira_senha">Senha</string>
+    <string name="join_account">Entre na sua conta</string>
+    <string name="email">E-mail</string>
+    <string name="password">Senha</string>
+    <string name="my_password">Esqueci minha senha</string>
+    <string name="join">Entrar</string>
+    <string name="no_have_account">Não tem uma conta?</string>
+    <string name="create_account"> Crie uma</string>
+    <string name="gcp_id">553313394578-6uuv2ohetikvrqkb6nekri7en4qbca74.example.com</string>
+
 
 </resources>
