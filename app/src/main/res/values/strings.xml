@@ -1,13 +1,46 @@
 <resources>
     <string name="app_name">Vanbora</string>
-    <string name="join_account">Entre na sua conta</string>
+    <string name="join_your_account">Entre na sua conta</string>
     <string name="email">E-mail</string>
     <string name="password">Senha</string>
+    <string name="name">Nome</string>
     <string name="my_password">Esqueci minha senha</string>
     <string name="join">Entrar</string>
+    <string name="next">Próximo</string>
+    <string name="google">Google</string>
     <string name="no_have_account">Não tem uma conta?</string>
+    <string name="have_account">Já tem uma conta?</string>
     <string name="create_account"> Crie uma</string>
-    <string name="gcp_id">553313394578-6uuv2ohetikvrqkb6nekri7en4qbca74.example.com</string>
+    <string name="join_account"> Entre nela</string>
+    <string name="email_error">Email invalido</string>
+    <string name="name_error">Nome invalido</string>
+    <string name="arroba_error">O email indicado precisa do @</string>
+    <string name="senha_error">Senha inválida</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="create_account_register">Crie uma Conta</string>
+    <string name="title_activity_select">SelectActivity</string>
+    <string name="select">Selecione</string>
+    <string name="one_option">uma opção</string>
+    <string name="para">para</string>
+    <string name="registrar">registrar</string>
+    <string name="driver">MOTORISTA</string>
+    <string name="user">USUÁRIO</string>
+    <string name="title_activity_dados_driver">dadosDriverActivity</string>
+    <string name="title_activity_driver_complements">DriverActivityComplements</string>
+
+    <string name="rg">RG</string>
+    <string name="cpf">CPF</string>
+    <string name="cep">CEP</string>
+    <string name="cnh">CNH</string>
+    <string name="telefone">Telefone</string>
+    <string name="data_nascimento">Data de nascimento</string>
+    <string name="rg_error">RG invalido</string>
+    <string name="cpf_error">CPF invalido</string>
+    <string name="cep_error">CEP invalido</string>
+    <string name="cnh_error">CNH invalido</string>
+    <string name="telefone_error">Telefone invalido</string>
+    <string name="data_nascimento_error">Data de nascimento invalida</string>
+
 
 
 </resources>

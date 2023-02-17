@@ -6,11 +6,36 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/vanbora"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Vanbora"
         tools:targetApi="31">
+        <activity
+            android:name=".DriverActivityComplements"
+            android:exported="false"
+            android:label="@string/title_activity_driver_complements"
+            android:theme="@style/Theme.Vanbora" />
+        <activity
+            android:name=".DadosDriverActivity"
+            android:exported="false"
+            android:label="@string/title_activity_dados_driver"
+            android:theme="@style/Theme.Vanbora" />
+        <activity
+            android:name=".dadosDriverActivity"
+            android:exported="false"
+            android:label="@string/title_activity_dados_driver"
+            android:theme="@style/Theme.Vanbora" />
+        <activity
+            android:name=".SelectActivity"
+            android:exported="false"
+            android:label="@string/title_activity_select"
+            android:theme="@style/Theme.Vanbora" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:label="@string/title_activity_register"
+            android:theme="@style/Theme.Vanbora" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
