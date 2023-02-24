@@ -5,14 +5,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -25,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 
 class SelectActivity : ComponentActivity() {
@@ -52,6 +50,10 @@ fun Select() {
 
     val context = LocalContext.current
 
+    val activityMain by remember {
+        mutableStateOf(MainActivity::class.java)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,29 +65,7 @@ fun Select() {
     ) {
 
         //Header - Logo do VanBora
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable { context.startActivity(Intent(context, MainActivity::class.java)) }
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.vanbora),
-                    contentDescription = "vanbora logo",
-                    modifier = Modifier
-                        .width(300.dp)
-                        .height(100.dp),
-                )
-            }
-        }
+        HeaderSelectDriverComplement(context = context, componentActivity = activityMain.newInstance())
 
         Column(
             modifier = Modifier

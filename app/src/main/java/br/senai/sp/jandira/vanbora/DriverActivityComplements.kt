@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 
 class DriverActivityComplements : ComponentActivity() {
@@ -103,6 +104,10 @@ fun DadosAdicionaisMotorista() {
 
     val context = LocalContext.current
 
+    val selectActivy by remember {
+        mutableStateOf(SelectActivity::class.java)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -114,41 +119,14 @@ fun DadosAdicionaisMotorista() {
     ) {
 
         //Header
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable {
-                            context.startActivity(
-                                Intent(
-                                    context,
-                                    SelectActivity::class.java
-                                )
-                            )
-                        }
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.vanbora),
-                    contentDescription = "vanbora logo",
-                    modifier = Modifier
-                        .width(300.dp)
-                        .height(100.dp),
-                )
-            }
-        }
+        HeaderSelectDriverComplement(context = context, componentActivity = selectActivy.newInstance())
 
         //Main
         val scrollState = rememberScrollState()
         Column(
-            modifier = Modifier.fillMaxWidth().verticalScroll(scrollState),
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
@@ -216,6 +194,7 @@ fun DadosAdicionaisMotorista() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
                 label = {
                     Text(
                         text = stringResource(id = R.string.cpf),
