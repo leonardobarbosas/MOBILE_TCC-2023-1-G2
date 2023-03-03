@@ -71,9 +71,6 @@ fun LoginView() {
         //Header - Logo do VanBora
         HeaderCadastroLogin()
 
-        Icon(imageVector = Icons.Filled.AirportShuttle, contentDescription = "menu", tint = Color.Blue)
-        Text(text = "tef")
-
         //Main - Parte dos dados para registro
         ValidateLoginCadastroForm(loginCadastro = loginCadastroValidateForm)
 
