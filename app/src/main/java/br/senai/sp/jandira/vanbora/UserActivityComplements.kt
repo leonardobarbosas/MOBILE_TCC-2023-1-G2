@@ -391,7 +391,7 @@ fun DadosAdicionaisUser() {
 
             ) {
                 Text(
-                    text = stringResource(id = R.string.next)
+                    text = stringResource(id = R.string.save)
                 )
             }
         }
