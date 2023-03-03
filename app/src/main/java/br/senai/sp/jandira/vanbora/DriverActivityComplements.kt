@@ -194,7 +194,6 @@ fun DadosAdicionaisMotorista() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
                 label = {
                     Text(
                         text = stringResource(id = R.string.cpf),
