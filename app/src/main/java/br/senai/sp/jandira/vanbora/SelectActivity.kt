@@ -131,7 +131,9 @@ fun Select() {
                 Spacer(modifier = Modifier.width(20.dp))
 
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                              context.startActivity(Intent(context, UserActivityComplements::class.java))
+                    },
                     colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 255))
                 )
                 {
