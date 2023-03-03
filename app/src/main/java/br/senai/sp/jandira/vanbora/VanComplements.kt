@@ -82,7 +82,7 @@ fun Greeting() {
         Button(
             onClick = {
                 isPlacaVanError = placaVan.isEmpty()
-                isModeloVanError = modeloVan.isEmpty()
+                isModeloVanError = modeloVan.length == 0
                 isVagasVanError = vagasVan.isEmpty()
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
