@@ -39,7 +39,7 @@ class RegisterActivity : ComponentActivity() {
 
                     val systemUi = rememberSystemUiController()
                     SideEffect {
-                        systemUi.setStatusBarColor(color = Color.Black, darkIcons = false)
+                        systemUi.setStatusBarColor(color = Color(255, 255, 255, 0), darkIcons = true)
                     }
                     Register()
                 }

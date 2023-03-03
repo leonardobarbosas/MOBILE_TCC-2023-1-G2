@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
@@ -18,6 +19,7 @@ import androidx.core.view.WindowCompat
 import br.senai.sp.jandira.vanbora.components.HeaderCadastroLogin
 import br.senai.sp.jandira.vanbora.components.ValidateLoginCadastroForm
 import br.senai.sp.jandira.vanbora.utils.ValidateLoginCadastroFooter
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +31,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val systemUi = rememberSystemUiController()
+                    SideEffect {
+                        systemUi.setStatusBarColor(color = Color(255, 255, 255, 0), darkIcons = true)
+                    }
                     LoginView()
                 }
             }
