@@ -1,6 +1,7 @@
 package br.senai.sp.jandira.vanbora
 
 import android.os.Bundle
+import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowCompat
 import br.senai.sp.jandira.vanbora.components.HeaderCadastroLogin
 import br.senai.sp.jandira.vanbora.components.ValidateLoginCadastroForm
 import br.senai.sp.jandira.vanbora.utils.ValidateLoginCadastroFooter

@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -23,6 +24,7 @@ import br.senai.sp.jandira.vanbora.components.HeaderCadastroLogin
 import br.senai.sp.jandira.vanbora.components.ValidateLoginCadastroForm
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import br.senai.sp.jandira.vanbora.utils.ValidateLoginCadastroFooter
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +36,11 @@ class RegisterActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+
+                    val systemUi = rememberSystemUiController()
+                    SideEffect {
+                        systemUi.setStatusBarColor(color = Color.Black, darkIcons = false)
+                    }
                     Register()
                 }
             }
