@@ -40,7 +40,7 @@
     <string name="cnh_error">CNH invalido</string>
     <string name="telefone_error">Telefone invalido</string>
     <string name="data_nascimento_error">Data de nascimento invalida</string>
-
+    <string name="title_activity_user_complements">UserActivityComplements</string>
 
 
 </resources>
