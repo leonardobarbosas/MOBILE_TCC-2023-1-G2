@@ -81,7 +81,7 @@ fun Greeting() {
 
         Button(
             onClick = {
-                isPlacaVanError = placaVan.isEmpty()
+                isPlacaVanError = placaVan.length == 0
                 isModeloVanError = modeloVan.isEmpty()
                 isVagasVanError = vagasVan.isEmpty()
             },
