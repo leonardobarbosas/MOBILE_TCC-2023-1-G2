@@ -414,6 +414,7 @@ fun DadosAdicionaisMotorista() {
                     isCnhError = cnhState.length == 0
                     isTelefoneError = telefoneState.length == 0
                     isDataNascimentoError = dataNascimentoState.length == 0
+                    context.startActivity(Intent(context, VanComplements::class.java))
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
