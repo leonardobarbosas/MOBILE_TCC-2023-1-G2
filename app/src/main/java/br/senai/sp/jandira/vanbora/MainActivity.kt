@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AirportShuttle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -47,8 +49,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LoginView() {
 
-    val context = LocalContext.current
-
     val loginCadastroValidateForm by remember {
         mutableStateOf(true)
     }
@@ -70,6 +70,8 @@ fun LoginView() {
 
         //Header - Logo do VanBora
         HeaderCadastroLogin()
+
+        Icon(imageVector = Icons.Filled.AirportShuttle, contentDescription = "menu", tint = Color.Blue)
 
         //Main - Parte dos dados para registro
         ValidateLoginCadastroForm(loginCadastro = loginCadastroValidateForm)
