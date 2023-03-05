@@ -52,7 +52,6 @@ fun HeaderCadastroLogin(){
                     .padding(all = 5.dp)
             )
         }
-        Spacer(modifier = Modifier.padding(start = 5.dp))
 
         Column(Modifier.padding(top = 2.dp),verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = stringResource(id = R.string.app_name), textAlign = TextAlign.Center)

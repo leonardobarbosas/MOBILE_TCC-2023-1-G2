@@ -22,30 +22,27 @@ import br.senai.sp.jandira.vanbora.R
 
 @Composable
 fun HeaderSelectDriverComplement(context: Context, componentActivity: ComponentActivity){
-    Column(
-        modifier = Modifier.fillMaxWidth().background(color = Color.White),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
         Row(
-            modifier = Modifier.padding(all = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "",
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable {
-                        context.startActivity(
-                            Intent(
-                                context,
-                                componentActivity::class.java
+            Row(modifier = Modifier.background(Color.White).padding(end = 25.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clickable {
+                            context.startActivity(
+                                Intent(
+                                    context,
+                                    componentActivity::class.java
+                                )
                             )
-                        )
-                    }
-            )
-            HeaderCadastroLogin()
+                        }
+                )
+
+                HeaderCadastroLogin()
+            }
         }
-    }
 }

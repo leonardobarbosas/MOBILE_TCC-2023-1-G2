@@ -35,6 +35,9 @@
     <string name="cnh">CNH</string>
     <string name="telefone">Telefone</string>
     <string name="data_nascimento">Data de nascimento</string>
+    <string name="placa_van">Placa da van:</string>
+    <string name="modelo_van">Modelo da van:</string>
+    <string name="numero_vagas">Número de vagas:</string>
     <string name="rg_error">RG invalido</string>
     <string name="cpf_error">CPF invalido</string>
     <string name="cep_error">CEP invalido</string>

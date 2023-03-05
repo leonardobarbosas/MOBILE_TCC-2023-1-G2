@@ -149,7 +149,8 @@ fun FormMainLogin(){
                     fontSize = 15.sp,
                     style = TextStyle(
                         color = Color.Black,
-                    )
+                    ),
+                    textAlign = TextAlign.Center
                 )
             },
             trailingIcon = {
