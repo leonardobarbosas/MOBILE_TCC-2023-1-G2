@@ -1,21 +1,25 @@
-package br.senai.sp.jandira.vanbora
+package br.senai.sp.jandira.vanbora.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -27,11 +31,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-class UserActivityComplements : ComponentActivity() {
+class DriverActivityComplements : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -45,7 +50,7 @@ class UserActivityComplements : ComponentActivity() {
                     SideEffect {
                         systemUi.setStatusBarColor(color = Color(255, 255, 255, 0), darkIcons = true)
                     }
-                    DadosAdicionaisUser()
+                    DadosAdicionaisMotorista()
                 }
             }
         }
@@ -54,15 +59,7 @@ class UserActivityComplements : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun DadosAdicionaisUser() {
-
-    val context = LocalContext.current
-
-    val selectActivy by remember {
-        mutableStateOf(SelectActivity::class.java)
-    }
-
-    //==================================
+fun DadosAdicionaisMotorista() {
 
     var rgState by rememberSaveable() {
         mutableStateOf("")
@@ -73,6 +70,10 @@ fun DadosAdicionaisUser() {
     }
 
     var cepState by rememberSaveable() {
+        mutableStateOf("")
+    }
+
+    var cnhState by rememberSaveable() {
         mutableStateOf("")
     }
 
@@ -96,6 +97,10 @@ fun DadosAdicionaisUser() {
         mutableStateOf(false)
     }
 
+    var isCnhError by remember() {
+        mutableStateOf(false)
+    }
+
     var isTelefoneError by remember() {
         mutableStateOf(false)
     }
@@ -105,27 +110,31 @@ fun DadosAdicionaisUser() {
     }
 
 
-    val scrollState = rememberScrollState()
+    val context = LocalContext.current
+
+    val selectActivy by remember {
+        mutableStateOf(SelectActivity::class.java)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .paint(
                 painter = painterResource(id = R.drawable.background2),
                 contentScale = ContentScale.Crop
-            ).verticalScroll(scrollState),
-        verticalArrangement = Arrangement.SpaceAround
+            ),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
 
         //Header
-        HeaderSelectDriverComplement(
-            context = context,
-            componentActivity = selectActivy.newInstance()
-        )
+        HeaderSelectDriverComplement(context = context, componentActivity = selectActivy.newInstance())
 
         //Main
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
@@ -136,7 +145,6 @@ fun DadosAdicionaisUser() {
                     .height(100.dp),
             )
 
-            //RG
             OutlinedTextField(
                 value = rgState, onValueChange = {
                     rgState = it
@@ -171,7 +179,7 @@ fun DadosAdicionaisUser() {
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isRgError) {
+            if(isRgError){
                 Text(
                     text = stringResource(id = R.string.rg_error),
                     modifier = Modifier
@@ -199,7 +207,6 @@ fun DadosAdicionaisUser() {
                 label = {
                     Text(
                         text = stringResource(id = R.string.cpf),
-                        textAlign = TextAlign.Center,
                         style = TextStyle(
                             color = Color.Black,
                         )
@@ -218,7 +225,7 @@ fun DadosAdicionaisUser() {
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isCpfError) {
+            if(isCpfError){
                 Text(
                     text = stringResource(id = R.string.cpf_error),
                     modifier = Modifier
@@ -246,7 +253,6 @@ fun DadosAdicionaisUser() {
                 label = {
                     Text(
                         text = stringResource(id = R.string.cep),
-                        textAlign = TextAlign.Center,
                         style = TextStyle(
                             color = Color.Black,
                         )
@@ -265,9 +271,55 @@ fun DadosAdicionaisUser() {
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isCepError) {
+            if(isCepError){
                 Text(
                     text = stringResource(id = R.string.cep_error),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 52.dp),
+                    color = Color.Red,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.End
+                )
+            }
+
+            //CNH
+            OutlinedTextField(
+                value = cnhState, onValueChange = {
+                    cnhState = it
+
+                    if (it == "" || it == null) {
+                        isCnhError
+                    }
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.cnh),
+                        style = TextStyle(
+                            color = Color.Black,
+                        )
+                    )
+                },
+                trailingIcon = {
+                    if (isCnhError) Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
+                },
+                isError = isCnhError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+            if(isCnhError){
+                Text(
+                    text = stringResource(id = R.string.cnh_error),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(end = 52.dp),
@@ -293,7 +345,6 @@ fun DadosAdicionaisUser() {
                 label = {
                     Text(
                         text = stringResource(id = R.string.telefone),
-                        textAlign = TextAlign.Center,
                         style = TextStyle(
                             color = Color.Black,
                         )
@@ -312,7 +363,7 @@ fun DadosAdicionaisUser() {
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isTelefoneError) {
+            if(isTelefoneError){
                 Text(
                     text = stringResource(id = R.string.telefone_error),
                     modifier = Modifier
@@ -340,7 +391,6 @@ fun DadosAdicionaisUser() {
                 label = {
                     Text(
                         text = stringResource(id = R.string.data_nascimento),
-                        textAlign = TextAlign.Center,
                         style = TextStyle(
                             color = Color.Black,
                         )
@@ -359,7 +409,7 @@ fun DadosAdicionaisUser() {
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isDataNascimentoError) {
+            if(isDataNascimentoError){
                 Text(
                     text = stringResource(id = R.string.data_nascimento_error),
                     modifier = Modifier
@@ -371,30 +421,28 @@ fun DadosAdicionaisUser() {
                 )
             }
 
-        }
+            Spacer(
+                modifier = Modifier.height(30.dp)
+            )
 
-        //Footer
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
             Button(
                 onClick = {
-                    isRgError = rgState.isEmpty()
-                    isCpfError = cpfState.isEmpty()
-                    isCepError = cepState.isEmpty()
-                    isTelefoneError = telefoneState.isEmpty()
-                    isDataNascimentoError = dataNascimentoState.isEmpty()
-
+                    isRgError = rgState.length == 0
+                    isCpfError = cpfState.length == 0
+                    isCepError = cepState.length == 0
+                    isCnhError = cnhState.length == 0
+                    isTelefoneError = telefoneState.length == 0
+                    isDataNascimentoError = dataNascimentoState.length == 0
+                    context.startActivity(Intent(context, VanComplements::class.java))
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
             ) {
                 Text(
-                    text = stringResource(id = R.string.save)
+                    text = stringResource(id = R.string.next)
                 )
             }
+
         }
     }
 }
-

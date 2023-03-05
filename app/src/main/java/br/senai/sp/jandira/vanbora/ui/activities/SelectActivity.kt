@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.vanbora
+package br.senai.sp.jandira.vanbora.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.vanbora.MainActivity
+import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -62,8 +64,9 @@ fun Select() {
             .paint(
                 painter = painterResource(id = R.drawable.background3),
                 contentScale = ContentScale.Crop
-            ),
-        verticalArrangement = Arrangement.SpaceAround
+            )
+            .padding(top = 30.dp, bottom = 60.dp),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
 
         //Header - Logo do VanBora

@@ -12,17 +12,17 @@
         android:theme="@style/Theme.Vanbora"
         tools:targetApi="31">
         <activity
-            android:name=".VanComplements"
+            android:name=".ui.activities.VanComplements"
             android:exported="false"
             android:label="@string/title_activity_van_complements"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".UserActivityComplements"
+            android:name=".ui.activities.UserActivityComplements"
             android:exported="false"
             android:label="@string/title_activity_user_complements"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".DriverActivityComplements"
+            android:name=".ui.activities.DriverActivityComplements"
             android:exported="false"
             android:label="@string/title_activity_driver_complements"
             android:theme="@style/Theme.Vanbora" />
@@ -37,12 +37,12 @@
             android:label="@string/title_activity_dados_driver"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".SelectActivity"
+            android:name=".ui.activities.SelectActivity"
             android:exported="false"
             android:label="@string/title_activity_select"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.activities.RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.Vanbora" />

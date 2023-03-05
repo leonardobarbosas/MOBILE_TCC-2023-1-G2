@@ -1,13 +1,10 @@
 package br.senai.sp.jandira.vanbora
 
 import android.os.Bundle
-import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AirportShuttle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -16,11 +13,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.view.WindowCompat
+import br.senai.sp.jandira.vanbora.components.FooterLogin
+import br.senai.sp.jandira.vanbora.components.FormMainLogin
 import br.senai.sp.jandira.vanbora.components.HeaderCadastroLogin
-import br.senai.sp.jandira.vanbora.components.ValidateLoginCadastroForm
-import br.senai.sp.jandira.vanbora.utils.ValidateLoginCadastroFooter
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
@@ -49,14 +44,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LoginView() {
 
-    val loginCadastroValidateForm by remember {
-        mutableStateOf(true)
-    }
-
-    val loginCadastroValidateFooter by remember {
-        mutableStateOf(true)
-    }
-
 
     Column(
         modifier = Modifier
@@ -65,17 +52,17 @@ fun LoginView() {
                 painter = painterResource(id = R.drawable.background),
                 contentScale = ContentScale.Crop
             ),
-        verticalArrangement = Arrangement.SpaceAround
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
 
         //Header - Logo do VanBora
         HeaderCadastroLogin()
 
         //Main - Parte dos dados para registro
-        ValidateLoginCadastroForm(loginCadastro = loginCadastroValidateForm)
+        FormMainLogin()
 
         //Footer - Criar cotnat/loogin com o google
-        ValidateLoginCadastroFooter(loginCadastro = loginCadastroValidateFooter)
+        FooterLogin()
     }
 
 }

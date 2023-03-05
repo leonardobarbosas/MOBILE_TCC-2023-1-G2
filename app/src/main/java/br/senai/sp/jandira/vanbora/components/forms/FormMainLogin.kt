@@ -22,7 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.SelectActivity
+import br.senai.sp.jandira.vanbora.ui.activities.SelectActivity
 
 @Composable
 fun FormMainLogin(){

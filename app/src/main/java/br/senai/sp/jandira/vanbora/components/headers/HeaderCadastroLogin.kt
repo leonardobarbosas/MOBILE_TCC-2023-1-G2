@@ -23,9 +23,13 @@ import br.senai.sp.jandira.vanbora.R
 @Composable
 fun HeaderCadastroLogin(){
 
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight(0.1f), horizontalArrangement = Arrangement.Center
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.1f)
+            .background(color = Color.White),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     )
     {
         Column(
@@ -45,10 +49,12 @@ fun HeaderCadastroLogin(){
                     .background(
                         color = Color(249, 171, 3, 255)
                     )
-                    .padding(paddingValues = PaddingValues(5.dp)))
-
+                    .padding(all = 5.dp)
+            )
         }
-        Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(modifier = Modifier.padding(start = 5.dp))
+
+        Column(Modifier.padding(top = 2.dp),verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = stringResource(id = R.string.app_name), textAlign = TextAlign.Center)
         }
     }

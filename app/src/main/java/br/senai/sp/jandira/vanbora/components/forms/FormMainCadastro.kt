@@ -71,7 +71,8 @@ fun FormMainCadastro(){
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+        ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
