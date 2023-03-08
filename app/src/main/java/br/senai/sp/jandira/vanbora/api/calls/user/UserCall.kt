@@ -13,7 +13,7 @@ interface UserCall {
     @GET("colocarEndPoint")
     fun getUserById(@Path("id")id: Int): Call<UserModel>
 
-    @POST("endPOint")
+    @POST("users")
     fun saveUser(@Body userModel: UserModel): Call<UserModel>
 
     @DELETE("endPoint")

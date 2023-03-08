@@ -2,6 +2,7 @@ package br.senai.sp.jandira.vanbora.ui.activities
 
 import VanInfos
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -60,12 +61,17 @@ fun VanInfosActivity(){
 
     val context = LocalContext.current
 
+    val intent = (context as VanComplements).intent
+
+    Toast.makeText(context, "${intent.getStringExtra("teste")}", Toast.LENGTH_SHORT).show()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .paint(
                 painter = painterResource(id = R.drawable.background),
-                contentScale = ContentScale.Crop),
+                contentScale = ContentScale.Crop
+            ),
 
     ) {
 
