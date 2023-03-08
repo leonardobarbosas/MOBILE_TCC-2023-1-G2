@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
+import br.senai.sp.jandira.vanbora.components.forms.userdriver.SelectUserDriver
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -72,90 +73,7 @@ fun Select() {
         //Header - Logo do VanBora
         HeaderSelectDriverComplement(context = context, componentActivity = activityMain.newInstance())
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = stringResource(id = R.string.select),
-                color = Color(250, 210, 69, 255),
-                fontSize = 40.sp,
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center,
-            )
-            Text(
-                text = stringResource(id = R.string.one_option),
-                color = Color.Black,
-                fontSize = 40.sp,
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center,
-            )
-            Text(
-                text = stringResource(id = R.string.para),
-                color = Color.Black,
-                fontSize = 40.sp,
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center,
-            )
-            Text(
-                text = stringResource(id = R.string.registrar),
-                color = Color(250, 210, 69, 255),
-                fontSize = 40.sp,
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center,
-            )
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row {
-                Button(
-                    onClick = {
-                        context.startActivity(Intent(context, DriverActivityComplements::class.java))
-                    },
-                    colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 255))
-                )
-                {
-                    Image(
-                        painter = painterResource(id = R.drawable.driver),
-                        contentDescription = "",
-                        modifier = Modifier.size(20.dp)
-                    )
-
-                    Spacer(modifier = Modifier.width(5.dp))
-
-                    Text(
-                        text = stringResource(id = R.string.driver)
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(20.dp))
-
-                Button(
-                    onClick = {
-                              context.startActivity(Intent(context, UserActivityComplements::class.java))
-                    },
-                    colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 255))
-                )
-                {
-                    Image(
-                        painter = painterResource(id = R.drawable.usuario),
-                        contentDescription = "",
-                        modifier = Modifier.size(20.dp)
-                    )
-
-                    Spacer(modifier = Modifier.width(5.dp))
-
-                    Text(
-                        text = stringResource(id = R.string.user)
-                    )
-                }
-            }
-        }
+        SelectUserDriver()
     }
 
 }
