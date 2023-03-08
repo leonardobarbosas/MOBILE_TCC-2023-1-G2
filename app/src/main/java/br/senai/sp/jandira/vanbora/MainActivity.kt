@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import androidx.compose.ui.layout.ContentScale
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.FooterLogin
 import br.senai.sp.jandira.vanbora.components.FormMainLogin
 import br.senai.sp.jandira.vanbora.components.HeaderCadastroLogin
@@ -43,7 +44,6 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun LoginView() {
-
 
     Column(
         modifier = Modifier
