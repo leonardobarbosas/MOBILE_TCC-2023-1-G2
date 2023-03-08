@@ -1,23 +1,30 @@
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -48,21 +55,53 @@ fun VanInfos(context: Context) {
 
     val scrollState = rememberScrollState()
 
+
+    //image
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    var context = LocalContext.current
+    var bitmap = remember{
+        mutableStateOf<Bitmap?>(null)
+    }
+
+    val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()){ uri: Uri? ->
+        imageUri = uri
+    }
+
     //IMAGE
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.15f)
             .padding(start = 80.dp, end = 80.dp)
-            .background(Color(156, 156, 156, 255))
+            .background(Color(156, 156, 156, 0))
             .clickable {
-                Toast
-                    .makeText(context, "Quem ler é gay kkkk", Toast.LENGTH_SHORT)
-                    .show()
+                launcher.launch("image/*")
             },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        imageUri?.let {
+            if (Build.VERSION.SDK_INT < 28){
+                bitmap.value = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
+            }
+            else{
+                val source = ImageDecoder.createSource(context.contentResolver, it)
+                bitmap.value = ImageDecoder.decodeBitmap(source)
+            }
+
+            bitmap.value?.let { btm ->
+                Image(bitmap = btm.asImageBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+        
         Icon(
             imageVector = Icons.Filled.PhotoCamera,
             contentDescription = "",
