@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewUser
+import br.senai.sp.jandira.vanbora.ui.activities.GetAllUsersActivity
 import br.senai.sp.jandira.vanbora.ui.activities.SelectActivity
 import br.senai.sp.jandira.vanbora.ui.activities.UserActivityComplements
 
@@ -397,6 +398,8 @@ fun UserInfos() {
                 var senha = intent.getStringExtra("senha").toString()
 
                 Toast.makeText(context, name, Toast.LENGTH_SHORT).show()
+
+
 
 
             },

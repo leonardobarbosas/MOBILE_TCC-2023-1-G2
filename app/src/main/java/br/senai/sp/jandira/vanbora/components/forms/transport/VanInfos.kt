@@ -192,6 +192,8 @@ fun VanInfos(context: Context) {
                 isModeloVanError = modeloVan.length == 0
                 isVagasVanError = vagasVan.length == 0
 
+                context.startActivity(Intent(context, GetAllUsersActivity::class.java))
+
                       },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 

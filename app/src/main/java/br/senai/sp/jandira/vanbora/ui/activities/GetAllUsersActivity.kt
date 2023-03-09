@@ -60,11 +60,10 @@ fun Greeting(name: String) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Yellow)
-            .verticalScroll(scrollState)
     ) {
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxWidth()
         ){
             items(users){
                 Card() {
