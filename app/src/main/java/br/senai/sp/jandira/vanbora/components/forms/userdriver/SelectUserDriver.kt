@@ -26,7 +26,7 @@ import br.senai.sp.jandira.vanbora.ui.activities.DriverActivityComplements
 import br.senai.sp.jandira.vanbora.ui.activities.UserActivityComplements
 
 @Composable
-fun SelectUserDriver(){
+fun SelectUserDriver(name: String, email: String, senha: String){
 
     val context = LocalContext.current
 
@@ -99,7 +99,12 @@ fun SelectUserDriver(){
 
             Button(
                 onClick = {
-                    context.startActivity(Intent(context, UserActivityComplements::class.java))
+
+                    val intent = Intent(context, UserActivityComplements::class.java)
+                    intent.putExtra("name", name)
+                    intent.putExtra("email", email)
+                    intent.putExtra("senha", senha)
+                    context.startActivity(intent)
                 },
                 colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 255))
             )

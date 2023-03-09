@@ -61,9 +61,7 @@ fun VanInfosActivity(){
 
     val context = LocalContext.current
 
-    val intent = (context as VanComplements).intent
 
-    Toast.makeText(context, "${intent.getStringExtra("teste")}", Toast.LENGTH_SHORT).show()
 
     Column(
         modifier = Modifier

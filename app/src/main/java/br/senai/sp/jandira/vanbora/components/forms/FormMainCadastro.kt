@@ -246,14 +246,14 @@ fun FormMainCadastro(){
                     isEmailError = emailState.length == 0
                     isSenhaError = senhaState.length == 0
 
-                    val intentUser = Intent(context, UserActivityComplements::class.java)
-                    intentUser.putExtra("name", nameState)
-                    intentUser.putExtra("email", emailState)
-                    intentUser.putExtra("senha", senhaState)
-
                     val intentSelect = Intent(context, SelectActivity::class.java)
 
+                    intentSelect.putExtra("name", nameState)
+                    intentSelect.putExtra("email", emailState)
+                    intentSelect.putExtra("senha", senhaState)
+
                     context.startActivity(intentSelect)
+
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 

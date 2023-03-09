@@ -2,6 +2,7 @@ package br.senai.sp.jandira.vanbora.ui.activities
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -34,6 +35,7 @@ class UserActivityComplements : ComponentActivity() {
                     SideEffect {
                         systemUi.setStatusBarColor(color = Color(255, 255, 255, 0), darkIcons = true)
                     }
+
                     DadosAdicionaisUser()
                 }
             }
@@ -51,8 +53,11 @@ fun DadosAdicionaisUser() {
         mutableStateOf(SelectActivity::class.java)
     }
 
+    val intent = (context as UserActivityComplements).intent
 
-
+    val name = intent.getStringExtra("name").toString()
+    val email = intent.getStringExtra("email").toString()
+    val senha = intent.getStringExtra("senha").toString()
 
     Column(
         modifier = Modifier
@@ -71,7 +76,7 @@ fun DadosAdicionaisUser() {
         )
 
         //Main and Footer
-        UserInfos()
+        UserInfos(name, email, senha)
     }
 }
 
