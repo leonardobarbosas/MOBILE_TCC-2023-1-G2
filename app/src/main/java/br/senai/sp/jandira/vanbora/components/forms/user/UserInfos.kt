@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.vanbora.components.forms.user
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.ui.activities.GetAllUsersActivity
 
 @Composable
 fun UserInfos() {
@@ -382,6 +384,8 @@ fun UserInfos() {
                 isCepError = cepState.isEmpty()
                 isTelefoneError = telefoneState.isEmpty()
                 isDataNascimentoError = dataNascimentoState.isEmpty()
+
+                context.startActivity(Intent(context, GetAllUsersActivity::class.java))
 
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
