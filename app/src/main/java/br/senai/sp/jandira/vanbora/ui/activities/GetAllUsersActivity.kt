@@ -101,8 +101,8 @@ fun Greeting() {
                             )
                         }
                         Column {
-                            Text(text = "add", color = Color.White)
-                            Text(text = "add2", color = Color.White)
+                            Text(text = it.nome, color = Color.White)
+                            Text(text = it., color = Color.White)
                             Text(text = "add3", color = Color.White)
                         }
                     }
