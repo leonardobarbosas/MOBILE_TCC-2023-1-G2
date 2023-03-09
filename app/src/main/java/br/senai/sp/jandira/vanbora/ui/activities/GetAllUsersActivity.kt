@@ -11,16 +11,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.api.calls.user.UserCall
 import br.senai.sp.jandira.vanbora.api.retrofit.RetrofitApi
 import br.senai.sp.jandira.vanbora.model.user.UserList
 import br.senai.sp.jandira.vanbora.model.user.UserModel
 import br.senai.sp.jandira.vanbora.ui.activities.ui.theme.VanboraTheme
+import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,6 +58,21 @@ class GetAllUsersActivity : ComponentActivity() {
 @Composable
 fun Greeting() {
 
+    var nomeState by remember {
+        mutableStateOf("")
+    }
+    var emailState by remember {
+        mutableStateOf("")
+    }
+    var telefoneState by remember {
+        mutableStateOf("")
+    }
+    var activeState by remember {
+        mutableStateOf(false)
+    }
+
+
+
     Log.i("ds3m", "aqui ******************")
 
     val retrofit = RetrofitApi.getRetrofit()
@@ -82,38 +100,116 @@ fun Greeting() {
             .fillMaxSize()
     ) {
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize().background(Color.Green)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(users.users!!) {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    backgroundColor = Color(197, 152, 22, 255)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        Column {
-                            Image(
-                                painter = painterResource(id = R.drawable.user),
-                                contentDescription = ""
-                            )
+            Text(
+                text = "Cadastro de Usuários"
+            )
+            OutlinedTextField(
+                value = nomeState,
+                onValueChange = {
+                    nomeState = it
+                },
+                modifier = Modifier.fillMaxWidth(),
+                label = {
+                    Text(
+                        text = "Nome"
+                    )
+                }
+            )
+            OutlinedTextField(
+                value = emailState,
+                onValueChange = {
+                    emailState = it
+                },
+                modifier = Modifier.fillMaxWidth(),
+                label = {
+                    Text(
+                        text = "Email"
+                    )
+                }
+            )
+            OutlinedTextField(
+                value = telefoneState,
+                onValueChange = {
+                    telefoneState = it
+                },
+                modifier = Modifier.fillMaxWidth(),
+                label = {
+                    Text(
+                        text = "Telefone"
+                    )
+                }
+            )
+
+            Button(
+                onClick = {
+                    val user = UserModel(
+                        nome = nomeState,
+                        email = emailState,
+                        telefone = telefoneState
+                    )
+                    val callPost = usersCall.saveUser(user)
+
+                    callPost.enqueue(object : Callback<UserModel> {
+                        override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
+                            Log.i("ds3m", response.body()!!.toString())
                         }
-                        Column {
-                            Text(text = it.nome, color = Color.White)
-                            Text(text = it., color = Color.White)
-                            Text(text = "add3", color = Color.White)
+
+                        override fun onFailure(call: Call<UserModel>, t: Throwable) {
+                            Log.i("ds3m", t.message.toString())
+                        }
+
+                    })
+                },
+                modifier = Modifier.fillMaxWidth().background(Color(197, 152, 22, 255))
+            ) {
+                Text(
+                    text = "Cadastrar"
+                )
+            }
+
+            Spacer(modifier = Modifier.padding(bottom = 32.dp))
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Green)
+            ) {
+                items(users.users!!) {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        backgroundColor = Color(197, 152, 22, 255)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            Column {
+                                Image(
+                                    painter = rememberAsyncImagePainter(it.foto),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(128.dp)
+                                )
+                            }
+                            Column {
+                                Text(text = it.nome, color = Color.White)
+                                Text(text = it.email, color = Color.White)
+                                Text(text = it.telefone, color = Color.White)
+                            }
                         }
                     }
                 }
             }
+
+
         }
 
-
     }
-
-
 }
 
 @Preview(showBackground = true, showSystemUi = true)
