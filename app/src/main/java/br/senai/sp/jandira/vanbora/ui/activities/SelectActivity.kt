@@ -2,6 +2,7 @@ package br.senai.sp.jandira.vanbora.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -59,6 +60,10 @@ fun Select() {
         mutableStateOf(MainActivity::class.java)
     }
 
+    val intent = (context as SelectActivity).intent
+
+    val t = intent.getStringExtra("name")
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -74,6 +79,8 @@ fun Select() {
         HeaderSelectDriverComplement(context = context, componentActivity = activityMain.newInstance())
 
         SelectUserDriver()
+
+        Toast.makeText(context, "$t", Toast.LENGTH_SHORT).show()
     }
 
 }

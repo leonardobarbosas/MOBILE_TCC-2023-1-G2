@@ -1,10 +1,13 @@
 package br.senai.sp.jandira.vanbora.components.forms.user
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -31,7 +34,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.functions_click.RegisterNewUser
+import br.senai.sp.jandira.vanbora.ui.activities.SelectActivity
+import br.senai.sp.jandira.vanbora.ui.activities.UserActivityComplements
 
 @Composable
 fun UserInfos() {
@@ -105,8 +112,8 @@ fun UserInfos() {
                 .height(100.dp)
                 .fillMaxWidth()
                 .clickable {
-                launcher.launch("image/*")
-            }
+                    launcher.launch("image/*")
+                }
         ) {
             imageUri?.let {
                 if (Build.VERSION.SDK_INT < 28){
@@ -382,6 +389,15 @@ fun UserInfos() {
                 isCepError = cepState.isEmpty()
                 isTelefoneError = telefoneState.isEmpty()
                 isDataNascimentoError = dataNascimentoState.isEmpty()
+
+                val intent = (context as UserActivityComplements).intent
+
+                var name = intent.getStringExtra("name").toString()
+                var email = intent.getStringExtra("email").toString()
+                var senha = intent.getStringExtra("senha").toString()
+
+                Toast.makeText(context, name, Toast.LENGTH_SHORT).show()
+
 
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))

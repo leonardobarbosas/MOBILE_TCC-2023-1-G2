@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.ui.activities.SelectActivity
+import br.senai.sp.jandira.vanbora.ui.activities.UserActivityComplements
 
 @Composable
 fun FormMainCadastro(){
@@ -243,6 +245,15 @@ fun FormMainCadastro(){
                     isNameError = nameState.length == 0
                     isEmailError = emailState.length == 0
                     isSenhaError = senhaState.length == 0
+
+                    val intentUser = Intent(context, UserActivityComplements::class.java)
+                    intentUser.putExtra("name", nameState)
+                    intentUser.putExtra("email", emailState)
+                    intentUser.putExtra("senha", senhaState)
+
+                    val intentSelect = Intent(context, SelectActivity::class.java)
+
+                    context.startActivity(intentSelect)
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
