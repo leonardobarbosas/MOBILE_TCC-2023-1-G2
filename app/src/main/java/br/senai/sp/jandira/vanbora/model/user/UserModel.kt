@@ -15,3 +15,15 @@ data class UserModel(
         return "UserModelItem(id=$id, cpf='$cpf', data_nascimento='$data_nascimento', email='$email', foto='$foto', nome='$nome', rg='$rg', senha='$senha', telefone='$telefone')"
     }
 }
+
+//{
+//            "id": 15,
+//            "email": "teste@gmail.com",
+//            "nome": "teste",
+//            "rg": "000000000",
+//            "cpf": "00000000000",
+//            "telefone": "0000000000",
+//            "data_nascimento": "2005-10-13T00:00:00.000Z",
+//            "senha": "teste123",
+//            "foto": "https://www.meutimao.com.br/fotos-do-corinthians/w941/2021/03/05/marcio_bittencourt_foto_3x4_6zok.jpg"
+//        }

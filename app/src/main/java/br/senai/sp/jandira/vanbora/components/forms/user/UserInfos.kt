@@ -102,8 +102,7 @@ fun UserInfos() {
     //Main
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(scrollState),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -112,6 +111,7 @@ fun UserInfos() {
             modifier = Modifier
                 .height(100.dp)
                 .fillMaxWidth()
+                .verticalScroll(scrollState)
                 .clickable {
                     launcher.launch("image/*")
                 }
