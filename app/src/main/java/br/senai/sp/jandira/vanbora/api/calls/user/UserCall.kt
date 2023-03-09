@@ -10,12 +10,19 @@ import retrofit2.http.Path
 
 interface UserCall {
 
-    @GET("colocarEndPoint")
+    //GET USER BY ID
+    @GET("user/{id}")
     fun getUserById(@Path("id")id: Int): Call<UserModel>
 
-    @POST("users")
+    //GET ALL USERS
+    @GET("users")
+    fun getAllUsers(): Call<List<UserModel>>
+
+    //ATUALIZAR USER
+    @POST("user")
     fun saveUser(@Body userModel: UserModel): Call<UserModel>
 
+    //DELETAR ALUNO
     @DELETE("endPoint")
     fun deleteUser(@Path("id")id: Int)
 }

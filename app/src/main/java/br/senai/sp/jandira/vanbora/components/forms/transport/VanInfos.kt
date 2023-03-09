@@ -1,4 +1,5 @@
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -29,6 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.ui.activities.GetAllUsersActivity
+import br.senai.sp.jandira.vanbora.ui.activities.VanComplements
 
 @Composable
 fun VanInfos(context: Context) {
@@ -188,6 +191,7 @@ fun VanInfos(context: Context) {
                 isPlacaVanError = placaVan.length == 0
                 isModeloVanError = modeloVan.length == 0
                 isVagasVanError = vagasVan.length == 0
+
                       },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 

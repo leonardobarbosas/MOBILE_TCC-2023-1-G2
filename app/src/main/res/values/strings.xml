@@ -47,6 +47,7 @@
     <string name="data_nascimento_error">Data de nascimento invalida</string>
     <string name="title_activity_user_complements">UserActivityComplements</string>
     <string name="title_activity_van_complements">VanComplements</string>
+    <string name="title_activity_get_all_users">getAllUsersActivity</string>
 
 
 </resources>
