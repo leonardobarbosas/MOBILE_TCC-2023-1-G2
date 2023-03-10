@@ -416,7 +416,7 @@ fun UserInfos(name: String, email: String, senha: String) {
                     }
 
                     override fun onFailure(call: Call<UserModel>, t: Throwable) {
-                        TODO("Not yet implemented")
+                        Toast.makeText(context, "Sem net", Toast.LENGTH_SHORT).show()
                     }
                 })
 

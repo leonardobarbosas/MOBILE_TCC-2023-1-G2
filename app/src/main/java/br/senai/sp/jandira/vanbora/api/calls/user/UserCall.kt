@@ -23,6 +23,7 @@ interface UserCall {
     fun getAllUsers(): Call<UserList>
     //fun getAllUsers(): Call<List<UserModel>>
 
+    @Headers("Content-type: application/json")
     @POST("user")
     fun saveUser(@Body userModel: UserModel): Call<UserModel>
 

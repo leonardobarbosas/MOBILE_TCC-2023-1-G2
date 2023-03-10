@@ -19,7 +19,6 @@ class RetrofitApi {
             if(!::instance.isInitialized){
                 instance = Retrofit.Builder()
                     .baseUrl(ConstantsApi.BASE_URL)
-                    .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
