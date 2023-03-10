@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.vanbora.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -14,10 +15,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.api.calls.user.UserCall
 import br.senai.sp.jandira.vanbora.api.retrofit.RetrofitApi
 import br.senai.sp.jandira.vanbora.model.user.UserList
@@ -34,7 +34,6 @@ class GetAllUsersActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VanboraTheme {
-                Log.i("ds3m", "aqui ******************")
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -47,7 +46,6 @@ class GetAllUsersActivity : ComponentActivity() {
                             darkIcons = true
                         )
                     }
-                    Log.i("ds3m", "aqui ******************")
                     Greeting()
                 }
             }
@@ -67,13 +65,9 @@ fun Greeting() {
     var telefoneState by remember {
         mutableStateOf("")
     }
-    var activeState by remember {
-        mutableStateOf(false)
-    }
 
+    var context = LocalContext.current
 
-
-    Log.i("ds3m", "aqui ******************")
 
     val retrofit = RetrofitApi.getRetrofit()
     val usersCall = retrofit.create(UserCall::class.java)
@@ -148,23 +142,7 @@ fun Greeting() {
 
             Button(
                 onClick = {
-                    val user = UserModel(
-                        nome = nomeState,
-                        email = emailState,
-                        telefone = telefoneState
-                    )
-                    val callPost = usersCall.saveUser(user)
-
-                    callPost.enqueue(object : Callback<UserModel> {
-                        override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
-                            Log.i("ds3m", response.body()!!.toString())
-                        }
-
-                        override fun onFailure(call: Call<UserModel>, t: Throwable) {
-                            Log.i("ds3m", t.message.toString())
-                        }
-
-                    })
+                    context.startActivity(Intent(context, GetUserById::class.java))
                 },
                 modifier = Modifier.fillMaxWidth().background(Color(197, 152, 22, 255))
             ) {
