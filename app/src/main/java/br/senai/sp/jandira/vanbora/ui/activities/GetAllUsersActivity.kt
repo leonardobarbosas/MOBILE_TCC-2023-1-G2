@@ -178,6 +178,7 @@ fun Greeting() {
                                 Text(text = it.nome, color = Color.White)
                                 Text(text = it.email, color = Color.White)
                                 Text(text = it.telefone, color = Color.White)
+                                
                             }
                         }
                     }
