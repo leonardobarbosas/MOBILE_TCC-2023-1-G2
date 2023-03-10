@@ -36,13 +36,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewUser
+import br.senai.sp.jandira.vanbora.model.user.UserModel
 import br.senai.sp.jandira.vanbora.ui.activities.GetAllUsersActivity
 import br.senai.sp.jandira.vanbora.ui.activities.SelectActivity
 import br.senai.sp.jandira.vanbora.ui.activities.UserActivityComplements
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
-fun UserInfos() {
+fun UserInfos(name: String, email: String, senha: String) {
 
     var rgState by rememberSaveable() {
         mutableStateOf("")
@@ -391,16 +396,29 @@ fun UserInfos() {
                 isTelefoneError = telefoneState.isEmpty()
                 isDataNascimentoError = dataNascimentoState.isEmpty()
 
-                val intent = (context as UserActivityComplements).intent
+                val user = UserModel(
+                    cpf = cpfState,
+                    data_nascimento = dataNascimentoState,
+                    email = email,
+                    foto = "sdfsfsfse",
+                    nome = name,
+                    rg = rgState,
+                    senha = senha,
+                    telefone = telefoneState
+                )
 
-                var name = intent.getStringExtra("name").toString()
-                var email = intent.getStringExtra("email").toString()
-                var senha = intent.getStringExtra("senha").toString()
+                val userCallSave = GetFunctionsCall.getUserCall().saveUser(user)
 
-                Toast.makeText(context, name, Toast.LENGTH_SHORT).show()
+                userCallSave.enqueue(object : Callback<UserModel>{
+                    override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
+                        val newUser = response.body()!!
+                        Toast.makeText(context, "${newUser.id} - ${newUser.nome}", Toast.LENGTH_SHORT).show()
+                    }
 
-
-
+                    override fun onFailure(call: Call<UserModel>, t: Throwable) {
+                        TODO("Not yet implemented")
+                    }
+                })
 
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))

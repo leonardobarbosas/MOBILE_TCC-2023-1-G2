@@ -62,7 +62,9 @@ fun Select() {
 
     val intent = (context as SelectActivity).intent
 
-    val t = intent.getStringExtra("name")
+    val nameUser = intent.getStringExtra("name").toString()
+    val emailUser = intent.getStringExtra("email").toString()
+    val senhaUser = intent.getStringExtra("senha").toString()
 
     Column(
         modifier = Modifier
@@ -78,9 +80,8 @@ fun Select() {
         //Header - Logo do VanBora
         HeaderSelectDriverComplement(context = context, componentActivity = activityMain.newInstance())
 
-        SelectUserDriver()
+        SelectUserDriver(nameUser, emailUser, senhaUser)
 
-        Toast.makeText(context, "$t", Toast.LENGTH_SHORT).show()
     }
 
 }
