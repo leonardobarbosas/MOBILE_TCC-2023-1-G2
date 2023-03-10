@@ -25,7 +25,7 @@ interface UserCall {
 
     @Headers("Content-type: application/json")
     @POST("user")
-    fun saveUser(@Body userModel: UserModel): Call<UserModel>
+    fun saveUser(@Body userModel: UserModel): Call<UserList>
 
     //DELETAR ALUNO
     @DELETE("endPoint")

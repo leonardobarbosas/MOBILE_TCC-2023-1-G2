@@ -10,11 +10,7 @@ data class UserModel(
     val rg: String = "",
     val senha: String = "",
     val telefone: String = ""
-){
-    override fun toString(): String {
-        return "UserModelItem(id=$id, cpf='$cpf', data_nascimento='$data_nascimento', email='$email', foto='$foto', nome='$nome', rg='$rg', senha='$senha', telefone='$telefone')"
-    }
-}
+)
 
 //{
 //            "id": 15,
