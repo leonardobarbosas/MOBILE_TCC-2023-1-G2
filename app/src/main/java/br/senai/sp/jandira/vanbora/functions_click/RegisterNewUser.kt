@@ -22,5 +22,27 @@ fun RegisterNewUser(
     context: Context
 ) {
 
+    val user = UserModel(
+        cpf = cpf,
+        data_nascimento = dataNascimento,
+        email = email,
+        foto = "sdfsfsfse",
+        nome = nome,
+        rg = rg,
+        senha = senha,
+        telefone = telefone
+    )
 
+    val userCallSave = GetFunctionsCall.getUserCall().saveUser(user)
+
+    userCallSave.enqueue(object : Callback<UserModel>{
+        override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
+            val newUser = response.body()!!
+            Toast.makeText(context, "${newUser.id} - ${newUser.nome}", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onFailure(call: Call<UserModel>, t: Throwable) {
+            Toast.makeText(context, "Sem net", Toast.LENGTH_SHORT).show()
+        }
+    })
 }

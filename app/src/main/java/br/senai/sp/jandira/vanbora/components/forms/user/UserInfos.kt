@@ -40,6 +40,7 @@ import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewUser
 import br.senai.sp.jandira.vanbora.model.user.UserModel
 import br.senai.sp.jandira.vanbora.ui.activities.GetAllUsersActivity
+import br.senai.sp.jandira.vanbora.ui.activities.Register
 import br.senai.sp.jandira.vanbora.ui.activities.SelectActivity
 import br.senai.sp.jandira.vanbora.ui.activities.UserActivityComplements
 import retrofit2.Call
@@ -396,29 +397,17 @@ fun UserInfos(name: String, email: String, senha: String) {
                 isTelefoneError = telefoneState.isEmpty()
                 isDataNascimentoError = dataNascimentoState.isEmpty()
 
-                val user = UserModel(
-                    cpf = cpfState,
-                    data_nascimento = dataNascimentoState,
-                    email = email,
-                    foto = "sdfsfsfse",
+                RegisterNewUser(
                     nome = name,
-                    rg = rgState,
+                    email = email,
                     senha = senha,
-                    telefone = telefoneState
+                    rg = rgState,
+                    cpf = cpfState,
+                    telefone = telefoneState,
+                    dataNascimento = dataNascimentoState,
+                    foto = "url_foto",
+                    context = context
                 )
-
-                val userCallSave = GetFunctionsCall.getUserCall().saveUser(user)
-
-                userCallSave.enqueue(object : Callback<UserModel>{
-                    override fun onResponse(call: Call<UserModel>, response: Response<UserModel>) {
-                        val newUser = response.body()!!
-                        Toast.makeText(context, "${newUser.id} - ${newUser.nome}", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onFailure(call: Call<UserModel>, t: Throwable) {
-                        Toast.makeText(context, "Sem net", Toast.LENGTH_SHORT).show()
-                    }
-                })
 
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
