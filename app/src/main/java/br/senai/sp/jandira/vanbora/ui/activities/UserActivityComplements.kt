@@ -2,6 +2,7 @@ package br.senai.sp.jandira.vanbora.ui.activities
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -74,6 +75,8 @@ fun DadosAdicionaisUser() {
             context = context,
             componentActivity = selectActivy.newInstance()
         )
+
+        Log.i("ds3m", "DadosAdicionaisUser: $name, $email, $senha")
 
         //Main and Footer
         UserInfos(name, email, senha)

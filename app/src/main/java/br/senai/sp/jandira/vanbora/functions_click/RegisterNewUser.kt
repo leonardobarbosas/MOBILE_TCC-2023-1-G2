@@ -6,27 +6,28 @@ import android.util.Log
 import android.widget.Toast
 import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.model.user.UserList
-import br.senai.sp.jandira.vanbora.model.user.UserModel
+import br.senai.sp.jandira.vanbora.model.user.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 fun RegisterNewUser(
-    nome: String,
-    email: String,
-    senha: String,
-    rg: String,
+    cep: String,
     cpf: String,
+    data_nascimento: String,
+    email: String,
+    foto: String,
+    nome: String,
+    rg: String,
+    senha: String,
     telefone: String,
-    dataNascimento: String,
-    foto: String ,
     context: Context
 ) {
 
-    val user = UserModel(
+    val user = User(
+        cep = cep,
         cpf = cpf,
-        data_nascimento = dataNascimento,
+        data_nascimento = data_nascimento,
         email = email,
         foto = foto,
         nome = nome,
@@ -37,14 +38,17 @@ fun RegisterNewUser(
 
     val userCallSave = GetFunctionsCall.getUserCall().saveUser(user)
 
-    userCallSave.enqueue(object : Callback<UserList>{
-        override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
-            val new = response.body()!!
-            Log.i("ds3x", "onResponse: ${new.users[1].id}")
+    userCallSave.enqueue(object : Callback<User>{
+        override fun onResponse(call: Call<User>, response: Response<User>) {
+            val teste = response.body()!!
+            Log.i("ds3m", "onResponse: ${teste.nome}")
+            Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show()
         }
 
-        override fun onFailure(call: Call<UserList>, t: Throwable) {
-            Log.i("ds3x", "onFailure: $t")
+        override fun onFailure(call: Call<User>, t: Throwable) {
+            Log.i("ds3m", "onFailure: ${t.message.toString()}")
         }
     })
+
+    context.startActivity(Intent(context, MainActivity::class.java))
 }
