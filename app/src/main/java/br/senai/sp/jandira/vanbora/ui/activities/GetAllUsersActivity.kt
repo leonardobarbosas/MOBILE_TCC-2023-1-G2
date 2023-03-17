@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.api.calls.user.UserCall
 import br.senai.sp.jandira.vanbora.api.retrofit.RetrofitApi
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.user.UserList
-import br.senai.sp.jandira.vanbora.model.user.UserModel
 import br.senai.sp.jandira.vanbora.ui.activities.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -69,24 +69,21 @@ fun Greeting() {
     var context = LocalContext.current
 
 
-    val retrofit = RetrofitApi.getRetrofit()
-    val usersCall = retrofit.create(UserCall::class.java)
-    val call = usersCall.getAllUsers()
+    val usersCall = GetFunctionsCall.getUserCall().getAllUsers()
 
     var users by remember {
         mutableStateOf(UserList(listOf()))
     }
 
-    call.enqueue(object: Callback<UserList>{
+    usersCall.enqueue(object : Callback<UserList>{
         override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
             users = response.body()!!
-            Log.i("ds3m", users.toString())
+            Log.i("ds3m", "onResponse: deu certo")
         }
 
         override fun onFailure(call: Call<UserList>, t: Throwable) {
-            Log.i("ds3m", t.message.toString())
+            Log.i("ds3m", "onFailure: sem net")
         }
-
     })
 
     Column(
@@ -144,7 +141,9 @@ fun Greeting() {
                 onClick = {
                     context.startActivity(Intent(context, GetUserById::class.java))
                 },
-                modifier = Modifier.fillMaxWidth().background(Color(197, 152, 22, 255))
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(197, 152, 22, 255))
             ) {
                 Text(
                     text = "Cadastrar"
@@ -157,8 +156,8 @@ fun Greeting() {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.Green)
-            ) {
-                items(users.users!!) {
+            ){
+                items(users.users!!){
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         backgroundColor = Color(197, 152, 22, 255)
@@ -178,18 +177,25 @@ fun Greeting() {
                                 Text(text = it.nome, color = Color.White)
                                 Text(text = it.email, color = Color.White)
                                 Text(text = it.telefone, color = Color.White)
-                                
+
                             }
-                        }
+                       }
                     }
                 }
             }
-
-
         }
 
     }
 }
+
+//{
+//                items(users.users!!) {
+//                    Card(
+//
+//                    ) {
+//
+//                    }
+//                }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

@@ -1,8 +1,6 @@
 package br.senai.sp.jandira.vanbora.api.retrofit
 
-import br.senai.sp.jandira.vanbora.api.MyInterceptor
 import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
