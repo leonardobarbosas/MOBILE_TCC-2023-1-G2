@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -15,11 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.senai.sp.jandira.vanbora.api.calls.user.UserCall
-import br.senai.sp.jandira.vanbora.api.retrofit.RetrofitApi
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.model.user.UserList
-import br.senai.sp.jandira.vanbora.model.user.UserModel
+import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.ui.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
@@ -61,8 +57,8 @@ fun GetId() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        var use by remember {
-            mutableStateOf<UserModel?>(null)
+        var user by remember {
+            mutableStateOf<User?>(null)
         }
 
 
@@ -86,21 +82,14 @@ fun GetId() {
 
                     var call = GetFunctionsCall.getUserCall().getUserById(id = idState.toInt())
 
-
-                    call.enqueue(object : Callback<UserModel>{
-                        override fun onResponse(
-                            call: Call<UserModel>,
-                            response: Response<UserModel>
-                        ) {
-
-
-                            use = response.body()!!
+                    call.enqueue(object : Callback<User>{
+                        override fun onResponse(call: Call<User>, response: Response<User>) {
+                            user = response.body()!!
                         }
 
-                        override fun onFailure(call: Call<UserModel>, t: Throwable) {
-                            Log.i("ds3m", "a")
+                        override fun onFailure(call: Call<User>, t: Throwable) {
+                            Log.i("ds3m", "onFailure: sem net")
                         }
-
                     })
 
                 }) {
@@ -119,15 +108,15 @@ fun GetId() {
                 ) {
                     Column {
                         Image(
-                            painter = rememberAsyncImagePainter(use?.foto),
+                            painter = rememberAsyncImagePainter(user?.foto),
                             contentDescription = null,
                             modifier = Modifier.size(128.dp)
                         )
                     }
                     Column {
-                        use?.let { Text(text = it.nome, color = Color.White) }
-                        use?.let { Text(text = it.email, color = Color.White) }
-                        use?.let { Text(text = it.telefone, color = Color.White) }
+                        user?.let { Text(text = it.nome, color = Color.White) }
+                        user?.let { Text(text = it.email, color = Color.White) }
+                        user?.let { Text(text = it.telefone, color = Color.White) }
                     }
                 }
             }
