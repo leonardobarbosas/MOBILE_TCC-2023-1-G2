@@ -33,6 +33,8 @@
     <string name="rg">RG</string>
     <string name="cpf">CPF</string>
     <string name="cep">CEP</string>
+    <string name="nmr">Número da casa</string>
+    <string name="complementos">Complementos</string>
     <string name="cnh">CNH</string>
     <string name="telefone">Telefone</string>
     <string name="data_nascimento">Data de nascimento</string>
@@ -49,6 +51,10 @@
     <string name="title_activity_van_complements">VanComplements</string>
     <string name="title_activity_get_all_users">getAllUsersActivity</string>
     <string name="title_activity_get_user_by_id">GetUserById</string>
+    <string name="title_activity_localize">LocalizeActivity</string>
+
+    <string name="vanbora_title1">Local</string>
+    <string name="vanbora_title2">ize-se</string>
 
 
 </resources>

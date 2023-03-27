@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.vanbora.components
+package br.senai.sp.jandira.vanbora.components.headers
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,18 +14,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.components.headers.Logo
 
-
-@Preview(showBackground = true)
 @Composable
-fun HeaderCadastroLogin(){
+fun Logo () {
+
     Row(
         modifier = Modifier
-            .fillMaxWidth()
             .fillMaxHeight(0.1f)
             .background(color = Color.White),
         horizontalArrangement = Arrangement.Center,
@@ -56,4 +52,5 @@ fun HeaderCadastroLogin(){
             Text(text = stringResource(id = R.string.app_name), textAlign = TextAlign.Center)
         }
     }
+
 }
