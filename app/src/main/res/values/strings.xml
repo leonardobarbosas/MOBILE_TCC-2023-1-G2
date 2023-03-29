@@ -29,6 +29,9 @@
     <string name="title_activity_dados_driver">dadosDriverActivity</string>
     <string name="title_activity_driver_complements">DriverActivityComplements</string>
     <string name="select_image">Selecionar Imagem</string>
+    <string name="contract">Contrato</string>
+    <string name="localize">Localize-se</string>
+    <string name="drivers">Motoristas</string>
 
     <string name="rg">RG</string>
     <string name="cpf">CPF</string>
@@ -53,8 +56,9 @@
     <string name="title_activity_get_user_by_id">GetUserById</string>
     <string name="title_activity_localize">LocalizeActivity</string>
 
-    <string name="vanbora_title1">Local</string>
-    <string name="vanbora_title2">ize-se</string>
+    <string name="vanbora_title1">Localize-se</string>
+    <string name="title_activity_motoristas">MotoristasActivity</string>
+    <string name="title_activity_contratos">ContratosActivity</string>
 
 
 </resources>

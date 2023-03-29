@@ -22,7 +22,7 @@ fun Logo () {
 
     Row(
         modifier = Modifier
-            .fillMaxHeight(0.1f)
+            .fillMaxHeight()
             .background(color = Color.White),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -49,7 +49,7 @@ fun Logo () {
         }
 
         Column(Modifier.padding(top = 2.dp),verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = stringResource(id = R.string.app_name), textAlign = TextAlign.Center)
+            Text(text = stringResource(id = R.string.app_name), color = Color.Black ,textAlign = TextAlign.Center)
         }
     }
 
