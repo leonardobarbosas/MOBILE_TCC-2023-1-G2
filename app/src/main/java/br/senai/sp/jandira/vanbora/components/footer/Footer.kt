@@ -21,9 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.ui.activities.ContratosActivity
 import br.senai.sp.jandira.vanbora.ui.activities.LocalizeActivity
-import br.senai.sp.jandira.vanbora.ui.activities.MotoristasActivity
 
 
 @Composable
@@ -45,8 +43,6 @@ fun Footer () {
 
             Column(
                 modifier = Modifier.clickable {
-                    val intent = Intent(context, MotoristasActivity::class.java)
-                    context.startActivity(intent)
                 },
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -64,8 +60,6 @@ fun Footer () {
 
             Column(
                 modifier = Modifier.clickable {
-                    val intent = Intent(context, ContratosActivity::class.java)
-                    context.startActivity(intent)
                 },
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally

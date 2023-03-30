@@ -3,6 +3,7 @@ package br.senai.sp.jandira.vanbora.components.headers.Rotas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -10,11 +11,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.footer.Footer
-import br.senai.sp.jandira.vanbora.components.forms.localize.Localizese
-import br.senai.sp.jandira.vanbora.components.headers.Header
+import br.senai.sp.jandira.vanbora.components.forms.maincontainer.MotoristasMain
 
 @Composable
-fun MeusContratos () {
+fun Motoristas () {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -26,7 +26,7 @@ fun MeusContratos () {
     ) {
 
         //Main
-        Localizese()
+        MotoristasMain()
 
         //Footer
         Footer()

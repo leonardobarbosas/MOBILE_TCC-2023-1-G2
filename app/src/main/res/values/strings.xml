@@ -59,6 +59,7 @@
     <string name="vanbora_title1">Localize-se</string>
     <string name="title_activity_motoristas">MotoristasActivity</string>
     <string name="title_activity_contratos">ContratosActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
 
 
 </resources>

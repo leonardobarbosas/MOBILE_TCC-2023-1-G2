@@ -1,15 +1,19 @@
 package br.senai.sp.jandira.vanbora.components.headers
 
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.ui.graphics.vector.ImageVector
 import br.senai.sp.jandira.vanbora.R
 
 sealed class Destinos(
-    val ico: Int,
+    val ico: ImageVector,
     val title: String,
-    val rota: String
+    val route: String
 ){
-    object Rota1: Destinos(R.drawable.visibility, "Ver perfil", "Vizualizar seu perfil")
-    object Rota2: Destinos(R.drawable.visibilityoff, "Meus contratos", "Vizualizar meus contratos")
-    object Rota3: Destinos(R.drawable.visibility, "Localize-se", "Localize-se")
-    object Rota4: Destinos(R.drawable.visibilityoff, "Contate-nos", "Contate-nos")
+    object RotaPerfil: Destinos(Icons.Filled.PeopleAlt, "Ver perfil", "Vizualizar seu perfil")
+    object RotaMeusContratos: Destinos(Icons.Filled.Newspaper, "Meus contratos", "Vizualizar meus contratos")
+    object RotaLocalize: Destinos(Icons.Filled.Map, "Localize-se", "Localize-se")
+    object RotaContate: Destinos(Icons.Filled.Phone, "Contate-nos", "Contate-nos")
+    object RotaMotoristas: Destinos(Icons.Filled.AirportShuttle, "Motoristas", "Motoristas")
 }

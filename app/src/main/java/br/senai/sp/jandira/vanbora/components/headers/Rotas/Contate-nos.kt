@@ -25,9 +25,6 @@ fun ContateNos () {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        //Header
-        Header()
-
         //Main
         Localizese()
 

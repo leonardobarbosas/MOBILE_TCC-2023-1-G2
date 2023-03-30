@@ -25,9 +25,6 @@ fun VerPerfil () {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        //Header
-        Header()
-
         //Main
         Localizese()
 

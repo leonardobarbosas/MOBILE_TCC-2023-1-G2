@@ -25,9 +25,6 @@ fun LocalizeSe () {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        //Header
-        Header()
-
         //Main
         Localizese()
 
