@@ -16,29 +16,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun Logo () {
+fun Logo() {
 
     Row(
-        modifier = Modifier
-            .fillMaxHeight()
-            .background(color = Color.White),
-        horizontalArrangement = Arrangement.End,
+        modifier = Modifier.background(color = Color.White),
         verticalAlignment = Alignment.CenterVertically
-    )
-    {
+    ) {
         Column(
             modifier = Modifier
-                .size(34.dp),
+                .size(40.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
             Icon(
-                imageVector =  Icons.Filled.AirportShuttle,
+                imageVector = Icons.Filled.AirportShuttle,
                 contentDescription = "icon",
                 tint = Color.White,
                 modifier = Modifier
@@ -50,8 +47,16 @@ fun Logo () {
             )
         }
 
-        Column(Modifier.padding(top = 2.dp),verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = stringResource(id = R.string.app_name), color = Color.Black ,textAlign = TextAlign.Center)
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                color = Color.Black,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
         }
     }
 

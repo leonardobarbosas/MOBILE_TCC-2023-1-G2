@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.components.footer.Footer
+import br.senai.sp.jandira.vanbora.components.footer.FooterShow
 import br.senai.sp.jandira.vanbora.components.forms.localize.Localizese
 import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.ui.activities.ui.theme.VanboraTheme
@@ -38,7 +38,11 @@ class LocalizeActivity : ComponentActivity() {
                             darkIcons = true
                         )
                     }
+                    Header()
+
                     Localize()
+
+                    FooterShow()
                 }
             }
         }
@@ -59,14 +63,11 @@ fun Localize() {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        //Header
-        Header()
 
-        //Main
+
         Localizese()
 
-        //Footer
-        Footer()
+
 
     }
 }

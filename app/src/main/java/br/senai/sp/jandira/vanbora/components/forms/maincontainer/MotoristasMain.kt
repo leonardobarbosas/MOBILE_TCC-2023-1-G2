@@ -1,20 +1,34 @@
 package br.senai.sp.jandira.vanbora.components.forms.maincontainer
 
 import android.util.Log
+import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.model.user.DriverList
 import br.senai.sp.jandira.vanbora.model.user.UserList
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
@@ -26,21 +40,27 @@ import retrofit2.Response
 @Composable
 fun MotoristasMain() {
 
-    val usersCall = GetFunctionsCall.getUserCall().getAllUsers()
-
-    var users by remember {
-        mutableStateOf(UserList(listOf()))
+    var filterState by remember {
+        mutableStateOf("")
     }
 
-    usersCall.enqueue(object : Callback<UserList> {
-        override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
-            users = response.body()!!
-            Log.i("ds3m", "onResponse: deu certo")
+
+    val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
+
+    var drivers by remember {
+        mutableStateOf(DriverList(listOf()))
+    }
+
+    driversCall.enqueue(object : Callback<DriverList> {
+        override fun onResponse(call: Call<DriverList>, response: Response<DriverList>) {
+            drivers = response.body()!!
+            Log.i("ds3m", "ds3m")
         }
 
-        override fun onFailure(call: Call<UserList>, t: Throwable) {
-            Log.i("ds3m", "onFailure: sem net")
+        override fun onFailure(call: Call<DriverList>, t: Throwable) {
+            Log.i("ds3m", "ds3m")
         }
+
     })
 
     Column(
@@ -55,37 +75,147 @@ fun MotoristasMain() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            LazyColumn(
+            Row(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Green)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                items(users.users) {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        backgroundColor = Color(197, 152, 22, 255)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround
-                        ) {
-                            Column {
-                                Image(
-                                    painter = rememberAsyncImagePainter(it.foto),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(128.dp)
-                                )
-                            }
-                            Column {
-                                Text(text = it.nome, color = Color.White)
-                                Text(text = it.email, color = Color.White)
-                                Text(text = it.telefone, color = Color.White)
+                OutlinedTextField(
+                    value = filterState,
+                    onValueChange = {
+                        filterState = it
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = "",
+                            tint = Color(238, 179, 31, 255)
+                        )
+                    },
+                    shape = RoundedCornerShape(40.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color(208, 173, 82, 255),
+                        unfocusedBorderColor = Color(208, 173, 82, 255),
+                        backgroundColor = Color(255, 248, 228, 255)
+                    )
+                )
 
+                Spacer(modifier = Modifier.padding(6.dp))
+
+                Icon(
+                    imageVector = Icons.Filled.FilterList,
+                    contentDescription = "",
+                    modifier = Modifier.height(46.dp).width(46.dp),
+                    tint = Color.Black
+                )
+
+            }
+
+            Spacer(modifier = Modifier.padding(10.dp))
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(drivers.drivers) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .padding(6.dp),
+                        shape = RoundedCornerShape(
+                            topStart = 20.dp,
+                            topEnd = 20.dp,
+                            bottomEnd = 8.dp,
+                            bottomStart = 8.dp
+                        )
+                    ) {
+                        Column() {
+                            Image(
+                                painter = rememberAsyncImagePainter(it.foto),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(130.dp)
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(1f),
+                                backgroundColor = Color(247, 233, 194, 255)
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Row(
+                                        modifier = Modifier.padding(start = 16.dp)
+                                    ) {
+                                        Image(
+                                            painter = rememberAsyncImagePainter(it.foto),
+                                            contentDescription = null,
+                                            contentScale = ContentScale.Crop,
+                                            modifier = Modifier
+                                                .height(50.dp)
+                                                .width(50.dp)
+                                                .clip(CircleShape)
+                                                .border(2.dp, Color.Gray, CircleShape)
+                                        )
+
+                                        Spacer(modifier = Modifier.padding(2.dp))
+
+                                        Column() {
+                                            Text(text = it.nome, color = Color.Black)
+                                            Spacer(modifier = Modifier.padding(2.dp))
+                                            Row() {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
+                                        }
+                                    }
+
+                                    Column(
+                                        modifier = Modifier.padding(end = 16.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Text(text = "16")
+                                        Text(text = "Vagas")
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
+
     }
 }

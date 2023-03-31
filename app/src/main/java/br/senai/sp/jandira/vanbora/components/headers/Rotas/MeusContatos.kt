@@ -9,7 +9,6 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.components.footer.Footer
 import br.senai.sp.jandira.vanbora.components.forms.localize.Localizese
 import br.senai.sp.jandira.vanbora.components.headers.Header
 
@@ -25,11 +24,11 @@ fun MeusContratos () {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
+        Header()
+
         //Main
         Localizese()
 
-        //Footer
-        Footer()
 
     }
 }

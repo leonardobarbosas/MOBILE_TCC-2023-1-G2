@@ -1,100 +1,114 @@
 package br.senai.sp.jandira.vanbora.components.footer
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AirportShuttle
-import androidx.compose.material.icons.filled.Contrast
-import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.ui.activities.LocalizeActivity
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import br.senai.sp.jandira.vanbora.components.headers.Destinos
+import br.senai.sp.jandira.vanbora.components.headers.Rotas.*
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview
 @Composable
-fun Footer () {
-
-    val context = LocalContext.current
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.7f),
-        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+fun FooterShow() {
+    val navController = rememberNavController()
+    Scaffold(
+        bottomBar = { BottomBar(navController = navController) }
     ) {
-        Row(
-            modifier = Modifier.background(Color(224, 180, 65, 255)),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Navigation(navController = navController)
+    }
+}
 
-            Column(
-                modifier = Modifier.clickable {
-                },
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.AirportShuttle,
-                    contentDescription = "",
-                    modifier = Modifier.fillMaxHeight(0.3f)
-                )
-                Text(
-                    text = stringResource(id = R.string.drivers),
-                    fontSize = 16.sp
-                )
-            }
+@Composable
+fun BottomBar(navController: NavHostController) {
+    val screens = listOf(
+        Destinos.RotaLocalize,
+        Destinos.RotaMotoristas,
+        Destinos.RotaMeusContratos,
+        Destinos.RotaContate,
+    )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
 
-            Column(
-                modifier = Modifier.clickable {
-                },
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Contrast,
-                    contentDescription = "",
-                    modifier = Modifier.fillMaxHeight(0.3f)
-                )
-                Text(
-                    text = stringResource(id = R.string.contract),
-                    fontSize = 16.sp
-                )
-            }
+    BottomNavigation {
+        screens.forEach { screen ->
+            AddItem(
+                screen = screen,
+                currentDestination = currentDestination,
+                navController = navController
+            )
+        }
+    }
+}
 
-            Column(
-                modifier = Modifier.clickable {
-                    val intent = Intent(context, LocalizeActivity::class.java)
-                    context.startActivity(intent)
-                },
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Map,
-                    contentDescription = "",
-                    modifier = Modifier.fillMaxHeight(0.3f)
-                )
-                Text(
-                    text = stringResource(id = R.string.localize),
-                    fontSize = 16.sp
-                )
+@Composable
+fun RowScope.AddItem(
+    screen: Destinos,
+    currentDestination: NavDestination?,
+    navController: NavHostController
+) {
+    BottomNavigationItem(
+        label = {
+            Text(text = screen.title, color = Color.Black)
+        },
+        icon = {
+            Icon(
+                imageVector = screen.ico,
+                contentDescription = "Navigation Icon",
+                tint = Color.Black
+            )
+        },
+        selected = currentDestination?.hierarchy?.any {
+            it.route == screen.route
+        } == true,
+        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
+        onClick = {
+            navController.navigate(screen.route) {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
             }
+        },
+        modifier = Modifier.background(Color(224, 180, 65, 255))
+    )
+}
+
+@Composable
+fun Navigation(navController: NavHostController) {
+
+    NavHost(navController, startDestination = Destinos.RotaLocalize.route) {
+
+        composable(Destinos.RotaPerfil.route) {
+            VerPerfil()
+        }
+
+        composable(Destinos.RotaLocalize.route) {
+            LocalizeSe()
+        }
+
+        composable(Destinos.RotaMeusContratos.route) {
+            MeusContratos()
+        }
+
+        composable(Destinos.RotaContate.route) {
+            ContateNos()
+        }
+
+        composable(Destinos.RotaMotoristas.route) {
+            Motoristas()
         }
 
     }

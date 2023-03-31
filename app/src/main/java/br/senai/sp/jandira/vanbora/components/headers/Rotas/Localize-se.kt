@@ -10,7 +10,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.components.footer.Footer
 import br.senai.sp.jandira.vanbora.components.forms.localize.Localizese
 import br.senai.sp.jandira.vanbora.components.headers.Header
 
@@ -27,11 +26,10 @@ fun LocalizeSe () {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
+        Header()
+
         //Main
         Localizese()
-
-        //Footer
-        Footer()
 
     }
 }
