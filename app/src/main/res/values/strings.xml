@@ -60,6 +60,7 @@
     <string name="title_activity_motoristas">MotoristasActivity</string>
     <string name="title_activity_contratos">ContratosActivity</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_perfil">PerfilActivity</string>
 
 
 </resources>
