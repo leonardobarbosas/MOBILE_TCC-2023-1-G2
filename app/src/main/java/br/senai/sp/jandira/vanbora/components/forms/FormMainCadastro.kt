@@ -23,8 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.ui.activities.SelectActivity
-import br.senai.sp.jandira.vanbora.ui.activities.UserActivityComplements
+import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
 
 @Composable
 fun FormMainCadastro(){

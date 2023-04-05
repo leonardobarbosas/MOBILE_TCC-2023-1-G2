@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.ui.activities.DriverActivityComplements
-import br.senai.sp.jandira.vanbora.ui.activities.UserActivityComplements
+import br.senai.sp.jandira.vanbora.ui.activities.client.UserActivityComplements
+import br.senai.sp.jandira.vanbora.ui.activities.driver.DriverActivityComplements
 
 @Composable
 fun SelectUserDriver(name: String, email: String, senha: String){

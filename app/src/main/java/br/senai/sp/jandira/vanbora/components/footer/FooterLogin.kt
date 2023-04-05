@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.ui.activities.RegisterActivity
+import br.senai.sp.jandira.vanbora.ui.activities.global.RegisterActivity
 
 @Composable
 fun FooterLogin(){
