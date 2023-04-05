@@ -18,9 +18,8 @@ fun LoginUserCLient(emailProps: String, senhaProps: String){
             call: Call<LoginUserClientJwtModel>,
             response: Response<LoginUserClientJwtModel>,
         ) {
-            val teste = response.body()!!
 
-            Log.i("ds3m", "onResponse: $teste")
+            Log.i("ds3m", "onResponse: add")
         }
 
         override fun onFailure(call: Call<LoginUserClientJwtModel>, t: Throwable) {

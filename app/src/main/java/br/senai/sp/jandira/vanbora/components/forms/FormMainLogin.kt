@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.LoginUserCLient
+import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
 
 @Composable
 fun FormMainLogin(){
@@ -201,8 +202,6 @@ fun FormMainLogin(){
                     isSenhaError = senhaState.length == 0
 
                     LoginUserCLient(emailProps = emailState,  senhaProps = senhaState)
-
-                    //context.startActivity(Intent(context, SelectActivity::class.java))
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
