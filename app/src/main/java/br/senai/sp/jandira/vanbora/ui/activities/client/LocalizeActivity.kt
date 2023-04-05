@@ -1,9 +1,6 @@
-package br.senai.sp.jandira.vanbora.ui.activities
+package br.senai.sp.jandira.vanbora.ui.activities.client
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -13,16 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
-import br.senai.sp.jandira.vanbora.components.forms.user.UserInfos
-import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
+import br.senai.sp.jandira.vanbora.components.footer.FooterShow
+import br.senai.sp.jandira.vanbora.components.forms.localize.Localizese
+import br.senai.sp.jandira.vanbora.components.headers.Header
+import br.senai.sp.jandira.vanbora.ui.activities.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-class UserActivityComplements : ComponentActivity() {
+
+
+class LocalizeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -34,31 +33,25 @@ class UserActivityComplements : ComponentActivity() {
                 ) {
                     val systemUi = rememberSystemUiController()
                     SideEffect {
-                        systemUi.setStatusBarColor(color = Color(255, 255, 255, 0), darkIcons = true)
+                        systemUi.setStatusBarColor(
+                            color = Color(255, 255, 255, 0),
+                            darkIcons = true
+                        )
                     }
+                    Header()
 
-                    DadosAdicionaisUser()
+                    Localize()
+
+                    FooterShow()
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun DadosAdicionaisUser() {
-
-    val context = LocalContext.current
-
-    val selectActivy by remember {
-        mutableStateOf(SelectActivity::class.java)
-    }
-
-    val intent = (context as UserActivityComplements).intent
-
-    val name = intent.getStringExtra("name").toString()
-    val email = intent.getStringExtra("email").toString()
-    val senha = intent.getStringExtra("senha").toString()
+fun Localize() {
 
     Column(
         modifier = Modifier
@@ -70,16 +63,12 @@ fun DadosAdicionaisUser() {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        //Header
-        HeaderSelectDriverComplement(
-            context = context,
-            componentActivity = selectActivy.newInstance()
-        )
 
-        Log.i("ds3m", "DadosAdicionaisUser: $name, $email, $senha")
 
-        //Main and Footer
-        UserInfos(name, email, senha)
+        Localizese()
+
+
+
     }
 }
 

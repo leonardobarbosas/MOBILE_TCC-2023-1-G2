@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Vanbora"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activities.PerfilActivity"
+            android:name=".ui.activities.client.PerfilActivity"
             android:exported="false"
             android:label="@string/title_activity_perfil"
             android:theme="@style/Theme.Vanbora" />
@@ -25,42 +25,42 @@
             android:value="AIzaSyAYk7lMFAb_tZjVD1zcDlipBE-LyA4PqSI" />
 
         <activity
-            android:name=".ui.activities.LocalizeActivity"
+            android:name=".ui.activities.client.LocalizeActivity"
             android:exported="false"
             android:label="@string/title_activity_localize"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".ui.activities.GetUserById"
+            android:name=".ui.activities.global.GetUserById"
             android:exported="false"
             android:label="@string/title_activity_get_user_by_id"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".ui.activities.GetAllUsersActivity"
+            android:name=".ui.activities.global.GetAllUsersActivity"
             android:exported="false"
             android:label="@string/title_activity_get_all_users"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".ui.activities.VanComplements"
+            android:name=".ui.activities.driver.VanComplements"
             android:exported="false"
             android:label="@string/title_activity_van_complements"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".ui.activities.UserActivityComplements"
+            android:name=".ui.activities.client.UserActivityComplements"
             android:exported="false"
             android:label="@string/title_activity_user_complements"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".ui.activities.DriverActivityComplements"
+            android:name=".ui.activities.driver.DriverActivityComplements"
             android:exported="false"
             android:label="@string/title_activity_driver_complements"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".ui.activities.SelectActivity"
+            android:name=".ui.activities.global.SelectActivity"
             android:exported="false"
             android:label="@string/title_activity_select"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".ui.activities.RegisterActivity"
+            android:name=".ui.activities.global.RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.Vanbora" />

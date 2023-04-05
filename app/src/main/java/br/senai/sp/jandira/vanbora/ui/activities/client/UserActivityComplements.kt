@@ -1,34 +1,29 @@
-package br.senai.sp.jandira.vanbora.ui.activities
+package br.senai.sp.jandira.vanbora.ui.activities.client
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
-import br.senai.sp.jandira.vanbora.components.forms.userdriver.SelectUserDriver
+import br.senai.sp.jandira.vanbora.components.forms.user.UserInfos
+import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-class SelectActivity : ComponentActivity() {
+class UserActivityComplements : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -42,46 +37,50 @@ class SelectActivity : ComponentActivity() {
                     SideEffect {
                         systemUi.setStatusBarColor(color = Color(255, 255, 255, 0), darkIcons = true)
                     }
-                    Select()
+
+                    DadosAdicionaisUser()
                 }
             }
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun Select() {
+fun DadosAdicionaisUser() {
 
     val context = LocalContext.current
 
-    val activityMain by remember {
-        mutableStateOf(MainActivity::class.java)
+    val selectActivy by remember {
+        mutableStateOf(SelectActivity::class.java)
     }
 
-    val intent = (context as SelectActivity).intent
+    val intent = (context as UserActivityComplements).intent
 
-    val nameUser = intent.getStringExtra("name").toString()
-    val emailUser = intent.getStringExtra("email").toString()
-    val senhaUser = intent.getStringExtra("senha").toString()
+    val name = intent.getStringExtra("name").toString()
+    val email = intent.getStringExtra("email").toString()
+    val senha = intent.getStringExtra("senha").toString()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .paint(
-                painter = painterResource(id = R.drawable.background3),
+                painter = painterResource(id = R.drawable.background2),
                 contentScale = ContentScale.Crop
-            )
-            .padding(top = 30.dp, bottom = 60.dp),
+            ),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        //Header - Logo do VanBora
-        HeaderSelectDriverComplement(context = context, componentActivity = activityMain.newInstance())
+        //Header
+        HeaderSelectDriverComplement(
+            context = context,
+            componentActivity = selectActivy.newInstance()
+        )
 
-        SelectUserDriver(nameUser, emailUser, senhaUser)
+        Log.i("ds3m", "DadosAdicionaisUser: $name, $email, $senha")
 
+        //Main and Footer
+        UserInfos(name, email, senha)
     }
-
 }
+

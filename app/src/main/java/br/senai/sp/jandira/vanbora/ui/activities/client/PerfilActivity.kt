@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.vanbora.ui.activities
+package br.senai.sp.jandira.vanbora.ui.activities.client
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
