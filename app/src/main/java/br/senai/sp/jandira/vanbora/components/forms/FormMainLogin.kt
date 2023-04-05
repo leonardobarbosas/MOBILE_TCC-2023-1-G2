@@ -22,7 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
+import br.senai.sp.jandira.vanbora.functions_click.LoginUserCLient
 
 @Composable
 fun FormMainLogin(){
@@ -199,7 +199,10 @@ fun FormMainLogin(){
                 onClick = {
                     isEmailError = emailState.length == 0
                     isSenhaError = senhaState.length == 0
-                    context.startActivity(Intent(context, SelectActivity::class.java))
+
+                    LoginUserCLient(emailProps = emailState,  senhaProps = senhaState)
+
+                    //context.startActivity(Intent(context, SelectActivity::class.java))
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
