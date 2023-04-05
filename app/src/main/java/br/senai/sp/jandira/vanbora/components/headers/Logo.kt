@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.vanbora.components
+package br.senai.sp.jandira.vanbora.components.headers
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,31 +16,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.components.headers.Logo
 
-
-@Preview(showBackground = true)
+@Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun HeaderCadastroLogin(){
+fun Logo() {
+
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.1f)
-            .background(color = Color.White),
-        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.background(color = Color.White),
         verticalAlignment = Alignment.CenterVertically
-    )
-    {
+    ) {
         Column(
             modifier = Modifier
-                .size(34.dp),
+                .size(40.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
             Icon(
-                imageVector =  Icons.Filled.AirportShuttle,
+                imageVector = Icons.Filled.AirportShuttle,
                 contentDescription = "icon",
                 tint = Color.White,
                 modifier = Modifier
@@ -52,8 +47,17 @@ fun HeaderCadastroLogin(){
             )
         }
 
-        Column(Modifier.padding(top = 2.dp),verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = stringResource(id = R.string.app_name), textAlign = TextAlign.Center)
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                color = Color.Black,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
         }
     }
+
 }
