@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.vanbora.model.user
+package br.senai.sp.jandira.vanbora.model.driver
 
 import java.util.Date
 

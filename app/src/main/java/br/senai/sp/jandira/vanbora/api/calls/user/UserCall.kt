@@ -1,6 +1,7 @@
 package br.senai.sp.jandira.vanbora.api.calls.user
 
 import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
+import br.senai.sp.jandira.vanbora.model.user.LoginUserClientJwtModel
 import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.model.user.UserList
 import retrofit2.Call
@@ -26,7 +27,7 @@ interface UserCall {
     @POST("user")
     fun saveUser(@Body user: User): Call<User>
 
-    //DELETAR ALUNO
-    @DELETE("endPoint")
-    fun deleteUser(@Path("id")id: Int)
+    @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
+    @POST("user/login")
+    fun loginUserClient(@Body user: User): Call<LoginUserClientJwtModel>
 }

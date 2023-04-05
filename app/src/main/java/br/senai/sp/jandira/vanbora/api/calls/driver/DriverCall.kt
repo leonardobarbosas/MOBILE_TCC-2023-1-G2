@@ -1,8 +1,8 @@
-package br.senai.sp.jandira.vanbora.api.calls.user
+package br.senai.sp.jandira.vanbora.api.calls.driver
 
 import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
-import br.senai.sp.jandira.vanbora.model.user.Driver
-import br.senai.sp.jandira.vanbora.model.user.DriverList
+import br.senai.sp.jandira.vanbora.model.driver.Driver
+import br.senai.sp.jandira.vanbora.model.driver.DriverList
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -19,9 +19,5 @@ interface DriverCall {
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("driver")
     fun saveDriver(@Body driver: Driver): Call<Driver>
-
-    //DELETAR ALUNO
-    @DELETE("endPoint")
-    fun deleteDriver(@Path("id")id: Int)
 
 }

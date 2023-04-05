@@ -1,6 +1,6 @@
 package br.senai.sp.jandira.vanbora.call_functions
 
-import br.senai.sp.jandira.vanbora.api.calls.user.DriverCall
+import br.senai.sp.jandira.vanbora.api.calls.driver.DriverCall
 import br.senai.sp.jandira.vanbora.api.calls.user.UserCall
 import br.senai.sp.jandira.vanbora.api.retrofit.RetrofitApi
 
@@ -14,7 +14,7 @@ class GetFunctionsCall {
             return userCall
         }
 
-        fun getDriverCall(): DriverCall{
+        fun getDriverCall(): DriverCall {
             val driverCall = retrofit.create(DriverCall::class.java)
 
             return driverCall
