@@ -14,7 +14,7 @@ interface DriverCall {
 
     //GET ALL USERS
     @GET("drivers")
-    fun getAllDrivers(): Call<DriverList>
+    fun getAllDrivers(): Call<Driver>
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("driver")

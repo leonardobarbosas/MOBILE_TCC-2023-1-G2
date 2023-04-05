@@ -43,16 +43,14 @@ fun MotoristasMain() {
         mutableStateOf(DriverList(listOf()))
     }
 
-    driversCall.enqueue(object : Callback<DriverList> {
-        override fun onResponse(call: Call<DriverList>, response: Response<DriverList>) {
-            drivers = response.body()!!
-            Log.i("ds3m", "ds3m")
+    driversCall.enqueue(object : Callback<Driver>{
+        override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
+            Log.i("ds3m", "onResponse: ${response.body()!!}")
         }
 
-        override fun onFailure(call: Call<DriverList>, t: Throwable) {
-            Log.i("ds3m", "ds3m")
+        override fun onFailure(call: Call<Driver>, t: Throwable) {
+            Log.i("ds3m", "onFailure: $t")
         }
-
     })
 
     Column(
@@ -100,7 +98,9 @@ fun MotoristasMain() {
                 Icon(
                     imageVector = Icons.Filled.FilterList,
                     contentDescription = "",
-                    modifier = Modifier.height(46.dp).width(46.dp),
+                    modifier = Modifier
+                        .height(46.dp)
+                        .width(46.dp),
                     tint = Color.Black
                 )
 
