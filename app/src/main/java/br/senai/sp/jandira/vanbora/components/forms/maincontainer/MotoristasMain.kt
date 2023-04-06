@@ -39,19 +39,20 @@ fun MotoristasMain() {
 
     val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
 
+    driversCall.enqueue(object : Callback<DriverList>{
+        override fun onResponse(call: Call<DriverList>, response: Response<DriverList>) {
+            Log.i("ds3m", "onResponse: ${response.body()!!.drivers}")
+        }
+
+        override fun onFailure(call: Call<DriverList>, t: Throwable) {
+            Log.i("ds3m", "onFailure: $t")
+        }
+    })
+
     var drivers by remember {
         mutableStateOf(DriverList(listOf()))
     }
 
-    driversCall.enqueue(object : Callback<Driver>{
-        override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
-            Log.i("ds3m", "onResponse: ${response.body()!!}")
-        }
-
-        override fun onFailure(call: Call<Driver>, t: Throwable) {
-            Log.i("ds3m", "onFailure: $t")
-        }
-    })
 
     Column(
         modifier = Modifier
