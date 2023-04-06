@@ -1,8 +1,13 @@
 package br.senai.sp.jandira.vanbora.components.forms.maincontainer
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.driver.Driver
@@ -36,6 +42,10 @@ fun MotoristasMain() {
         mutableStateOf("")
     }
 
+    var expandState by remember {
+        mutableStateOf(false)
+    }
+
 
     val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
 
@@ -43,7 +53,7 @@ fun MotoristasMain() {
         mutableStateOf(DriverList(listOf()))
     }
 
-    driversCall.enqueue(object : Callback<DriverList>{
+    driversCall.enqueue(object : Callback<DriverList> {
         override fun onResponse(call: Call<DriverList>, response: Response<DriverList>) {
             drivers = response.body()!!
         }
@@ -112,12 +122,15 @@ fun MotoristasMain() {
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(drivers.drivers) {driver ->
+                items(drivers.drivers) { driver ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(200.dp)
-                            .padding(6.dp),
+                            .padding(6.dp)
+                            .clickable {
+                                expandState = true
+                            },
                         shape = RoundedCornerShape(
                             topStart = 20.dp,
                             topEnd = 20.dp,
@@ -134,6 +147,7 @@ fun MotoristasMain() {
                                     .fillMaxWidth()
                                     .height(130.dp)
                             )
+
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
