@@ -1,6 +1,5 @@
 package br.senai.sp.jandira.vanbora.components
 
-import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.LoginUserCLient
-import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
 
 @Composable
 fun FormMainLogin(){
@@ -63,7 +61,6 @@ fun FormMainLogin(){
 
     val emailFocusRequester = FocusRequester()
 
-    val context = LocalContext.current
 
     Column(
         modifier = Modifier

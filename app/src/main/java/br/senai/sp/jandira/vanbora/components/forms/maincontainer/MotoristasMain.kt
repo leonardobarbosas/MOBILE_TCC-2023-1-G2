@@ -39,19 +39,19 @@ fun MotoristasMain() {
 
     val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
 
+    var drivers by remember {
+        mutableStateOf(DriverList(listOf()))
+    }
+
     driversCall.enqueue(object : Callback<DriverList>{
         override fun onResponse(call: Call<DriverList>, response: Response<DriverList>) {
-            Log.i("ds3m", "onResponse: ${response.body()!!.drivers}")
+            drivers = response.body()!!
         }
 
         override fun onFailure(call: Call<DriverList>, t: Throwable) {
             Log.i("ds3m", "onFailure: $t")
         }
     })
-
-    var drivers by remember {
-        mutableStateOf(DriverList(listOf()))
-    }
 
 
     Column(
@@ -112,7 +112,7 @@ fun MotoristasMain() {
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(drivers.drivers) {
+                items(drivers.drivers) {driver ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -127,8 +127,8 @@ fun MotoristasMain() {
                     ) {
                         Column() {
                             Image(
-                                painter = rememberAsyncImagePainter(it.foto),
-                                contentDescription = null,
+                                painter = rememberAsyncImagePainter(driver.van[0].foto),
+                                contentDescription = "",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -149,8 +149,8 @@ fun MotoristasMain() {
                                         modifier = Modifier.padding(start = 16.dp)
                                     ) {
                                         Image(
-                                            painter = rememberAsyncImagePainter(it.foto),
-                                            contentDescription = null,
+                                            painter = rememberAsyncImagePainter(driver.foto),
+                                            contentDescription = "",
                                             contentScale = ContentScale.Crop,
                                             modifier = Modifier
                                                 .height(50.dp)
@@ -162,7 +162,7 @@ fun MotoristasMain() {
                                         Spacer(modifier = Modifier.padding(2.dp))
 
                                         Column() {
-                                            Text(text = it.nome, color = Color.Black)
+                                            Text(text = driver.nome, color = Color.Black)
                                             Spacer(modifier = Modifier.padding(2.dp))
                                             Row() {
                                                 Icon(
@@ -198,7 +198,7 @@ fun MotoristasMain() {
                                         modifier = Modifier.padding(end = 16.dp),
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Text(text = "16")
+                                        Text(text = "${driver.van[0].quantidade_vagas}")
                                         Text(text = "Vagas")
                                     }
                                 }
