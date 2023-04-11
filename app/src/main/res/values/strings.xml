@@ -32,6 +32,7 @@
     <string name="contract">Contrato</string>
     <string name="localize">Localize-se</string>
     <string name="drivers">Motoristas</string>
+    <string name="comments">Ver comentários do perfil</string>
 
     <string name="rg">RG</string>
     <string name="cpf">CPF</string>
