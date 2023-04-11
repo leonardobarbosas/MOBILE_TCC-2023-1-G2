@@ -1,10 +1,7 @@
 package br.senai.sp.jandira.vanbora.components.forms.maincontainer
 
+import android.content.Intent
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,12 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
+import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,6 +43,7 @@ fun MotoristasMain() {
         mutableStateOf(false)
     }
 
+    val context = LocalContext.current
 
     val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
 
@@ -130,6 +128,12 @@ fun MotoristasMain() {
                             .padding(6.dp)
                             .clickable {
                                 expandState = true
+
+                                val intentSelect = Intent(context, PerfilActivity::class.java)
+
+                                intentSelect.putExtra("id", driver.id.toString())
+
+                                context.startActivity(intentSelect)
                             },
                         shape = RoundedCornerShape(
                             topStart = 20.dp,

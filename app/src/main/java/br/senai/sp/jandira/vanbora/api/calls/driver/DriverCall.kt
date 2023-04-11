@@ -10,7 +10,7 @@ interface DriverCall {
 
     //GET USER BY ID
     @GET("driver/{id}")
-    fun getDriverById(@Path("id")id: Int): Call<Driver>
+    fun getDriverById(@Path("id")id: String): Call<Driver>
 
     //GET ALL USERS
     @GET("drivers")
