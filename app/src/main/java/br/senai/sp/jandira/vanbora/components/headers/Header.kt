@@ -1,65 +1,82 @@
 package br.senai.sp.jandira.vanbora.components.headers
 
-import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Image
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import br.senai.sp.jandira.vanbora.components.headers.Rotas.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.model.driver.Driver
+import br.senai.sp.jandira.vanbora.model.user.User
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
+import coil.compose.rememberAsyncImagePainter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun Header() {
 
+    val context = LocalContext.current
+
+    val intent = (context as MotoristasActivity).intent
+
+    val idLogin = intent.getStringExtra("id")
+
+    val loginCall = GetFunctionsCall.getUserCall().getUserById(id = idLogin.toString())
+
+    var login by remember {
+        mutableStateOf<User?>(null)
+    }
+
+    loginCall.enqueue(object : Callback<User>{
+        override fun onResponse(call: Call<User>, response: Response<User>) {
+            login = response.body()!!
+        }
+
+        override fun onFailure(call: Call<User>, t: Throwable) {
+            Log.i("ds3m", "onFailure")
+        }
+
+    })
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(Color.White),
-        horizontalArrangement = Arrangement.SpaceAround,
+            .background(Color.White)
+            .padding(start = 26.dp, end = 26.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Logo()
 
 
-        IconButton(onClick = {
+        Image(
+            painter = rememberAsyncImagePainter(login?.foto),
+            contentDescription = "",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(40.dp)
+                .width(40.dp)
+                .clip(CircleShape)
+                .border(2.dp, Color.Gray, CircleShape)
+        )
 
-        }) {
-            Icon(
-                imageVector = Icons.Filled.People,
-                contentDescription = "",
-                modifier = Modifier.size(36.dp),
-                tint = Color.Black
-            )
-        }
 
     }
 

@@ -25,7 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.ui.activities.global.GetAllUsersActivity
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 
 @Composable
 fun VanInfos(context: Context) {
@@ -186,7 +186,7 @@ fun VanInfos(context: Context) {
                 isModeloVanError = modeloVan.length == 0
                 isVagasVanError = vagasVan.length == 0
 
-                context.startActivity(Intent(context, GetAllUsersActivity::class.java))
+                context.startActivity(Intent(context, MotoristasActivity::class.java))
 
                       },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))

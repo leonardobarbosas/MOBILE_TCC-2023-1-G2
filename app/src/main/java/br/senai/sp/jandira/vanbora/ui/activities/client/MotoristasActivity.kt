@@ -14,14 +14,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.footer.FooterShow
-import br.senai.sp.jandira.vanbora.components.forms.localize.Localizese
 import br.senai.sp.jandira.vanbora.components.headers.Header
+import br.senai.sp.jandira.vanbora.components.headers.Rotas.Motoristas
 import br.senai.sp.jandira.vanbora.ui.activities.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 
-class LocalizeActivity : ComponentActivity() {
+class MotoristasActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -38,9 +38,12 @@ class LocalizeActivity : ComponentActivity() {
                             darkIcons = true
                         )
                     }
+
+
+
                     Header()
 
-                    Localize()
+                    Motorista()
 
                     FooterShow()
                 }
@@ -51,7 +54,7 @@ class LocalizeActivity : ComponentActivity() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun Localize() {
+fun Motorista() {
 
     Column(
         modifier = Modifier
@@ -65,7 +68,7 @@ fun Localize() {
 
 
 
-        Localizese()
+        Motoristas()
 
 
 

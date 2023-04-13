@@ -20,8 +20,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
 import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
@@ -184,7 +186,6 @@ fun MotoristasMain() {
 
                                             Spacer(modifier = Modifier.padding(2.dp))
 
-                                            Log.i("ds3m", "Avaliacao: ${driver.avaliacao}")
 
                                                 if (driver.avaliacao == 10) {
                                                     Row {
@@ -475,7 +476,19 @@ fun MotoristasMain() {
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Text(text = "${driver.van[0].quantidade_vagas}")
-                                        Text(text = "Vagas")
+                                        if(driver?.van?.get(0)?.quantidade_vagas == 1) {
+                                            Text(
+                                                text = "Vaga",
+                                                fontSize = 12.sp,
+                                                textAlign = TextAlign.Center
+                                            )
+                                        }else{
+                                            Text(
+                                                text = "Vagas",
+                                                fontSize = 12.sp,
+                                                textAlign = TextAlign.Center
+                                            )
+                                        }
                                     }
                                 }
                             }

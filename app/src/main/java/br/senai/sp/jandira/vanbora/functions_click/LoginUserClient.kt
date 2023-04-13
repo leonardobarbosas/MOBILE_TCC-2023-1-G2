@@ -6,8 +6,7 @@ import android.util.Log
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.user.LoginUserClientJwtModel
 import br.senai.sp.jandira.vanbora.model.user.User
-import br.senai.sp.jandira.vanbora.ui.activities.client.LocalizeActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,11 +22,9 @@ fun LoginUserCLient(emailProps: String, senhaProps: String, context: Context){
             response: Response<LoginUserClientJwtModel>
         ) {
             val userLogin = response.body()!!
-            Log.i("ds3m", "onResponse: ${response.body()!!}")
 
             if(userLogin != null ){
-
-                val intentSelect = Intent(context, LocalizeActivity::class.java)
+                val intentSelect = Intent(context, MotoristasActivity::class.java)
 
                 intentSelect.putExtra("id", userLogin.id.toString())
 

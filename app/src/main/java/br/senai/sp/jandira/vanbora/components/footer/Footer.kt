@@ -36,9 +36,9 @@ fun FooterShow() {
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
-        Destinos.RotaLocalize,
         Destinos.RotaMotoristas,
         Destinos.RotaMeusContratos,
+        Destinos.RotaNotificacoes,
         Destinos.RotaContate,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -89,13 +89,13 @@ fun RowScope.AddItem(
 @Composable
 fun Navigation(navController: NavHostController) {
 
-    NavHost(navController, startDestination = Destinos.RotaLocalize.route) {
+    NavHost(navController, startDestination = Destinos.RotaMotoristas.route) {
 
         composable(Destinos.RotaPerfil.route) {
             VerPerfil()
         }
 
-        composable(Destinos.RotaLocalize.route) {
+        composable(Destinos.RotaNotificacoes.route) {
             LocalizeSe()
         }
 

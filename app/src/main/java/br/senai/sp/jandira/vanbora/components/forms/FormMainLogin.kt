@@ -22,7 +22,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.LoginUserCLient
-import br.senai.sp.jandira.vanbora.ui.activities.client.LocalizeActivity
 
 @Composable
 fun FormMainLogin(){

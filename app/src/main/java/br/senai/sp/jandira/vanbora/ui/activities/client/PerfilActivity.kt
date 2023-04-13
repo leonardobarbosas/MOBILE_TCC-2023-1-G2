@@ -67,7 +67,7 @@ fun Perfil() {
     val context = LocalContext.current
 
     val localizeMain by remember {
-        mutableStateOf(LocalizeActivity::class.java)
+        mutableStateOf(MotoristasActivity::class.java)
     }
 
     val intent = (context as PerfilActivity).intent
@@ -163,11 +163,22 @@ fun Perfil() {
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center
                     )
-                    Text(
-                        text = "Vagas",
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center
-                    )
+
+                    if(driver?.van?.get(0)?.quantidade_vagas == 1) {
+                        Text(
+                            text = "Vaga",
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }else{
+                        Text(
+                            text = "Vagas",
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally

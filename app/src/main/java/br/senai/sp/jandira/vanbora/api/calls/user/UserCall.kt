@@ -6,7 +6,6 @@ import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.model.user.UserList
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -16,7 +15,7 @@ interface UserCall {
 
     //GET USER BY ID
     @GET("user/{id}")
-    fun getUserById(@Path("id")id: Int): Call<User>
+    fun getUserById(@Path("id") id: String): Call<User>
 
     //GET ALL USERS
     @GET("users")
