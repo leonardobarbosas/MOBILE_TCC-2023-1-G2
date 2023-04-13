@@ -25,7 +25,7 @@
     <string name="para">para</string>
     <string name="registrar">registrar</string>
     <string name="driver">MOTORISTA</string>
-    <string name="user">USUÁRIO</string>
+    <string name="user">CLIENTE</string>
     <string name="title_activity_dados_driver">dadosDriverActivity</string>
     <string name="title_activity_driver_complements">DriverActivityComplements</string>
     <string name="select_image">Selecionar Imagem</string>

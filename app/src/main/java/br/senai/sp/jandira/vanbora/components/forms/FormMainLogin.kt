@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.LoginUserCLient
+import br.senai.sp.jandira.vanbora.ui.activities.client.LocalizeActivity
 
 @Composable
 fun FormMainLogin(){
@@ -60,6 +61,8 @@ fun FormMainLogin(){
     }
 
     val emailFocusRequester = FocusRequester()
+
+    var context = LocalContext.current
 
 
     Column(
@@ -198,7 +201,8 @@ fun FormMainLogin(){
                     isEmailError = emailState.length == 0
                     isSenhaError = senhaState.length == 0
 
-                    LoginUserCLient(emailProps = emailState,  senhaProps = senhaState)
+
+                    LoginUserCLient(emailProps = emailState,  senhaProps = senhaState, context = context)
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
