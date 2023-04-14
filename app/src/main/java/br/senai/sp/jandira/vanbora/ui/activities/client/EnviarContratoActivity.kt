@@ -14,12 +14,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.footer.FooterShow
-import br.senai.sp.jandira.vanbora.components.headers.Header
-import br.senai.sp.jandira.vanbora.components.headers.Rotas.Motoristas
-import br.senai.sp.jandira.vanbora.ui.activities.ui.theme.VanboraTheme
+import br.senai.sp.jandira.vanbora.components.forms.contract.EnviarContrato
+import br.senai.sp.jandira.vanbora.ui.activities.client.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
-class MotoristasActivity : ComponentActivity() {
+class EnviarContratoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -36,9 +35,7 @@ class MotoristasActivity : ComponentActivity() {
                             darkIcons = true
                         )
                     }
-                    Header()
-
-                    Motorista()
+                    EnvioDeContrato()
 
                     FooterShow()
                 }
@@ -49,7 +46,7 @@ class MotoristasActivity : ComponentActivity() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun Motorista() {
+fun EnvioDeContrato() {
 
     Column(
         modifier = Modifier
@@ -63,7 +60,7 @@ fun Motorista() {
 
 
 
-        Motoristas()
+        EnviarContrato()
 
 
 

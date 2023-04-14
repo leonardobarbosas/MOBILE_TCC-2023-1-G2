@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.vanbora.ui.activities.client
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -102,7 +103,7 @@ fun Perfil() {
         //Main
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(start = 20.dp, end = 20.dp, top = 20.dp)
                 .clip(shape = RoundedCornerShape(25.dp))
                 .background(Color(252, 241, 211, 255))
@@ -139,7 +140,7 @@ fun Perfil() {
                 )
             }
 
-            Spacer(modifier = Modifier.padding(6.dp))
+            Spacer(modifier = Modifier.padding(2.dp))
 
             Text(
                 text = "${driver?.nome}",
@@ -147,9 +148,27 @@ fun Perfil() {
                 textAlign = TextAlign.Center
             )
 
-            Avaliacao()
-
             Spacer(modifier = Modifier.padding(6.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Button(
+                    onClick = {
+                        context.startActivity(Intent(context, EnviarContratoActivity::class.java))
+                    },
+                    colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.contrac)
+                    )
+                }
+                Avaliacao()
+            }
+
+            Spacer(modifier = Modifier.padding(10.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -184,17 +203,17 @@ fun Perfil() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
+                        text = "Desde",
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
                         text = "${driver?.inicio_carreira}",
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "Anos de",
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center
-                    )
-                    Text(
-                        text = "transporte",
+                        text = "no transporte",
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center
                     )
@@ -253,6 +272,8 @@ fun Perfil() {
                 }
             }
 
+            Spacer(modifier = Modifier.padding(16.dp))
+
             Button(
                 onClick = {
                 },
@@ -263,27 +284,9 @@ fun Perfil() {
                 )
             }
 
+            Spacer(modifier = Modifier.padding(16.dp))
 
 
-
-
-//            Card(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                shape = RoundedCornerShape(16.dp)
-//            ) {
-//                Column(
-//                    modifier = Modifier
-//                        .background(Color(255, 237, 185, 255))
-//                        .fillMaxWidth()
-//                ) {
-//
-//                    Text(text = "2 comments", fontSize = 26.sp)
-//
-//                    comentarios()
-
-//                }
-//            }
         }
     }
 }

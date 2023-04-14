@@ -33,6 +33,7 @@
     <string name="localize">Localize-se</string>
     <string name="drivers">Motoristas</string>
     <string name="comments">Ver comentários do perfil</string>
+    <string name="contrac">Contratar</string>
 
     <string name="rg">RG</string>
     <string name="cpf">CPF</string>
@@ -62,6 +63,20 @@
     <string name="title_activity_contratos">ContratosActivity</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_perfil">PerfilActivity</string>
+    <string name="title_activity_enviar_contrato">EnviarContratoActivity</string>
+
+
+    <string name="nome_responsavel">Nome do responsável</string>
+    <string name="nome_passageiro">Nome do passageiro</string>
+    <string name="idade_passageiro">Idade do passageiro</string>
+    <string name="escola">Escola</string>
+
+
+    <string name="nome_responsavel_error">Nome do responsável invalido</string>
+    <string name="nome_passageiro_error">Nome do passageiro invalido</string>
+    <string name="idade_passageiro_error">Idade do passageiro invalida</string>
+    <string name="escola_error">Escola invalida</string>
+
 
 
 </resources>
