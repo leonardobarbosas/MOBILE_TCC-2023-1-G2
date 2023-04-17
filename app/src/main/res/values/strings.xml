@@ -77,6 +77,14 @@
     <string name="idade_passageiro_error">Idade do passageiro invalida</string>
     <string name="escola_error">Escola invalida</string>
 
+    <string name="ida">Ida</string>
+    <string name="volta">Volta</string>
+    <string name="ida_e_volta">Ida e Volta</string>
+    <string name="mensal">Mensal</string>
+    <string name="semanal">Semanal</string>
+    <string name="diario">Diário</string>
+    <string name="anual">Anual</string>
+    <string name="title_activity_editar_perfil">EditarPerfilActivity</string>
 
 
 </resources>

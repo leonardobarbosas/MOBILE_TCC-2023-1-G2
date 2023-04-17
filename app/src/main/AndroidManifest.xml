@@ -14,11 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Vanbora"
         tools:targetApi="31">
+        <activity
+            android:name=".components.headers.Rotas.EditarPerfilActivity"
+            android:exported="false"
+            android:label="@string/title_activity_editar_perfil"
+            android:theme="@style/Theme.Vanbora" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAYk7lMFAb_tZjVD1zcDlipBE-LyA4PqSI" />
-
 
         <activity
             android:name=".ui.activities.client.EnviarContratoActivity"

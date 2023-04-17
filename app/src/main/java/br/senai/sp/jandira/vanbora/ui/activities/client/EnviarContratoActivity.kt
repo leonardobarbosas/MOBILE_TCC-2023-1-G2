@@ -10,10 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.components.footer.FooterShow
+import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.forms.contract.EnviarContrato
 import br.senai.sp.jandira.vanbora.ui.activities.client.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -37,7 +38,6 @@ class EnviarContratoActivity : ComponentActivity() {
                     }
                     EnvioDeContrato()
 
-                    FooterShow()
                 }
             }
         }
@@ -47,6 +47,12 @@ class EnviarContratoActivity : ComponentActivity() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun EnvioDeContrato() {
+
+    val context = LocalContext.current
+
+    val localizeMain by remember {
+        mutableStateOf(MotoristasActivity::class.java)
+    }
 
     Column(
         modifier = Modifier
@@ -58,11 +64,11 @@ fun EnvioDeContrato() {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-
+        HeaderSelectDriverComplement(
+            context = context, componentActivity = localizeMain.newInstance()
+        )
 
         EnviarContrato()
-
-
 
     }
 }
