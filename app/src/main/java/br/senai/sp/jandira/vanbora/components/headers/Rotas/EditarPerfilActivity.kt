@@ -3,6 +3,7 @@ package br.senai.sp.jandira.vanbora.components.headers.Rotas
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -32,7 +33,6 @@ import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.ui.theme.VanboraTheme
 import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -102,117 +102,357 @@ fun EditarPerfil() {
     val localizeMain by remember {
         mutableStateOf(MotoristasActivity::class.java)
     }
-    
+
+
     val context = LocalContext.current
 
-    context as PerfilActivity
+    val intent = (context as EditarPerfilActivity).intent
 
-//    val context = LocalContext.current
-//
-//    val intent = (context as PerfilActivity).intent
-//
-//    val id = context.parent.intent.getStringExtra("id")
-//
-//    val idPerfil = intent.getStringExtra("id")
-//
-//    Log.i("ds3m", "EditarPerfil: $id")
-//
-//    val perfilCall = GetFunctionsCall.getUserCall().getUserById(id = idPerfil.toString())
-//
-//    var perfil by remember {
-//        mutableStateOf<User?>(null)
-//    }
-//
-//    perfilCall.enqueue(object : Callback<User> {
-//        override fun onResponse(call: Call<User>, response: Response<User>) {
-//            perfil = response.body()!!
-//        }
-//
-//        override fun onFailure(call: Call<User>, t: Throwable) {
-//            Log.i("ds3m", "onFailure")
-//        }
-//    })
+    val idPerfil = intent.getStringExtra("id")
 
-//    HeaderSelectDriverComplement(context = context, componentActivity = localizeMain.newInstance())
+    val perfilCall = GetFunctionsCall.getUserCall().getUserById(id = idPerfil.toString())
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .paint(
-                painter = painterResource(id = R.drawable.background2),
-                contentScale = ContentScale.Crop
-            ),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-//
-//    //RG
-//        OutlinedTextField(
-//            value = rgState, onValueChange = {
-//                rgState = it
-//
-//                if (it == "" || it == null) {
-//                    isRgError
-//                }
-//
-//            },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-//            label = {
-//                perfil?.let {
-//                    Text(
-//                        text = it.rg,
-//                        textAlign = TextAlign.Center,
-//                        style = TextStyle(
-//                            color = Color.Black,
-//                        )
-//                    )
-//                }
-//            },
-//            trailingIcon = {
-//                if (isRgError) Icon(
-//                    imageVector = Icons.Default.Warning,
-//                    contentDescription = ""
-//                )
-//            },
-//            isError = isRgError,
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-//            colors = TextFieldDefaults.outlinedTextFieldColors(
-//                focusedBorderColor = Color(0, 0, 0, 255),
-//                unfocusedBorderColor = Color(0, 0, 0, 255)
-//            )
-//        )
-//        if (isRgError) {
-//            Text(
-//                text = stringResource(id = R.string.rg_error),
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(end = 52.dp),
-//                color = Color.Red,
-//                fontSize = 15.sp,
-//                textAlign = TextAlign.End
-//            )
-//        }
-//
-//
-//
-//
-//
-//        Spacer(modifier = Modifier.padding(16.dp))
-//
-//        Button(
-//            onClick = {
-//                context.startActivity(Intent(context, MotoristasActivity::class.java))
-//            },
-//            colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
-//        ) {
-//            Text(
-//                text = stringResource(id = R.string.save)
-//            )
-//        }
-
+    var perfil by remember {
+        mutableStateOf<User?>(null)
     }
 
-}
+    var code by remember {
+        mutableStateOf("")
+    }
 
+    var message by remember {
+        mutableStateOf("")
+    }
+
+    perfilCall.enqueue(object : Callback<User> {
+        override fun onResponse(call: Call<User>, response: Response<User>) {
+            perfil = response.body()!!
+        }
+
+        override fun onFailure(call: Call<User>, t: Throwable) {
+            Log.i("ds3m", "onFailure")
+        }
+    })
+
+    Column {
+
+        HeaderSelectDriverComplement(
+            context = context, componentActivity = localizeMain.newInstance()
+        )
+
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .paint(
+                    painter = painterResource(id = R.drawable.background2),
+                    contentScale = ContentScale.Crop
+                ),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            //RG
+            OutlinedTextField(
+                value = rgState, onValueChange = {
+                    rgState = it
+
+                    if (it == "" || it == null) {
+                        isRgError
+                    }
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                label = {
+                    Text(text = stringResource(id = R.string.rg))
+                },
+                placeholder = {
+                    perfil?.let {
+                        Text(
+                            text = it.rg,
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                color = Color.Black,
+                            )
+                        )
+                    }
+                },
+                trailingIcon = {
+                    if (isRgError) Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
+                },
+                isError = isRgError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+            if (isRgError) {
+                Text(
+                    text = stringResource(id = R.string.rg_error),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 52.dp),
+                    color = Color.Red,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.End
+                )
+            }
+
+            //CPF
+            OutlinedTextField(
+                value = cpfState, onValueChange = {
+                    cpfState = it
+
+                    if (it == "" || it == null) {
+                        isCpfError
+                    }
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                label = {
+                    Text(text = stringResource(id = R.string.cpf))
+                },
+                placeholder = {
+                    perfil?.let {
+                        Text(
+                            text = it.cpf,
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                color = Color.Black,
+                            )
+                        )
+                    }
+                },
+                trailingIcon = {
+                    if (isCpfError) Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
+                },
+                isError = isCpfError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+            if (isCpfError) {
+                Text(
+                    text = stringResource(id = R.string.cpf_error),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 52.dp),
+                    color = Color.Red,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.End
+                )
+            }
+
+            //CEP
+            OutlinedTextField(
+                value = cepState, onValueChange = {
+                    cepState = it
+
+                    if (it == "" || it == null) {
+                        cepState
+                    }
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                label = {
+                    Text(text = stringResource(id = R.string.cep))
+                },
+                placeholder = {
+                    perfil?.let {
+                        Text(
+                            text = it.cep,
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                color = Color.Black,
+                            )
+                        )
+                    }
+                },
+                trailingIcon = {
+                    if (isCepError) Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
+                },
+                isError = isCepError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+            if (isCepError) {
+                Text(
+                    text = stringResource(id = R.string.cep_error),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 52.dp),
+                    color = Color.Red,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.End
+                )
+            }
+
+            //TELEFONE
+            OutlinedTextField(
+                value = telefoneState, onValueChange = {
+                    telefoneState = it
+
+                    if (it == "" || it == null) {
+                        isTelefoneError
+                    }
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                label = {
+                    Text(text = stringResource(id = R.string.telefone))
+                },
+                placeholder = {
+                    perfil?.let {
+                        Text(
+                            text = it.telefone,
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                color = Color.Black,
+                            )
+                        )
+                    }
+                },
+                trailingIcon = {
+                    if (isTelefoneError) Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
+                },
+                isError = isTelefoneError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+            if (isTelefoneError) {
+                Text(
+                    text = stringResource(id = R.string.telefone_error),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 52.dp),
+                    color = Color.Red,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.End
+                )
+            }
+
+            //Data de Nascimento
+            OutlinedTextField(
+                value = dataNascimentoState, onValueChange = {
+                    dataNascimentoState = it
+
+                    if (it == "" || it == null) {
+                        isDataNascimentoError
+                    }
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                label = {
+                    Text(text = stringResource(id = R.string.data_nascimento))
+                },
+                placeholder = {
+                    perfil?.let {
+                        Text(
+                            text = it.data_nascimento,
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                color = Color.Black,
+                            )
+                        )
+                    }
+                },
+                trailingIcon = {
+                    if (isDataNascimentoError) Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
+                },
+                isError = isDataNascimentoError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+            if (isDataNascimentoError) {
+                Text(
+                    text = stringResource(id = R.string.data_nascimento_error),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 52.dp),
+                    color = Color.Red,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.End
+                )
+            }
+
+            Spacer(modifier = Modifier.padding(26.dp))
+
+            Button(
+                onClick = {
+
+                    var user = User(cepState, cpfState, dataNascimentoState, perfil!!.email, perfil!!.foto, perfil!!.id,perfil!!.nome, rgState, perfil!!.senha, telefoneState, status_usuario = 1)
+
+                    Log.i("ds3m", "EditarPerfil: ${user}")
+
+
+                    var perfilPutCall = GetFunctionsCall.getUserCall().putUser(user.id.toString(), user)
+
+                    perfilPutCall.enqueue(object: Callback<String>{
+                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                            code = response.code().toString()
+                            message = response.body().toString()
+                            Log.i("ds3m", "onResponse: $code , $message")
+                        }
+
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            Log.i("ds3m", "onFailure: $t")
+                        }
+                    })
+
+                    if(code == "201"){
+                        context.startActivity(Intent(context, MotoristasActivity::class.java))
+                    }
+                    else{
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                        Log.i("ds3m", "EditarPerfil: tessste")
+                    }
+
+                },
+                colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
+            ) {
+                Text(
+                    text = stringResource(id = R.string.save)
+                )
+            }
+
+        }
+
+    }
+}

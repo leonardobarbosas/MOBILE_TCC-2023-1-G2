@@ -10,9 +10,10 @@ data class User(
     val nome: String = "",
     val rg: String = "",
     val senha: String = "",
-    val telefone: String = ""
+    val telefone: String = "",
+    val status_usuario: Int = 1
 ){
     override fun toString(): String {
-        return "User(id=$id, 'cep=$cep', 'cpf=$cpf', 'data_nascimento=$data_nascimento', 'email=$email', 'foto=$foto','nome=$nome', 'rg=$rg', 'senha=$senha', 'telefone=$telefone')"
+        return "User(id=$id, 'cep=$cep', 'cpf=$cpf', 'data_nascimento=$data_nascimento', 'email=$email', 'foto=$foto','nome=$nome', 'rg=$rg', 'senha=$senha', 'telefone=$telefone', status_usuario = $status_usuario)"
     }
 }

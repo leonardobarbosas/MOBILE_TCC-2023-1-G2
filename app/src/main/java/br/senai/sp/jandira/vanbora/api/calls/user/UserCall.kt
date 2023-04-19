@@ -9,18 +9,21 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface UserCall {
 
-    //GET USER BY ID
     @GET("user/{id}")
     fun getUserById(@Path("id") id: String): Call<User>
 
     //GET ALL USERS
     @GET("users")
     fun getAllUsers(): Call<UserList>
-    //fun getAllUsers(): Call<List<UserModel>>
+
+    @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
+    @PUT("user/{id}")
+    fun putUser(@Path("id") id: String, @Body user: User): Call<String>
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("user")
