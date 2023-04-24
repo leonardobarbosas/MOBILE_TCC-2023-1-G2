@@ -17,6 +17,7 @@
     <string name="name_error">Nome invalido</string>
     <string name="arroba_error">O email indicado precisa do @</string>
     <string name="senha_error">Senha inválida</string>
+    <string name="senha">Senha</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="create_account_register">Crie uma Conta</string>
     <string name="title_activity_select">SelectActivity</string>
@@ -25,6 +26,7 @@
     <string name="para">para</string>
     <string name="registrar">registrar</string>
     <string name="driver">MOTORISTA</string>
+    <string name="download_contract">Baixar contrato</string>
     <string name="user">CLIENTE</string>
     <string name="title_activity_dados_driver">dadosDriverActivity</string>
     <string name="title_activity_driver_complements">DriverActivityComplements</string>
@@ -85,6 +87,7 @@
     <string name="diario">Diário</string>
     <string name="anual">Anual</string>
     <string name="title_activity_editar_perfil">EditarPerfilActivity</string>
+    <string name="title_activity_visualizar_contratos">VisualizarContratosActivity</string>
 
 
 </resources>

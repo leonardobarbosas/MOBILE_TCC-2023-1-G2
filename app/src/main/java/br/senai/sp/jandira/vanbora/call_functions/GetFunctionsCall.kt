@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.vanbora.call_functions
 
+import br.senai.sp.jandira.vanbora.api.calls.contracts.ContractCall
 import br.senai.sp.jandira.vanbora.api.calls.driver.DriverCall
 import br.senai.sp.jandira.vanbora.api.calls.user.UserCall
 import br.senai.sp.jandira.vanbora.api.retrofit.RetrofitApi
@@ -18,6 +19,12 @@ class GetFunctionsCall {
             val driverCall = retrofit.create(DriverCall::class.java)
 
             return driverCall
+        }
+
+        fun getContractCall(): ContractCall{
+            val contractCall = retrofit.create(ContractCall::class.java)
+
+            return contractCall
         }
     }
 

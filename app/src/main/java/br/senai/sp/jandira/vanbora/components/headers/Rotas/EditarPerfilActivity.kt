@@ -58,6 +58,31 @@ class EditarPerfilActivity : ComponentActivity() {
 @Composable
 fun EditarPerfil() {
 
+    var nomeState by rememberSaveable() {
+        mutableStateOf("")
+    }
+
+    var isNomeError by remember() {
+        mutableStateOf(false)
+    }
+
+    var emailState by rememberSaveable() {
+        mutableStateOf("")
+    }
+
+    var isEmailError by remember() {
+        mutableStateOf(false)
+    }
+
+    var senhaState by rememberSaveable() {
+        mutableStateOf("")
+    }
+
+    var isSenhaError by remember() {
+        mutableStateOf(false)
+    }
+
+
     var rgState by rememberSaveable() {
         mutableStateOf("")
     }
@@ -151,6 +176,162 @@ fun EditarPerfil() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            //Nome
+            OutlinedTextField(
+                value = nomeState, onValueChange = {
+                    nomeState = it
+
+                    if (it == "" || it == null) {
+                        isNomeError
+                    }
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                label = {
+                    Text(text = stringResource(id = R.string.nome_passageiro))
+                },
+                placeholder = {
+                    perfil?.let {
+                        Text(
+                            text = it.nome,
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                color = Color.Black,
+                            )
+                        )
+                    }
+                },
+                trailingIcon = {
+                    if (isNomeError) Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
+                },
+                isError = isNomeError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+            if (isNomeError) {
+                Text(
+                    text = stringResource(id = R.string.nome_passageiro_error),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 52.dp),
+                    color = Color.Red,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.End
+                )
+            }
+
+            //Email
+            OutlinedTextField(
+                value = emailState, onValueChange = {
+                    emailState = it
+
+                    if (it == "" || it == null) {
+                        isEmailError
+                    }
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                label = {
+                    Text(text = stringResource(id = R.string.email))
+                },
+                placeholder = {
+                    perfil?.let {
+                        Text(
+                            text = it.email,
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                color = Color.Black,
+                            )
+                        )
+                    }
+                },
+                trailingIcon = {
+                    if (isEmailError) Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
+                },
+                isError = isEmailError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+            if (isEmailError) {
+                Text(
+                    text = stringResource(id = R.string.email_error),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 52.dp),
+                    color = Color.Red,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.End
+                )
+            }
+
+            //Senha
+            OutlinedTextField(
+                value = senhaState, onValueChange = {
+                    senhaState = it
+
+                    if (it == "" || it == null) {
+                        isSenhaError
+                    }
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                label = {
+                    Text(text = stringResource(id = R.string.senha))
+                },
+                placeholder = {
+                    perfil?.let {
+                        Text(
+                            text = "*******",
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                color = Color.Black,
+                            )
+                        )
+                    }
+                },
+                trailingIcon = {
+                    if (isSenhaError) Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
+                },
+                isError = isSenhaError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+            if (isSenhaError) {
+                Text(
+                    text = stringResource(id = R.string.senha_error),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 52.dp),
+                    color = Color.Red,
+                    fontSize = 15.sp,
+                    textAlign = TextAlign.End
+                )
+            }
 
             //RG
             OutlinedTextField(
@@ -417,7 +598,7 @@ fun EditarPerfil() {
             Button(
                 onClick = {
 
-                    var user = User(cepState, cpfState, dataNascimentoState, perfil!!.email, perfil!!.foto, perfil!!.id,perfil!!.nome, rgState, perfil!!.senha, telefoneState, status_usuario = 1)
+                    var user = User(cepState, cpfState, dataNascimentoState, emailState, perfil!!.foto, perfil!!.id, nomeState, rgState, senhaState, telefoneState, status_usuario = 1)
 
                     Log.i("ds3m", "EditarPerfil: ${user}")
 

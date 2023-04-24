@@ -19,30 +19,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
+import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 
 @Composable
 fun HeaderSelectDriverComplement(context: Context, componentActivity: ComponentActivity){
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Row(modifier = Modifier.background(Color.White).padding(end = 25.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable {
-                            context.startActivity(
-                                Intent(
-                                    context,
-                                    componentActivity::class.java
-                                )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Row(modifier = Modifier.background(Color.White).padding(end = 25.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "",
+                modifier = Modifier
+                    .size(40.dp)
+                    .clickable {
+                        context.startActivity(
+                            Intent(
+                                context,
+                                componentActivity::class.java
                             )
-                        }
-                )
+                        )
+                    }
+            )
 
-                HeaderCadastroLogin()
-            }
+            HeaderCadastroLogin()
         }
+    }
 }
