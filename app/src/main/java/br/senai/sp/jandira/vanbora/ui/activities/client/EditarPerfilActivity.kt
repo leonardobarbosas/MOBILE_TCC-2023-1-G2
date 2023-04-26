@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.vanbora.components.headers.Rotas
+package br.senai.sp.jandira.vanbora.ui.activities.client
 
 import android.content.Intent
 import android.os.Bundle
@@ -598,18 +598,31 @@ fun EditarPerfil() {
             Button(
                 onClick = {
 
-                    var user = User(cepState, cpfState, dataNascimentoState, emailState, perfil!!.foto, perfil!!.id, nomeState, rgState, senhaState, telefoneState, status_usuario = 1)
+                    var user = User(
+                        cepState,
+                        cpfState,
+                        dataNascimentoState,
+                        emailState,
+                        perfil!!.foto,
+                        perfil!!.id,
+                        nomeState,
+                        rgState,
+                        senhaState,
+                        telefoneState,
+                        status_usuario = 1
+                    )
 
-                    Log.i("ds3m", "EditarPerfil: ${user}")
+//                  Log.i("ds3m", "EditarPerfil: ${user}")
 
 
-                    var perfilPutCall = GetFunctionsCall.getUserCall().putUser(user.id.toString(), user)
+                    var perfilPutCall =
+                        GetFunctionsCall.getUserCall().putUser(user.id.toString(), user)
 
-                    perfilPutCall.enqueue(object: Callback<String>{
+                    perfilPutCall.enqueue(object : Callback<String> {
                         override fun onResponse(call: Call<String>, response: Response<String>) {
                             code = response.code().toString()
                             message = response.body().toString()
-                            Log.i("ds3m", "onResponse: $code , $message")
+//                          Log.i("ds3m", "onResponse: $code , $message")
                         }
 
                         override fun onFailure(call: Call<String>, t: Throwable) {
@@ -617,12 +630,17 @@ fun EditarPerfil() {
                         }
                     })
 
-                    if(code == "201"){
-                        context.startActivity(Intent(context, MotoristasActivity::class.java))
-                    }
-                    else{
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                        Log.i("ds3m", "EditarPerfil: tessste")
+                    if (code == "201") {
+                        Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Perfil atualizado com sucesso", Toast.LENGTH_SHORT)
+                            .show()
+
+                        if (user != null) {
+                            val intentSelect = Intent(context, MotoristasActivity::class.java)
+                            intentSelect.putExtra("id", user.id.toString())
+                            context.startActivity(intentSelect)
+                        }
                     }
 
                 },

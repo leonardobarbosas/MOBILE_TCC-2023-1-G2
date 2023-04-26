@@ -1,12 +1,10 @@
 package br.senai.sp.jandira.vanbora.api.calls.contracts
 
+import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
 import br.senai.sp.jandira.vanbora.model.contract.Contract
 import br.senai.sp.jandira.vanbora.model.contract.ContractX
-import br.senai.sp.jandira.vanbora.model.driver.Driver
-import br.senai.sp.jandira.vanbora.model.driver.DriverList
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ContractCall {
 
@@ -16,5 +14,9 @@ interface ContractCall {
 
     @GET("contract/{id}")
     fun getOneContractId(@Path("id")id: String): Call<ContractX>
+
+    @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
+    @POST("contract")
+    fun postContract(@Body contract: ContractX): Call<ContractX>
 
 }

@@ -2,6 +2,7 @@ package br.senai.sp.jandira.vanbora.components.forms.contract
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -31,8 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.ui.activities.client.EnviarContratoActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
+import br.senai.sp.jandira.vanbora.ui.activities.client.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true, showSystemUi = true)
@@ -72,13 +72,6 @@ fun EnviarContrato() {
             mutableStateOf(false)
         }
 
-        var escolaState by rememberSaveable() {
-            mutableStateOf("")
-        }
-
-        var isEscolaError by remember() {
-            mutableStateOf(false)
-        }
 
         //Tipo Transporte
         var mExpanded by remember { mutableStateOf(false) }
@@ -101,7 +94,6 @@ fun EnviarContrato() {
             stringResource(id = R.string.semanal),
             stringResource(id = R.string.mensal),
             stringResource(id = R.string.anual)
-
         )
         var nSelectedText by remember { mutableStateOf("") }
         var nTextFieldSize by remember { mutableStateOf(Size.Zero) }
@@ -399,7 +391,18 @@ fun EnviarContrato() {
 
         Button(
             onClick = {
-                context.startActivity(Intent(context, MotoristasActivity::class.java))
+                val intentSelect = Intent(context, ContratoActivity::class.java)
+
+                intentSelect.putExtra("nome_responsavel", nomeResponsavelState)
+                intentSelect.putExtra("nome_passageiro", nomePassageiroState)
+                intentSelect.putExtra("idade_passageiro", idadePassageiroState)
+                intentSelect.putExtra("tipo_pagamento", mSelectedText)
+                intentSelect.putExtra("escola", nSelectedText)
+                intentSelect.putExtra("tipo_transporte", nSelectedText)
+
+                context.startActivity(intentSelect)
+
+                Log.i("ds3m", "EnviarContrato: $nSelectedText")
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
         ) {

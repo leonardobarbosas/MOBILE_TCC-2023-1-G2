@@ -14,3 +14,4 @@ data class ContractX(
     val usuario: User,
     val valo_contrato: Int
 )
+

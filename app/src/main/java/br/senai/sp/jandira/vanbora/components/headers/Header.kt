@@ -8,9 +8,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,11 +18,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.components.headers.Rotas.EditarPerfilActivity
-import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.user.User
+import br.senai.sp.jandira.vanbora.ui.activities.client.EditarPerfilActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,6 +35,7 @@ fun Header() {
     val intent = (context as MotoristasActivity).intent
 
     val idLogin = intent.getStringExtra("id")
+    Log.i("ds3m", "Header: $idLogin")
 
     val loginCall = GetFunctionsCall.getUserCall().getUserById(id = idLogin.toString())
 

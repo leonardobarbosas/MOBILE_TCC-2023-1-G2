@@ -27,6 +27,7 @@
     <string name="registrar">registrar</string>
     <string name="driver">MOTORISTA</string>
     <string name="download_contract">Baixar contrato</string>
+    <string name="send_contract">Enviar contrato</string>
     <string name="user">CLIENTE</string>
     <string name="title_activity_dados_driver">dadosDriverActivity</string>
     <string name="title_activity_driver_complements">DriverActivityComplements</string>
@@ -88,6 +89,7 @@
     <string name="anual">Anual</string>
     <string name="title_activity_editar_perfil">EditarPerfilActivity</string>
     <string name="title_activity_visualizar_contratos">VisualizarContratosActivity</string>
+    <string name="title_activity_contrato">ContratoActivity</string>
 
 
 </resources>
