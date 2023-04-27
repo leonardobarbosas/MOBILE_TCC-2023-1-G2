@@ -21,7 +21,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.functions_click.LoginDriverClient
 import br.senai.sp.jandira.vanbora.functions_click.LoginUserCLient
+import br.senai.sp.jandira.vanbora.model.driver.Van
 
 @Composable
 fun FormMainLogin(){
@@ -50,6 +52,14 @@ fun FormMainLogin(){
     }
 
     var senhaVisibility by remember() {
+        mutableStateOf(false)
+    }
+
+    val checkedStateDriver = remember {
+        mutableStateOf(false)
+    }
+
+    val checkedStateUser = remember {
         mutableStateOf(false)
     }
 
@@ -185,6 +195,29 @@ fun FormMainLogin(){
         }
 
         Row(
+            modifier = Modifier.fillMaxWidth().padding(start = 52.dp, end = 52.dp),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = checkedStateDriver.value,
+                onCheckedChange = { checkedStateDriver.value = it },
+                colors = CheckboxDefaults.colors(Color.Gray)
+            )
+            Text(text = stringResource(R.string.driver), fontSize = 10.sp)
+
+            Spacer(modifier = Modifier.padding(16.dp))
+
+            Checkbox(
+                checked = checkedStateUser.value,
+                onCheckedChange = { checkedStateUser.value = it },
+                colors = CheckboxDefaults.colors(Color.Gray)
+            )
+            Text(text = stringResource(R.string.user), fontSize = 10.sp)
+        }
+
+
+        Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
@@ -201,7 +234,13 @@ fun FormMainLogin(){
                     isSenhaError = senhaState.length == 0
 
 
-                    LoginUserCLient(emailProps = emailState,  senhaProps = senhaState, context = context)
+                    if (checkedStateDriver.value){
+                        LoginDriverClient(emailProps = emailState,  senhaProps = senhaState, context = context)
+                    }else if (checkedStateUser.value){
+                        LoginUserCLient(emailProps = emailState,  senhaProps = senhaState, context = context)
+                    }
+
+
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 

@@ -112,7 +112,7 @@ fun MeusContratos() {
 
                             Column {
                                 Image(
-                                    painter = rememberAsyncImagePainter(contract.motorista.van[0].foto),
+                                    painter = rememberAsyncImagePainter(contract.motorista.van?.get(0)?.foto),
                                     contentDescription = "",
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier

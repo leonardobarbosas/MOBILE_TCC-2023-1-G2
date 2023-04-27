@@ -15,7 +15,7 @@ data class Driver(
     val senha: String = "",
     val status_motorista: Int = 0,
     val telefone: String = "",
-    val van: List<Van>
+    val van: List<Van>? = null
 ){
     override fun toString(): String {
         return "User(id=$id, 'avaliacao=$avaliacao', 'cnh=$cnh', 'cpf=$cpf', 'data_nascimento=$data_nascimento', 'descricao=$descricao', 'email=$email', 'foto=$foto', 'inicio_carreira=$inicio_carreira', 'nome=$nome', 'rg=$rg', 'senha=$senha', 'status_motorista=$status_motorista', 'telefone=$telefone', 'van=$van'"

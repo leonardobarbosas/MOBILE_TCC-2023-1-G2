@@ -151,7 +151,7 @@ fun MotoristasMain() {
 
                         Column {
                             Image(
-                                painter = rememberAsyncImagePainter(driver.van[0].foto),
+                                painter = rememberAsyncImagePainter(driver?.van?.get(0)?.foto),
                                 contentDescription = "",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -480,7 +480,7 @@ fun MotoristasMain() {
                                         modifier = Modifier.padding(end = 16.dp),
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Text(text = "${driver.van[0].quantidade_vagas}")
+                                        Text(text = "${driver?.van!!?.get(0)?.quantidade_vagas}")
                                         if (driver?.van?.get(0)?.quantidade_vagas == 1) {
                                             Text(
                                                 text = "Vaga",
