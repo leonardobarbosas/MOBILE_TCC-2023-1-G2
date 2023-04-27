@@ -90,6 +90,7 @@
     <string name="title_activity_editar_perfil">EditarPerfilActivity</string>
     <string name="title_activity_visualizar_contratos">VisualizarContratosActivity</string>
     <string name="title_activity_contrato">ContratoActivity</string>
+    <string name="title_activity_suas_vans">SuasVansActivity</string>
 
 
 </resources>

@@ -8,6 +8,7 @@ import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.LoginDriverClientJwtModel
 import br.senai.sp.jandira.vanbora.model.driver.Van
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
+import br.senai.sp.jandira.vanbora.ui.activities.driver.SuasVansActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +27,7 @@ fun LoginDriverClient(emailProps: String, senhaProps: String ,context: Context){
             val driverLogin = response.body()!!
 
             if(driverLogin != null ){
-                val intentSelect = Intent(context, MotoristasActivity::class.java)
+                val intentSelect = Intent(context, SuasVansActivity::class.java)
 
                 intentSelect.putExtra("id", driverLogin.id.toString())
 
