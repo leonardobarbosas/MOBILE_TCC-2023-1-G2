@@ -1,11 +1,9 @@
-package br.senai.sp.jandira.vanbora.components
+package br.senai.sp.jandira.vanbora.components.headers.header
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,25 +15,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.components.HeaderCadastroLogin
 import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.EditarPerfilActivity
+import br.senai.sp.jandira.vanbora.ui.activities.client.EnviarContratoActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun HeaderSelectDriverComplement(context: Context, componentActivity: ComponentActivity){
+fun HeaderEnviarContrato() {
 
     val context = LocalContext.current
 
-    val intent = (context as EditarPerfilActivity).intent
+    val intent = (context as EnviarContratoActivity).intent
 
     val idPerfil = intent.getStringExtra("id")
 
@@ -67,26 +63,25 @@ fun HeaderSelectDriverComplement(context: Context, componentActivity: ComponentA
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Row(modifier = Modifier.background(Color.White).padding(end = 25.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier
+                .background(Color.White)
+                .padding(end = 25.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "",
                 modifier = Modifier
                     .size(40.dp)
                     .clickable {
-//                        context.startActivity(
 
-//                            if (user != null) {
-//                                val intentSelect = Intent(context, MotoristasActivity::class.java)
-//                                intentSelect.putExtra("id", user.id.toString())
-//                                context.startActivity(intentSelect)
-//                            }
-//
-//                            Intent(
-//                                context,
-//                                componentActivity::class.java
-//                            )
-//                        )
+                        if (perfil != null) {
+                            val intentSelect = Intent(context, MotoristasActivity::class.java)
+                            intentSelect.putExtra("id", perfil?.id.toString())
+                            context.startActivity(intentSelect)
+                        }
+
                     }
             )
 

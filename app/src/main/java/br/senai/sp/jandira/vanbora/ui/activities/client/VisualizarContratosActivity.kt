@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.vanbora.ui.activities.client.ui
+package br.senai.sp.jandira.vanbora.ui.activities.client
 
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
+import br.senai.sp.jandira.vanbora.components.headers.HeaderVisualizar
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.MeusContratos
 import br.senai.sp.jandira.vanbora.model.contract.ContractX
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
@@ -53,7 +54,6 @@ fun VisualizarContratos() {
 
     val idContract = intent.getStringExtra("id").toString()
 
-    Log.i("ds3m", "VisualizarContratos: $idContract")
 
     val contractCall =
         GetFunctionsCall.getContractCall().getOneContractId(id = idContract)
@@ -65,7 +65,6 @@ fun VisualizarContratos() {
     contractCall.enqueue(object : Callback<ContractX> {
         override fun onResponse(call: Call<ContractX>, response: Response<ContractX>) {
             contracts = response.body()!!
-            Log.i("ds3m", "onResponse: $response.body()!!")
         }
 
         override fun onFailure(call: Call<ContractX>, t: Throwable) {
@@ -73,13 +72,10 @@ fun VisualizarContratos() {
         }
     })
 
-    val contratos by remember {
-        mutableStateOf(MotoristasActivity::class.java)
-    }
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-        HeaderSelectDriverComplement(context = context, componentActivity = contratos.newInstance())
+        HeaderVisualizar()
 
 
         Column(
@@ -104,6 +100,7 @@ fun VisualizarContratos() {
                     Text(text = "Tipo de Pagamento: ${contracts?.tipo_pagamento?.tipo_pagamento}")
                     Text(text = "Tipo de Contrato: ${contracts?.tipo_contrato?.tipo_contrato}")
                     Text(text = "Escola: ${contracts?.escola?.nome}")
+                    Text(text = "Preço: ${contracts?.valo_contrato}")
 
                     Spacer(modifier = Modifier.padding(10.dp))
 

@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.vanbora.ui.activities.client
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -161,10 +162,8 @@ fun EditarPerfil() {
 
     Column {
 
-        HeaderSelectDriverComplement(
-            context = context, componentActivity = localizeMain.newInstance()
-        )
 
+        HeaderSelectDriverComplement()
 
         Column(
             modifier = Modifier

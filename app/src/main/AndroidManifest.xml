@@ -31,7 +31,7 @@
             android:label="@string/title_activity_contrato"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".ui.activities.client.ui.VisualizarContratosActivity"
+            android:name=".ui.activities.client.VisualizarContratosActivity"
             android:exported="false"
             android:label="@string/title_activity_visualizar_contratos"
             android:theme="@style/Theme.Vanbora" />

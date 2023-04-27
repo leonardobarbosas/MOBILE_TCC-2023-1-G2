@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
+import br.senai.sp.jandira.vanbora.components.headers.HeaderComplements
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -67,10 +68,7 @@ fun VanInfosActivity(){
 
         //Header
         Column() {
-            HeaderSelectDriverComplement(
-                context = context,
-                componentActivity = driverActivityComplements.newInstance()
-            )
+            HeaderComplements()
         }
         //DIV PAI
         Column(

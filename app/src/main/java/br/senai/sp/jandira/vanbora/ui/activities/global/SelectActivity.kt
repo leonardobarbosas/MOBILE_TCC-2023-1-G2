@@ -18,6 +18,8 @@ import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.forms.userdriver.SelectUserDriver
+import br.senai.sp.jandira.vanbora.components.headers.HeaderComplements
+import br.senai.sp.jandira.vanbora.components.headers.HeaderSelect
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -71,7 +73,7 @@ fun Select() {
     ) {
 
         //Header - Logo do VanBora
-        HeaderSelectDriverComplement(context = context, componentActivity = activityMain.newInstance())
+        HeaderSelect()
 
         SelectUserDriver(nameUser, emailUser, senhaUser)
 

@@ -2,10 +2,6 @@ package br.senai.sp.jandira.vanbora.components.forms.maincontainer
 
 import android.content.Intent
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,13 +20,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
+import br.senai.sp.jandira.vanbora.ui.activities.client.Avaliacao
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
@@ -42,15 +41,11 @@ import retrofit2.Response
 @Composable
 fun MotoristasMain() {
 
+    var context = LocalContext.current
+
     var filterState by remember {
         mutableStateOf("")
     }
-
-    var expandState by remember {
-        mutableStateOf(false)
-    }
-
-    val context = LocalContext.current
 
     val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
 
@@ -151,7 +146,7 @@ fun MotoristasMain() {
 
                         Column {
                             Image(
-                                painter = rememberAsyncImagePainter(driver?.van?.get(0)?.foto),
+                                painter = rememberAsyncImagePainter(driver.van?.get(0)?.foto),
                                 contentDescription = "",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -165,14 +160,16 @@ fun MotoristasMain() {
                                     .fillMaxHeight(1f),
                                 backgroundColor = Color(247, 233, 194, 255)
                             ) {
+
                                 Row(
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier
+                                        .padding(start = 16.dp)
+                                        .fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Row(
-                                        modifier = Modifier.padding(start = 16.dp)
-                                    ) {
+
+                                    Row() {
                                         Image(
                                             painter = rememberAsyncImagePainter(driver.foto),
                                             contentDescription = "",
@@ -478,10 +475,11 @@ fun MotoristasMain() {
 
                                     Column(
                                         modifier = Modifier.padding(end = 16.dp),
+                                        verticalArrangement = Arrangement.Center,
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Text(text = "${driver?.van!!?.get(0)?.quantidade_vagas}")
-                                        if (driver?.van?.get(0)?.quantidade_vagas == 1) {
+                                        Text(text = "${driver.van!!.get(0)?.quantidade_vagas}")
+                                        if (driver.van.get(0)?.quantidade_vagas == 1) {
                                             Text(
                                                 text = "Vaga",
                                                 fontSize = 12.sp,
@@ -496,14 +494,13 @@ fun MotoristasMain() {
                                         }
                                     }
                                 }
+
                             }
                         }
                     }
                 }
-
             }
         }
-
-
     }
 }
+

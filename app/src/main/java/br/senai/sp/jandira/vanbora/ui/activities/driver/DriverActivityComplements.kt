@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.forms.driver.DriverInfos
+import br.senai.sp.jandira.vanbora.components.headers.HeaderComplements
 import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -63,7 +64,7 @@ fun DadosAdicionaisMotorista() {
     ) {
 
         //Header
-        HeaderSelectDriverComplement(context = context, componentActivity = selectActivy.newInstance())
+        HeaderComplements()
 
         //Main (Form) and Footer
         DriverInfos(context = context)

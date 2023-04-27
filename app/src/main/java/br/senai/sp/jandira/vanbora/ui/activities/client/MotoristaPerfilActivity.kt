@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
+import br.senai.sp.jandira.vanbora.components.headers.HeaderPerfil
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.ui.activities.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
@@ -64,10 +64,6 @@ fun Perfil() {
 
     val context = LocalContext.current
 
-    val localizeMain by remember {
-        mutableStateOf(MotoristasActivity::class.java)
-    }
-
     val intent = (context as PerfilActivity).intent
 
     val idUser = intent.getStringExtra("id")
@@ -93,9 +89,8 @@ fun Perfil() {
 
     Column {
         //Header
-        HeaderSelectDriverComplement(
-            context = context, componentActivity = localizeMain.newInstance()
-        )
+
+        HeaderPerfil()
 
         //Main
         Column(

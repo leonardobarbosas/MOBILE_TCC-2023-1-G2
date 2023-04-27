@@ -13,9 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.material.icons.filled.StarHalf
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,18 +22,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.components.forms.localize.Localizese
 import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.model.contract.Contract
-import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.ui.VisualizarContratosActivity
+import br.senai.sp.jandira.vanbora.ui.activities.client.VisualizarContratosActivity
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
 import retrofit2.Callback
@@ -159,7 +153,7 @@ fun MeusContratos() {
                                                     onClick = {
                                                         val intentSelect = Intent(context, VisualizarContratosActivity::class.java)
 
-                                                        intentSelect.putExtra("id", contract?.id.toString())
+                                                        intentSelect.putExtra("id", contract.id.toString())
 
                                                         context.startActivity(intentSelect)
 

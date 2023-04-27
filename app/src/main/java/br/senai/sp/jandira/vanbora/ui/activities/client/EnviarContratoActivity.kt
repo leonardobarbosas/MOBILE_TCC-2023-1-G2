@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.forms.contract.EnviarContrato
+import br.senai.sp.jandira.vanbora.components.headers.header.HeaderEnviarContrato
 import br.senai.sp.jandira.vanbora.ui.activities.client.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -48,11 +49,6 @@ class EnviarContratoActivity : ComponentActivity() {
 @Composable
 fun EnvioDeContrato() {
 
-    val context = LocalContext.current
-
-    val localizeMain by remember {
-        mutableStateOf(MotoristasActivity::class.java)
-    }
 
     Column(
         modifier = Modifier
@@ -64,9 +60,8 @@ fun EnvioDeContrato() {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        HeaderSelectDriverComplement(
-            context = context, componentActivity = localizeMain.newInstance()
-        )
+
+        HeaderEnviarContrato()
 
         EnviarContrato()
 

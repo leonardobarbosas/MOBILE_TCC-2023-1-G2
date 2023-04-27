@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.forms.user.UserInfos
+import br.senai.sp.jandira.vanbora.components.headers.HeaderSelect
 import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -70,10 +71,7 @@ fun DadosAdicionaisUser() {
     ) {
 
         //Header
-        HeaderSelectDriverComplement(
-            context = context,
-            componentActivity = selectActivy.newInstance()
-        )
+        HeaderSelect()
 
         Log.i("ds3m", "DadosAdicionaisUser: $name, $email, $senha")
 
