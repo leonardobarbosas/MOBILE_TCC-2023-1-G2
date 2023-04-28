@@ -2,11 +2,9 @@ package br.senai.sp.jandira.vanbora.ui.activities.driver
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-<<<<<<< Updated upstream
-import androidx.compose.foundation.layout.fillMaxSize
-=======
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,16 +12,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
->>>>>>> Stashed changes
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-<<<<<<< Updated upstream
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
-=======
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,16 +29,16 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.components.footer.FooterShow
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
 import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
+import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.components.footer.FooterShow
-import coil.compose.rememberAsyncImagePainter
->>>>>>> Stashed changes
+
 
 class SuasVansActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +50,7 @@ class SuasVansActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    SuaVan()
                 }
             }
         }
@@ -67,11 +58,9 @@ class SuasVansActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-<<<<<<< Updated upstream
-    Text(text = "Hello $name!")
-=======
-    var context = LocalContext.current
+fun SuaVan() {
+
+    val context = LocalContext.current
 
     var drivers by remember {
         mutableStateOf(DriverList(listOf()))
@@ -89,7 +78,11 @@ fun Greeting(name: String) {
         }
     })
 
-    Column (
+
+
+
+
+    Column(
         modifier = with(Modifier) {
             fillMaxSize()
                 .paint(
@@ -118,13 +111,13 @@ fun Greeting(name: String) {
                 style = MaterialTheme.typography.h2.copy(
                     fontFamily = FontFamily(Font(R.font.poppins_semibold))
                 )
-                )
+            )
         }
         LazyColumn(
             modifier = Modifier.fillMaxSize()
-        ){
-            items(drivers.drivers){driver ->
-                Card (
+        ) {
+            items(drivers.drivers) { driver ->
+                Card(
                     modifier = Modifier
                         .fillMaxSize()
                         .height(200.dp)
@@ -142,7 +135,7 @@ fun Greeting(name: String) {
                         bottomEnd = 20.dp,
                         bottomStart = 20.dp
                     )
-                ){
+                ) {
                     Column {
                         Image(
                             painter = rememberAsyncImagePainter(model = driver.van?.get(0)?.foto),
@@ -152,22 +145,41 @@ fun Greeting(name: String) {
                                 .fillMaxWidth()
                                 .height(200.dp)
                         )
+                        Card(
+                            modifier = Modifier
+                                .fillMaxHeight(1f)
+                                .fillMaxWidth(),
+                            backgroundColor = Color(247, 233, 194, 255)
+                        ) {
+                            Row() {
+                                Column {
+                                    Text(text = "${driver.van?.get(0)?.modelo}")
+                                    driver.van?.get(0)?.let { Text(text = it.placa)}
+                                }
+                                Column(
+                                    modifier = Modifier.padding(end = 16.dp),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ){
+                                    Text(text = "${driver.van?.get(0)?.quantidade_vagas}")
+                                }
+                            }
+                        }
                     }
 
                 }
             }
         }
 
-
-//        FooterShow()
+        FooterShow()
     }
->>>>>>> Stashed changes
 }
+
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     VanboraTheme {
-        Greeting("Android")
+        SuaVan()
     }
 }
