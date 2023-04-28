@@ -91,6 +91,8 @@
     <string name="title_activity_visualizar_contratos">VisualizarContratosActivity</string>
     <string name="title_activity_contrato">ContratoActivity</string>
     <string name="title_activity_suas_vans">SuasVansActivity</string>
+    <string name="suas_vans_suas">Suas</string>
+    <string name="suas_vans_vans">Vans</string>
 
 
 </resources>
