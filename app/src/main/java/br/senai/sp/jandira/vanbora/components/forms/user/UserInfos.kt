@@ -100,8 +100,6 @@ fun UserInfos(name: String, email: String, senha: String) {
 
 
 
-
-
         //RG
         OutlinedTextField(
             value = rgState, onValueChange = {

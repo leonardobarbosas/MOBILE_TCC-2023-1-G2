@@ -8,6 +8,8 @@
     <string name="join">Entrar</string>
     <string name="next">Próximo</string>
     <string name="save">Salvar</string>
+    <string name="logout">Logout</string>
+    <string name="delete">Excluir</string>
     <string name="google">Google</string>
     <string name="no_have_account">Não tem uma conta?</string>
     <string name="have_account">Já tem uma conta?</string>
