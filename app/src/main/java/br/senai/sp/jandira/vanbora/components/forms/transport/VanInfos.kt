@@ -1,5 +1,3 @@
-import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -25,10 +23,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
+import br.senai.sp.jandira.vanbora.functions_click.RegisterNewDriver
+import br.senai.sp.jandira.vanbora.model.driver.Van
 
 @Composable
-fun VanInfos(context: Context) {
+fun VanInfos(
+    email: String,
+    senha: String,
+    rg: String,
+    cpf: String,
+    descricao: String,
+    cnh: String,
+    telefone: String,
+    inicio_carreira: String,
+    name: String,
+    data_nascimento: String,
+) {
 
     var placaVan by rememberSaveable {
         mutableStateOf("")
@@ -37,6 +47,9 @@ fun VanInfos(context: Context) {
         mutableStateOf("")
     }
     var vagasVan by rememberSaveable {
+        mutableStateOf("")
+    }
+    var precoVan by rememberSaveable {
         mutableStateOf("")
     }
 
@@ -49,6 +62,9 @@ fun VanInfos(context: Context) {
     var isVagasVanError by rememberSaveable {
         mutableStateOf(false)
     }
+    var isPrecoVanError by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     val scrollState = rememberScrollState()
 
@@ -58,13 +74,15 @@ fun VanInfos(context: Context) {
         mutableStateOf<Uri?>(null)
     }
     var context = LocalContext.current
-    var bitmap = remember{
+
+    var bitmap = remember {
         mutableStateOf<Bitmap?>(null)
     }
 
-    val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()){ uri: Uri? ->
-        imageUri = uri
-    }
+    val launcher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
+            imageUri = uri
+        }
 
     //IMAGE
     Column(
@@ -81,16 +99,16 @@ fun VanInfos(context: Context) {
     ) {
 
         imageUri?.let {
-            if (Build.VERSION.SDK_INT < 28){
+            if (Build.VERSION.SDK_INT < 28) {
                 bitmap.value = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
-            }
-            else{
+            } else {
                 val source = ImageDecoder.createSource(context.contentResolver, it)
                 bitmap.value = ImageDecoder.decodeBitmap(source)
             }
 
             bitmap.value?.let { btm ->
-                Image(bitmap = btm.asImageBitmap(),
+                Image(
+                    bitmap = btm.asImageBitmap(),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -98,7 +116,7 @@ fun VanInfos(context: Context) {
         }
 
         Spacer(modifier = Modifier.height(12.dp))
-        
+
         Icon(
             imageVector = Icons.Filled.PhotoCamera,
             contentDescription = "",
@@ -176,6 +194,29 @@ fun VanInfos(context: Context) {
             isError = isVagasVanError,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
+
+        OutlinedTextField(
+            value = precoVan,
+            onValueChange = {
+                precoVan = it
+                if (it == "" || it == null) {
+                    isPrecoVanError
+                }
+            },
+            label = {
+                Text(
+                    text = stringResource(id = R.string.preco_van)
+                )
+            },
+            trailingIcon = {
+                if (isPrecoVanError) Icon(
+                    imageVector = Icons.Default.Warning,
+                    contentDescription = ""
+                )
+            },
+            isError = isPrecoVanError,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
     }
 
     //BUTTON
@@ -185,10 +226,23 @@ fun VanInfos(context: Context) {
                 isPlacaVanError = placaVan.length == 0
                 isModeloVanError = modeloVan.length == 0
                 isVagasVanError = vagasVan.length == 0
+                isPrecoVanError = precoVan.length == 0
 
-                context.startActivity(Intent(context, MotoristasActivity::class.java))
+                RegisterNewDriver(
+                    senha = senha,
+                    cnh = cnh, cpf = cpf,
+                    data_nascimento = data_nascimento,
+                    descricao = descricao,
+                    email = email,
+                    foto = "url_foto",
+                    inicio_carreira = inicio_carreira,
+                    nome = name,
+                    rg = rg,
+                    telefone = telefone,
+                    context = context
+                )
 
-                      },
+            },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
         ) {

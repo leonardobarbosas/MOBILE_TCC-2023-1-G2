@@ -17,6 +17,7 @@ import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.forms.driver.DriverInfos
 import br.senai.sp.jandira.vanbora.components.headers.HeaderComplements
+import br.senai.sp.jandira.vanbora.ui.activities.client.UserActivityComplements
 import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -46,12 +47,13 @@ class DriverActivityComplements : ComponentActivity() {
 @Composable
 fun DadosAdicionaisMotorista() {
 
-
     val context = LocalContext.current
 
-    val selectActivy by remember {
-        mutableStateOf(SelectActivity::class.java)
-    }
+    val intent = (context as DriverActivityComplements).intent
+
+    val name = intent.getStringExtra("name").toString()
+    val email = intent.getStringExtra("email").toString()
+    val senha = intent.getStringExtra("senha").toString()
 
     Column(
         modifier = Modifier
@@ -67,6 +69,6 @@ fun DadosAdicionaisMotorista() {
         HeaderComplements()
 
         //Main (Form) and Footer
-        DriverInfos(context = context)
+        DriverInfos(name, email, senha)
     }
 }

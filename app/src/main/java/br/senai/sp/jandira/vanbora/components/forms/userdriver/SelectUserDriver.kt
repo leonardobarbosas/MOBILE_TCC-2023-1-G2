@@ -77,7 +77,11 @@ fun SelectUserDriver(name: String, email: String, senha: String){
         Row {
             Button(
                 onClick = {
-                    context.startActivity(Intent(context, DriverActivityComplements::class.java))
+                    val intent = Intent(context, DriverActivityComplements::class.java)
+                    intent.putExtra("name", name)
+                    intent.putExtra("email", email)
+                    intent.putExtra("senha", senha)
+                    context.startActivity(intent)
                 },
                 colors = ButtonDefaults.buttonColors(Color(255, 255, 255, 255))
             )

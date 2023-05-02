@@ -34,7 +34,11 @@ import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewUser
 
 @Composable
-fun UserInfos(name: String, email: String, senha: String) {
+fun UserInfos(
+    name: String,
+    email: String,
+    senha: String
+) {
 
     var rgState by rememberSaveable() {
         mutableStateOf("")
@@ -343,7 +347,6 @@ fun UserInfos(name: String, email: String, senha: String) {
         Button(
             onClick = {
                 RegisterNewUser(cep = cepState, cpf = cpfState, data_nascimento = dataNascimentoState, email = email, foto = "url_foto", nome = name, rg = rgState, senha = senha, telefone = telefoneState, context = context)
-
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
@@ -354,41 +357,3 @@ fun UserInfos(name: String, email: String, senha: String) {
         }
     }
 }
-
-/*
-//image
-Column(
-modifier = Modifier
-.height(100.dp)
-.fillMaxWidth()
-.verticalScroll(scrollState)
-.clickable {
-    launcher.launch("image/*")
-}
-) {
-    imageUri?.let {
-        if (Build.VERSION.SDK_INT < 28){
-            bitmap.value = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
-        }
-        else{
-            val source = ImageDecoder.createSource(context.contentResolver, it)
-            bitmap.value = ImageDecoder.decodeBitmap(source)
-        }
-
-        bitmap.value?.let { btm ->
-            Image(bitmap = btm.asImageBitmap(),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-    }
-
-
-    Icon(
-        imageVector = Icons.Filled.PhotoCamera,
-        contentDescription = "",
-        modifier = Modifier.fillMaxSize()
-    )
-}
-*/
- */

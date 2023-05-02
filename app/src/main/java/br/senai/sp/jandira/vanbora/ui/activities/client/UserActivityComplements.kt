@@ -50,10 +50,6 @@ fun DadosAdicionaisUser() {
 
     val context = LocalContext.current
 
-    val selectActivy by remember {
-        mutableStateOf(SelectActivity::class.java)
-    }
-
     val intent = (context as UserActivityComplements).intent
 
     val name = intent.getStringExtra("name").toString()
