@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.Destinos
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.*
 
@@ -100,7 +101,7 @@ fun Navigation(navController: NavHostController) {
         }
 
         composable(Destinos.RotaMeusContratos.route) {
-            MeusContratos()
+            MeusContratos(viewModel = MainViewModel())
         }
 
         composable(Destinos.RotaContate.route) {

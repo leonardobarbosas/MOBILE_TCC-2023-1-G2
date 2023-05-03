@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.components.confirm.CustomDialog
+import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.model.contract.Contract
 import br.senai.sp.jandira.vanbora.model.contract.ContractX
@@ -39,7 +41,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun MeusContratos() {
+fun MeusContratos(
+    viewModel: MainViewModel
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -195,32 +199,7 @@ fun MeusContratos() {
                                         ) {
                                             Button(
                                                 onClick = {
-                                                    var contract = ContractX(
-                                                        contracts!!.contracts[0].escola,
-                                                        contracts!!.contracts[0].id,
-                                                        contracts!!.contracts[0]!!.idade_passageiro,
-                                                        contracts!!.contracts[0].motorista,
-                                                        contracts!!.contracts[0].nome_passageiro,
-                                                        contracts!!.contracts[0].tipo_contrato,
-                                                        contracts!!.contracts[0].tipo_pagamento,
-                                                        contracts!!.contracts[0].usuario,
-                                                        contracts!!.contracts[0].valo_contrato,
-                                                    )
-//
-                                                    val callContractDelete = GetFunctionsCall.getContractCall().deleteContract(contract.id)
-                                                    callContractDelete.enqueue(object: Callback<String>{
-                                                        override fun onResponse(
-                                                            call: Call<String>, response: Response<String>
-                                                        ) {
-                                                            Toast.makeText(context, "Usuário deletado com sucesso", Toast.LENGTH_SHORT).show()
-                                                            val intentSelect = Intent(context, MotoristasActivity::class.java)
-                                                            context.startActivity(intentSelect)
-                                                        }
-                                                        override fun onFailure(call: Call<String>, t: Throwable) {
-                                                            Log.i("ds3m", "fali")
-                                                        }
-
-                                                    })
+                                                    viewModel.onPurchaseClick()
                                                 },
                                                 shape = CircleShape,
                                                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
@@ -228,6 +207,42 @@ fun MeusContratos() {
                                                 Image(
                                                     imageVector = Icons.Filled.Delete,
                                                     contentDescription = ""
+                                                )
+                                            }
+                                            if(viewModel.isDialogShown){
+                                                CustomDialog(
+                                                    onDismiss = {
+                                                        viewModel.onDismissDialog()
+                                                    },
+                                                    onConfirm = {
+                                                        var contract = ContractX(
+                                                            contracts!!.contracts[0].escola,
+                                                            contracts!!.contracts[0].id,
+                                                            contracts!!.contracts[0]!!.idade_passageiro,
+                                                            contracts!!.contracts[0].motorista,
+                                                            contracts!!.contracts[0].nome_passageiro,
+                                                            contracts!!.contracts[0].tipo_contrato,
+                                                            contracts!!.contracts[0].tipo_pagamento,
+                                                            contracts!!.contracts[0].usuario,
+                                                            contracts!!.contracts[0].valo_contrato,
+                                                        )
+
+                                                        val callContractDelete = GetFunctionsCall.getContractCall().deleteContract(contract.id)
+                                                        callContractDelete.enqueue(object: Callback<String> {
+                                                            override fun onResponse(
+                                                                call: Call<String>, response: Response<String>
+                                                            ) {
+                                                                Toast.makeText(context, "Contrato encerrado com sucesso", Toast.LENGTH_SHORT).show()
+                                                                simulateHotReload(context)
+
+                                                            }
+                                                            override fun onFailure(call: Call<String>, t: Throwable) {
+                                                                Log.i("ds3m", "fali")
+                                                            }
+
+                                                        })
+
+                                                    }
                                                 )
                                             }
                                         }
