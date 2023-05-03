@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+<<<<<<< HEAD
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -39,6 +40,27 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+=======
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.model.driver.DriverList
+import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+>>>>>>> main
 
 class SuasVansActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +80,7 @@ class SuasVansActivity : ComponentActivity() {
 }
 
 @Composable
+<<<<<<< HEAD
 fun SuaVan() {
 
     val context = LocalContext.current
@@ -78,10 +101,29 @@ fun SuaVan() {
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
+=======
+fun Greeting(name: String) {
+    var context = LocalContext.current
+
+    var drivers by remember {
+        mutableStateOf(DriverList(listOf()))
+    }
+
+    val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
+
+
+    driversCall.enqueue(object : Callback<DriverList> {
+        override fun onResponse(call: Call<DriverList>, response: Response<DriverList>) {
+            drivers = response.body()!!
+        }
+
+        override fun onFailure(call: Call<DriverList>, t: Throwable) {
+>>>>>>> main
             Log.i("ds3m", "onFailure: $t")
         }
     })
 
+<<<<<<< HEAD
     Column(
         modifier = with(Modifier) {
             fillMaxSize()
@@ -456,6 +498,15 @@ fun SuaVan() {
         }
         FooterShow()
     }
+=======
+    Column (
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween
+            ) {
+    }
+
+>>>>>>> main
 }
 
 @Preview(showBackground = true)

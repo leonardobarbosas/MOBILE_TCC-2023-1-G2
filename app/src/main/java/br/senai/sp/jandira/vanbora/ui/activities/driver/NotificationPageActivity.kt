@@ -74,7 +74,7 @@ class NotificationPageActivity: ComponentActivity() {
                     painter = painterResource(id = R.drawable.background2)
                 )
                 ) {
-            
+
             FooterShow()
 
         }
