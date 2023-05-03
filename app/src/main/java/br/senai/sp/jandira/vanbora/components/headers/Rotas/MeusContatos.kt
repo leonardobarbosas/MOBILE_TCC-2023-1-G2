@@ -2,6 +2,7 @@ package br.senai.sp.jandira.vanbora.components.headers.Rotas
 
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,6 +29,7 @@ import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.model.contract.Contract
+import br.senai.sp.jandira.vanbora.model.contract.ContractX
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.VisualizarContratosActivity
@@ -106,7 +108,11 @@ fun MeusContratos() {
 
                             Column {
                                 Image(
-                                    painter = rememberAsyncImagePainter(contract.motorista.van?.get(0)?.foto),
+                                    painter = rememberAsyncImagePainter(
+                                        contract.motorista.van?.get(
+                                            0
+                                        )?.foto
+                                    ),
                                     contentDescription = "",
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier
@@ -151,16 +157,31 @@ fun MeusContratos() {
 
                                                 Button(
                                                     onClick = {
-                                                        val intentSelect = Intent(context, VisualizarContratosActivity::class.java)
+                                                        val intentSelect = Intent(
+                                                            context,
+                                                            VisualizarContratosActivity::class.java
+                                                        )
 
-                                                        intentSelect.putExtra("id", contract.id.toString())
+                                                        intentSelect.putExtra(
+                                                            "id",
+                                                            contract.id.toString()
+                                                        )
 
                                                         context.startActivity(intentSelect)
 
-                                                        Log.i("ds3m", "MeusContratos: ${contract.id}")
+                                                        Log.i(
+                                                            "ds3m", "MeusContratos: ${contract.id}"
+                                                        )
                                                     },
                                                     modifier = Modifier.height(25.dp),
-                                                    colors = ButtonDefaults.buttonColors(Color(251, 211, 69, 255))
+                                                    colors = ButtonDefaults.buttonColors(
+                                                        Color(
+                                                            251,
+                                                            211,
+                                                            69,
+                                                            255
+                                                        )
+                                                    )
                                                 ) {
                                                     Text(text = "Infos. contrato", fontSize = 5.sp)
                                                 }
@@ -173,7 +194,34 @@ fun MeusContratos() {
                                             horizontalAlignment = Alignment.CenterHorizontally
                                         ) {
                                             Button(
-                                                onClick = {},
+                                                onClick = {
+                                                    var contract = ContractX(
+                                                        contracts!!.contracts[0].escola,
+                                                        contracts!!.contracts[0].id,
+                                                        contracts!!.contracts[0]!!.idade_passageiro,
+                                                        contracts!!.contracts[0].motorista,
+                                                        contracts!!.contracts[0].nome_passageiro,
+                                                        contracts!!.contracts[0].tipo_contrato,
+                                                        contracts!!.contracts[0].tipo_pagamento,
+                                                        contracts!!.contracts[0].usuario,
+                                                        contracts!!.contracts[0].valo_contrato,
+                                                    )
+//
+                                                    val callContractDelete = GetFunctionsCall.getContractCall().deleteContract(contract.id)
+                                                    callContractDelete.enqueue(object: Callback<String>{
+                                                        override fun onResponse(
+                                                            call: Call<String>, response: Response<String>
+                                                        ) {
+                                                            Toast.makeText(context, "Usuário deletado com sucesso", Toast.LENGTH_SHORT).show()
+                                                            val intentSelect = Intent(context, MotoristasActivity::class.java)
+                                                            context.startActivity(intentSelect)
+                                                        }
+                                                        override fun onFailure(call: Call<String>, t: Throwable) {
+                                                            Log.i("ds3m", "fali")
+                                                        }
+
+                                                    })
+                                                },
                                                 shape = CircleShape,
                                                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
                                             ) {
