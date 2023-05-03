@@ -16,6 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.forms.contract.EnviarContrato
+import br.senai.sp.jandira.vanbora.components.headers.HeaderPerfil
+import br.senai.sp.jandira.vanbora.components.headers.header.HeaderContrato
 import br.senai.sp.jandira.vanbora.components.headers.header.HeaderEnviarContrato
 import br.senai.sp.jandira.vanbora.ui.activities.client.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -61,7 +63,7 @@ fun EnvioDeContrato() {
     ) {
 
 
-        HeaderEnviarContrato()
+        HeaderContrato()
 
         EnviarContrato()
 

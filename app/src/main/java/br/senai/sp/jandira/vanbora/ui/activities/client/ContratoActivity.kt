@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.components.headers.HeaderPerfil
 import br.senai.sp.jandira.vanbora.model.contract.Contract
 import br.senai.sp.jandira.vanbora.model.contract.ContractX
 import br.senai.sp.jandira.vanbora.ui.activities.client.ui.theme.VanboraTheme
@@ -58,7 +59,7 @@ fun Contrato() {
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-//        HeaderSelectDriverComplement(context = context, componentActivity = contratos.newInstance())
+        HeaderPerfil()
 
 
         Column(
