@@ -31,8 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.api.retrofit.footer.FooterShow
+import br.senai.sp.jandira.vanbora.components.user.footer.FooterShow
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
@@ -61,6 +62,7 @@ class SuasVansActivity : ComponentActivity() {
 fun SuaVan() {
 
     val context = LocalContext.current
+    
 
     var drivers by remember {
         mutableStateOf(DriverList(listOf()))

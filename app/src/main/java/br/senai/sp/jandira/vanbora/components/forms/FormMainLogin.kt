@@ -233,14 +233,11 @@ fun FormMainLogin(){
                     isEmailError = emailState.length == 0
                     isSenhaError = senhaState.length == 0
 
-
                     if (checkedStateDriver.value){
                         LoginDriverClient(emailProps = emailState,  senhaProps = senhaState, context = context)
                     }else if (checkedStateUser.value){
                         LoginUserCLient(emailProps = emailState,  senhaProps = senhaState, context = context)
                     }
-
-
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
