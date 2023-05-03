@@ -1,6 +1,5 @@
 package br.senai.sp.jandira.vanbora.ui.activities.client
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -28,12 +27,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
+import br.senai.sp.jandira.vanbora.components.functions.MaskTransformationCep
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.ui.theme.VanboraTheme
 import br.senai.sp.jandira.vanbora.model.user.User
-import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -471,6 +471,7 @@ fun EditarPerfil() {
                 },
                 isError = isCepError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                visualTransformation = MaskTransformationCep(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color(0, 0, 0, 255),
                     unfocusedBorderColor = Color(0, 0, 0, 255)
@@ -594,60 +595,109 @@ fun EditarPerfil() {
 
             Spacer(modifier = Modifier.padding(26.dp))
 
-            Button(
-                onClick = {
-
-                    var user = User(
-                        cepState,
-                        cpfState,
-                        dataNascimentoState,
-                        emailState,
-                        perfil!!.foto,
-                        perfil!!.id,
-                        nomeState,
-                        rgState,
-                        senhaState,
-                        telefoneState,
-                        status_usuario = 1
-                    )
-
-//                  Log.i("ds3m", "EditarPerfil: ${user}")
-
-
-                    var perfilPutCall =
-                        GetFunctionsCall.getUserCall().putUser(user.id.toString(), user)
-
-                    perfilPutCall.enqueue(object : Callback<String> {
-                        override fun onResponse(call: Call<String>, response: Response<String>) {
-                            code = response.code().toString()
-                            message = response.body().toString()
-//                          Log.i("ds3m", "onResponse: $code , $message")
-                        }
-
-                        override fun onFailure(call: Call<String>, t: Throwable) {
-                            Log.i("ds3m", "onFailure: $t")
-                        }
-                    })
-
-                    if (code == "201") {
-                        Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(context, "Perfil atualizado com sucesso", Toast.LENGTH_SHORT)
-                            .show()
-
-                        if (user != null) {
-                            val intentSelect = Intent(context, MotoristasActivity::class.java)
-                            intentSelect.putExtra("id", user.id.toString())
-                            context.startActivity(intentSelect)
-                        }
-                    }
-
-                },
-                colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
-                Text(
-                    text = stringResource(id = R.string.save)
-                )
+
+                Button(
+                    onClick = {
+
+                        var user = User(
+                            cepState,
+                            cpfState,
+                            dataNascimentoState,
+                            emailState,
+                            perfil!!.foto,
+                            perfil!!.id,
+                            nomeState,
+                            rgState,
+                            senhaState,
+                            telefoneState,
+                            status_usuario = 1
+                        )
+
+
+                        var perfilPutCall =
+                            GetFunctionsCall.getUserCall().putUser(user.id.toString(), user)
+
+                        perfilPutCall.enqueue(object : Callback<String> {
+                            override fun onResponse(
+                                call: Call<String>,
+                                response: Response<String>
+                            ) {
+                                code = response.code().toString()
+                                message = response.body().toString()
+                            }
+
+                            override fun onFailure(call: Call<String>, t: Throwable) {
+                                Log.i("ds3m", "onFailure: $t")
+                            }
+                        })
+
+                        if (code == "201") {
+                            Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Perfil atualizado com sucesso",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+
+                            if (user != null) {
+                                val intentSelect = Intent(context, MotoristasActivity::class.java)
+                                intentSelect.putExtra("id", user.id.toString())
+                                context.startActivity(intentSelect)
+                            }
+                        }
+
+                    },
+                    colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.save)
+                    )
+                }
+
+                Button(
+                    onClick = {
+                        var user = User(
+                            cepState,
+                            cpfState,
+                            dataNascimentoState,
+                            emailState,
+                            perfil!!.foto,
+                            perfil!!.id,
+                            nomeState,
+                            rgState,
+                            senhaState,
+                            telefoneState,
+                            status_usuario = 1
+                        )
+
+                        val callUserDelete = GetFunctionsCall.getUserCall().deleteUser(user.id)
+                        callUserDelete.enqueue(object: Callback<String>{
+                            override fun onResponse(
+                                call: Call<String>, response: Response<String>
+                            ) {
+                                Toast.makeText(context, "Usuário deletado com sucesso", Toast.LENGTH_SHORT).show()
+                                val intentSelect = Intent(context, MainActivity::class.java)
+                                context.startActivity(intentSelect)
+                            }
+                            override fun onFailure(call: Call<String>, t: Throwable) {
+                                Log.i("ds3m", "onFailure: $t")
+                            }
+
+                        })
+                    },
+                    colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.delete)
+                    )
+                }
+
             }
 
         }

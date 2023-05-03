@@ -17,7 +17,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.headers.HeaderComplements
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -47,13 +46,20 @@ class VanComplements : ComponentActivity() {
 @Composable
 fun VanInfosActivity(){
 
-    val driverActivityComplements by remember {
-        mutableStateOf(DriverActivityComplements::class.java)
-    }
-
-
     val context = LocalContext.current
 
+    val intent = (context as DriverActivityComplements).intent
+
+    val name = intent.getStringExtra("name").toString()
+    val email = intent.getStringExtra("email").toString()
+    val senha = intent.getStringExtra("senha").toString()
+    val rg = intent.getStringExtra("rg").toString()
+    val cpf = intent.getStringExtra("cpf").toString()
+    val cnh = intent.getStringExtra("cnh").toString()
+    val descricao = intent.getStringExtra("descricao").toString()
+    val telefone = intent.getStringExtra("telefone").toString()
+    val inicio_carreira = intent.getStringExtra("inicio_carreira").toString()
+    val data_nascimento = intent.getStringExtra("data_nascimento").toString()
 
 
     Column(
@@ -79,9 +85,8 @@ fun VanInfosActivity(){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            VanInfos(context)
+            VanInfos(name, email, senha, rg, cpf, cnh, descricao, telefone, inicio_carreira, data_nascimento)
 
         }
     }
 }
-

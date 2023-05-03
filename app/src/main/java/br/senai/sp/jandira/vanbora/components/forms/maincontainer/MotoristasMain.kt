@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
 import br.senai.sp.jandira.vanbora.ui.activities.client.Avaliacao
@@ -59,7 +60,6 @@ fun MotoristasMain() {
         }
 
         override fun onFailure(call: Call<DriverList>, t: Throwable) {
-            Log.i("ds3m", "onFailure: $t")
         }
     })
 
@@ -68,6 +68,8 @@ fun MotoristasMain() {
         modifier = Modifier
             .fillMaxSize()
     ) {
+
+        Header()
 
         Column(
             modifier = Modifier

@@ -1,21 +1,29 @@
 package br.senai.sp.jandira.vanbora.components
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AirportShuttle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import br.senai.sp.jandira.vanbora.MainActivity
+import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.EditarPerfilActivity
@@ -39,13 +47,7 @@ fun HeaderSelectDriverComplement() {
         mutableStateOf<User?>(null)
     }
 
-    var code by remember {
-        mutableStateOf("")
-    }
 
-    var message by remember {
-        mutableStateOf("")
-    }
 
     perfilCall.enqueue(object : Callback<User> {
         override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -58,32 +60,41 @@ fun HeaderSelectDriverComplement() {
     })
 
     Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        modifier = Modifier
+            .background(Color.White)
+            .padding(start = 15.dp, end = 15.dp)
+            .fillMaxWidth()
+            .height(80.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Row(
+        Icon(
+            imageVector = Icons.Default.ArrowBack,
+            contentDescription = "",
             modifier = Modifier
-                .background(Color.White)
-                .padding(end = 25.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "",
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable {
+                .size(50.dp)
+                .clickable {
 
-                        if (perfil != null) {
-                            val intentSelect = Intent(context, MotoristasActivity::class.java)
-                            intentSelect.putExtra("id", perfil?.id.toString())
-                            context.startActivity(intentSelect)
-                        }
-
+                    if (perfil != null) {
+                        val intentSelect = Intent(context, MotoristasActivity::class.java)
+                        intentSelect.putExtra("id", perfil?.id.toString())
+                        context.startActivity(intentSelect)
                     }
-            )
 
-            HeaderCadastroLogin()
+                }
+        )
+
+
+
+        Button(
+            onClick = {
+                val intentSelect = Intent(context, MainActivity::class.java)
+                context.startActivity(intentSelect)
+            },
+            colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
+        ) {
+            Text(
+                text = stringResource(id = R.string.logout)
+            )
         }
     }
 }

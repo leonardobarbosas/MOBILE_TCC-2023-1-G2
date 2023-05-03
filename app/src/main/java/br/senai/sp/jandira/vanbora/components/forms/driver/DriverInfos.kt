@@ -34,9 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.ui.activities.driver.VanComplements
+import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
 
 @Composable
-fun DriverInfos(context: Context) {
+fun DriverInfos(name: String, email: String, senha: String) {
 
     var rgState by rememberSaveable() {
         mutableStateOf("")
@@ -62,6 +63,15 @@ fun DriverInfos(context: Context) {
         mutableStateOf("")
     }
 
+    var inicioCarreiraState by rememberSaveable() {
+        mutableStateOf("")
+    }
+    var descricaoState by rememberSaveable() {
+        mutableStateOf("")
+    }
+
+
+
     var isRgError by remember() {
         mutableStateOf(false)
     }
@@ -85,6 +95,14 @@ fun DriverInfos(context: Context) {
     var isDataNascimentoError by remember() {
         mutableStateOf(false)
     }
+    var isInicioCarreiraError by remember() {
+        mutableStateOf(false)
+    }
+    var isDescricaoError by remember() {
+        mutableStateOf(false)
+    }
+
+
 
     //image
     var imageUri by remember {
@@ -371,6 +389,99 @@ fun DriverInfos(context: Context) {
             )
         }
 
+        //DESCRICAO
+        OutlinedTextField(
+            value = descricaoState, onValueChange = {
+                descricaoState = it
+
+                if (it == "" || it == null) {
+                    isDescricaoError
+                }
+
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+            label = {
+                Text(
+                    text = stringResource(id = R.string.descricao),
+                    style = TextStyle(
+                        color = Color.Black,
+                    )
+                )
+            },
+            trailingIcon = {
+                if (isDescricaoError) Icon(
+                    imageVector = Icons.Default.Warning,
+                    contentDescription = ""
+                )
+            },
+            isError = isDescricaoError,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0, 0, 0, 255),
+                unfocusedBorderColor = Color(0, 0, 0, 255)
+            )
+        )
+        if(isDescricaoError){
+            Text(
+                text = stringResource(id = R.string.inicio_carreira_error),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 52.dp),
+                color = Color.Red,
+                fontSize = 15.sp,
+                textAlign = TextAlign.End
+            )
+        }
+
+        //INICIO CARREIRA
+        OutlinedTextField(
+            value = inicioCarreiraState, onValueChange = {
+                inicioCarreiraState = it
+
+                if (it == "" || it == null) {
+                    isInicioCarreiraError
+                }
+
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+            label = {
+                Text(
+                    text = stringResource(id = R.string.inicio_carreira),
+                    style = TextStyle(
+                        color = Color.Black,
+                    )
+                )
+            },
+            trailingIcon = {
+                if (isInicioCarreiraError) Icon(
+                    imageVector = Icons.Default.Warning,
+                    contentDescription = ""
+                )
+            },
+            isError = isInicioCarreiraError,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0, 0, 0, 255),
+                unfocusedBorderColor = Color(0, 0, 0, 255)
+            )
+        )
+        if(isInicioCarreiraError){
+            Text(
+                text = stringResource(id = R.string.inicio_carreira_error),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 52.dp),
+                color = Color.Red,
+                fontSize = 15.sp,
+                textAlign = TextAlign.End
+            )
+        }
+
+
         //DATA NASCIMENTO
         OutlinedTextField(
             value = dataNascimentoState, onValueChange = {
@@ -423,17 +534,20 @@ fun DriverInfos(context: Context) {
 
         Button(
             onClick = {
-                isRgError = rgState.length == 0
-                isCpfError = cpfState.length == 0
-                isCepError = cepState.length == 0
-                isCnhError = cnhState.length == 0
-                isTelefoneError = telefoneState.length == 0
-                isDataNascimentoError = dataNascimentoState.length == 0
+                val intentSelect = Intent(context, VanComplements::class.java)
 
-                val intent = Intent(context, VanComplements::class.java)
-                intent.putExtra("teste", rgState)
+                intentSelect.putExtra("name", name)
+                intentSelect.putExtra("email", email)
+                intentSelect.putExtra("senha", senha)
+                intentSelect.putExtra("rg", rgState)
+                intentSelect.putExtra("cpf", cpfState)
+                intentSelect.putExtra("cnh", cnhState)
+                intentSelect.putExtra("descricao", descricaoState)
+                intentSelect.putExtra("telefone", telefoneState)
+                intentSelect.putExtra("inicio_carreira", inicioCarreiraState)
+                intentSelect.putExtra("data_nascimento", dataNascimentoState)
 
-                context.startActivity(intent)
+                context.startActivity(intentSelect)
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
