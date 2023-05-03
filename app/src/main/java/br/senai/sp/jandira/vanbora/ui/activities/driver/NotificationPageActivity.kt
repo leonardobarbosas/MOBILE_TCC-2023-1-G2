@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.api.retrofit.footer.FooterShow
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
@@ -75,7 +74,6 @@ class NotificationPageActivity: ComponentActivity() {
                 )
                 ) {
 
-            FooterShow()
 
         }
     }

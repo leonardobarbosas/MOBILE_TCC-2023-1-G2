@@ -1,11 +1,11 @@
 package br.senai.sp.jandira.vanbora.ui.activities.driver
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-<<<<<<< HEAD
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -32,41 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-<<<<<<< HEAD
-import br.senai.sp.jandira.vanbora.api.retrofit.footer.FooterShow
 import br.senai.sp.jandira.vanbora.model.driver.Driver
-=======
-import br.senai.sp.jandira.vanbora.components.user.footer.FooterShow
-import br.senai.sp.jandira.vanbora.model.driver.DriverList
-import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
->>>>>>> branch-motorista
 import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-=======
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.model.driver.DriverList
-import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
->>>>>>> main
 
 class SuasVansActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,11 +57,11 @@ class SuasVansActivity : ComponentActivity() {
 }
 
 @Composable
-<<<<<<< HEAD
+
 fun SuaVan() {
 
     val context = LocalContext.current
-    
+
 
     val intent = (context as SuasVansActivity).intent
 
@@ -108,37 +79,17 @@ fun SuaVan() {
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
-=======
-fun Greeting(name: String) {
-    var context = LocalContext.current
-
-    var drivers by remember {
-        mutableStateOf(DriverList(listOf()))
-    }
-
-    val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
-
-
-    driversCall.enqueue(object : Callback<DriverList> {
-        override fun onResponse(call: Call<DriverList>, response: Response<DriverList>) {
-            drivers = response.body()!!
-        }
-
-        override fun onFailure(call: Call<DriverList>, t: Throwable) {
->>>>>>> main
             Log.i("ds3m", "onFailure: $t")
         }
     })
 
-<<<<<<< HEAD
     Column(
-        modifier = with(Modifier) {
-            fillMaxSize()
-                .paint(
-                    painter = painterResource(id = R.drawable.background2),
-                    contentScale = ContentScale.Crop
-                )
-        },
+        modifier = Modifier
+            .fillMaxSize()
+            .paint(
+                painter = painterResource(id = R.drawable.background2),
+                contentScale = ContentScale.Crop
+            ),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -503,17 +454,7 @@ fun Greeting(name: String) {
                 }
             }
         }
-        FooterShow()
     }
-=======
-    Column (
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
-            ) {
-    }
-
->>>>>>> main
 }
 
 @Preview(showBackground = true)
