@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.components.footer.FooterShow
+import br.senai.sp.jandira.vanbora.api.retrofit.footer.FooterShow
 import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.Motoristas
 import br.senai.sp.jandira.vanbora.ui.activities.ui.theme.VanboraTheme

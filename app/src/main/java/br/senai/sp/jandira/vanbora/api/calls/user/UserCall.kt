@@ -6,6 +6,7 @@ import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.model.user.UserList
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -32,4 +33,7 @@ interface UserCall {
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("user/login")
     fun loginUserClient(@Body user: User): Call<LoginUserClientJwtModel>
+
+    @DELETE("user/{id}")
+    fun deleteUser(@Path("id") id: Int): Call<String>
 }

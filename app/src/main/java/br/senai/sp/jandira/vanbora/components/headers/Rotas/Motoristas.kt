@@ -26,8 +26,6 @@ fun Motoristas () {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-        Header()
-
         //Main
         MotoristasMain()
 
