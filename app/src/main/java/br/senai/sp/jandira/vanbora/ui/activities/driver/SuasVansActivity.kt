@@ -9,7 +9,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -33,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.api.retrofit.footer.FooterShow
-import br.senai.sp.jandira.vanbora.model.driver.DriverList
+import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
@@ -63,18 +62,22 @@ fun SuaVan() {
 
     val context = LocalContext.current
 
+    val intent = (context as SuasVansActivity).intent
+
+    val idDriver = intent.getStringExtra("id")
+
+    val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
+
     var drivers by remember {
-        mutableStateOf(DriverList(listOf()))
+        mutableStateOf<Driver?>(null)
     }
 
-    val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
-
-    driversCall.enqueue(object : Callback<DriverList> {
-        override fun onResponse(call: Call<DriverList>, response: Response<DriverList>) {
+    driverCall.enqueue(object : Callback<Driver> {
+        override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
             drivers = response.body()!!
         }
 
-        override fun onFailure(call: Call<DriverList>, t: Throwable) {
+        override fun onFailure(call: Call<Driver>, t: Throwable) {
             Log.i("ds3m", "onFailure: $t")
         }
     })
@@ -113,348 +116,349 @@ fun SuaVan() {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            items(drivers.drivers) { driver ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .height(200.dp)
-                        .padding(6.dp)
-                        .clickable {
-                            val vanSelect = Intent(context, "---TELA DE INFO VAN---"::class.java)
+            drivers?.let {
+                items(it.id) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .height(200.dp)
+                            .padding(6.dp)
+                            .clickable {
+                                val vanSelect = Intent(context, "---TELA DE INFO VAN---"::class.java)
 
-                            vanSelect.putExtra("id", driver.van?.get(0)?.id)
 
-                            context.startActivity(vanSelect)
-                        },
-                    shape = RoundedCornerShape(
-                        topStart = 20.dp,
-                        topEnd = 20.dp,
-                        bottomEnd = 20.dp,
-                        bottomStart = 20.dp
-                    )
-                ) {
-                    Column {
-                        Image(
-                            painter = rememberAsyncImagePainter(model = driver.van?.get(0)?.foto),
-                            contentDescription = "",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
+
+                                context.startActivity(vanSelect)
+                            },
+                        shape = RoundedCornerShape(
+                            topStart = 20.dp,
+                            topEnd = 20.dp,
+                            bottomEnd = 20.dp,
+                            bottomStart = 20.dp
                         )
-                        Card(
-                            modifier = Modifier
-                                .fillMaxHeight(1f)
-                                .fillMaxWidth(),
-                            backgroundColor = Color(247, 233, 194, 255)
-                        ) {
-                            Row() {
-                                Column {
-                                    Text(text = "${driver.van?.get(0)?.modelo}")
-                                    driver.van?.get(0)?.let { Text(text = it.placa)}
+                    ) {
+                        Column {
+                            Image(
+                                painter = rememberAsyncImagePainter(model = drivers!!.van?.get(0)?.foto),
+                                contentDescription = "",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxHeight(1f)
+                                    .fillMaxWidth(),
+                                backgroundColor = Color(247, 233, 194, 255)
+                            ) {
+                                Row() {
+                                    Column {
+                                        Text(text = "${drivers!!.van?.get(0)?.modelo}")
+                                        drivers!!.van?.get(0)?.let { Text(text = it.placa)}
 
-                                    Spacer(modifier = Modifier.padding(3.dp))
+                                        Spacer(modifier = Modifier.padding(3.dp))
 
-                                    if (driver.avaliacao == 10) {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                        }
-                                    } else if (driver.avaliacao == 9) {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarHalf,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                        }
-                                    } else if (driver.avaliacao == 8) {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                        }
-                                    } else if (driver.avaliacao == 7) {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarHalf,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                        }
-                                    } else if (driver.avaliacao == 6) {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                        }
-                                    } else if (driver.avaliacao == 5) {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarHalf,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                        }
-                                    } else if (driver.avaliacao == 4) {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                        }
-                                    } else if (driver.avaliacao == 3) {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarHalf,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                        }
-                                    } else if (driver.avaliacao == 2) {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.Star,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                        }
-                                    } else {
-                                        Row {
-                                            Icon(
-                                                imageVector = Icons.Filled.StarHalf,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Filled.StarBorder,
-                                                contentDescription = "",
-                                                tint = Color(238, 179, 31, 255)
-                                            )
+                                        if (drivers!!.avaliacao == 10) {
+                                            Row {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
+                                        } else if (drivers!!.avaliacao == 9) {
+                                            Row {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarHalf,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
+                                        } else if (drivers!!.avaliacao == 8) {
+                                            Row {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
+                                        } else if (drivers!!.avaliacao == 7) {
+                                            Row {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarHalf,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
+                                        } else if (drivers!!.avaliacao == 6) {
+                                            Row {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
+                                        } else if (drivers!!.avaliacao == 5) {
+                                            Row {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarHalf,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
+                                        } else if (drivers!!.avaliacao == 4) {
+                                            Row {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
+                                        } else if (drivers!!.avaliacao == 3) {
+                                            Row {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarHalf,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
+                                        } else if (drivers!!.avaliacao == 2) {
+                                            Row {
+                                                Icon(
+                                                    imageVector = Icons.Filled.Star,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
+                                        } else {
+                                            Row {
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarHalf,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                                Icon(
+                                                    imageVector = Icons.Filled.StarBorder,
+                                                    contentDescription = "",
+                                                    tint = Color(238, 179, 31, 255)
+                                                )
+                                            }
                                         }
                                     }
-                                }
-                                Column(
-                                    modifier = Modifier.padding(end = 16.dp),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ){
-                                    Text(text = "${driver.van?.get(0)?.quantidade_vagas}")
+                                    Column(
+                                        modifier = Modifier.padding(end = 16.dp),
+                                        verticalArrangement = Arrangement.Center,
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ){
+                                        Text(text = "${drivers!!.van?.get(0)?.quantidade_vagas}")
+                                    }
                                 }
                             }
                         }
-                    }
 
+                    }
                 }
             }
         }
         FooterShow()
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
