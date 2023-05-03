@@ -19,4 +19,6 @@ interface ContractCall {
     @POST("contract")
     fun postContract(@Body contract: ContractX): Call<ContractX>
 
+    @DELETE("contract/{id}")
+    fun deleteContract(@Path("id") id: Int): Call<String>
 }

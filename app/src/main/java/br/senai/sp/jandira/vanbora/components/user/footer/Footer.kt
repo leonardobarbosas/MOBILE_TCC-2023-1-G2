@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.vanbora.api.retrofit.footer
+package br.senai.sp.jandira.vanbora.components.user.footer
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

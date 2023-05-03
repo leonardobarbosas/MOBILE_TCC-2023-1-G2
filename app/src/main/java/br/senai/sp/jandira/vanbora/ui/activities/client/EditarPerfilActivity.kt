@@ -628,7 +628,6 @@ fun EditarPerfil() {
                             ) {
                                 code = response.code().toString()
                                 message = response.body().toString()
-//                          Log.i("ds3m", "onResponse: $code , $message")
                             }
 
                             override fun onFailure(call: Call<String>, t: Throwable) {

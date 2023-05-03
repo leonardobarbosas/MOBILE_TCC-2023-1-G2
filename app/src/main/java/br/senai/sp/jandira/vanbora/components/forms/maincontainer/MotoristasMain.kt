@@ -60,7 +60,6 @@ fun MotoristasMain() {
         }
 
         override fun onFailure(call: Call<DriverList>, t: Throwable) {
-            Log.i("ds3m", "onFailure: $t")
         }
     })
 
