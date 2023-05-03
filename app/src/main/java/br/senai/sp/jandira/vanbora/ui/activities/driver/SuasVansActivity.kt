@@ -132,9 +132,7 @@ fun SuaVan() {
                             },
                         shape = RoundedCornerShape(
                             topStart = 20.dp,
-                            topEnd = 20.dp,
-                            bottomEnd = 20.dp,
-                            bottomStart = 20.dp
+                            topEnd = 20.dp
                         )
                     ) {
                         Column {
@@ -144,7 +142,7 @@ fun SuaVan() {
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(200.dp)
+                                    .height(130.dp)
                             )
                             Card(
                                 modifier = Modifier
