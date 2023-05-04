@@ -1,7 +1,6 @@
 package br.senai.sp.jandira.vanbora.ui.activities.client
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -13,15 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
-import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.HeaderPerfil
-import br.senai.sp.jandira.vanbora.model.contract.Contract
-import br.senai.sp.jandira.vanbora.model.contract.ContractX
 import br.senai.sp.jandira.vanbora.ui.activities.client.ui.theme.VanboraTheme
-import retrofit2.Callback
 
 class ContratoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +34,6 @@ class ContratoActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Contrato() {
 
@@ -82,8 +75,8 @@ fun Contrato() {
                     Text(text = "Nome do Passageiro: $nomePassageiro")
                     Text(text = "Idade do Passageiro: $idadePassageiro")
                     Text(text = "Tipo de Pagamento: $tipoPagamento")
-                    Text(text = "Tipo de Contrato: $escola")
-                    Text(text = "Escola: $tipoTransporte")
+                    Text(text = "Tipo de Contrato: $tipoTransporte")
+                    Text(text = "Escola: $escola")
 
                     Spacer(modifier = Modifier.padding(10.dp))
 
@@ -95,7 +88,11 @@ fun Contrato() {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Button(
-                                onClick = { /*TODO*/ },
+                                onClick = {
+
+
+
+                                },
                                 colors = ButtonDefaults.buttonColors(Color(251, 211, 69, 255))
                             ) {
                                 Text(text = stringResource(R.string.send_contract))
