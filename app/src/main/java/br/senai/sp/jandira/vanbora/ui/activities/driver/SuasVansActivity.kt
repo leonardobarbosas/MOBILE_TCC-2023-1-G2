@@ -160,19 +160,23 @@ fun SuaVan() {
                                 backgroundColor = Color(247, 233, 194, 255)
                             ) {
                                 Row() {
-                                    Column (modifier = Modifier.padding(14.dp)) {
+                                    Column(modifier = Modifier.padding(14.dp)) {
 //
                                         drivers!!.van?.get(0)?.modelo?.get(0)
-                                            ?.let { it1 -> Text(
-                                                text = it1.modelo,
-                                                fontSize = 20.sp,
+                                            ?.let { it1 ->
+                                                Text(
+                                                    text = it1.modelo,
+                                                    fontSize = 20.sp,
+                                                    fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                                )
+                                            }
+                                        drivers!!.van?.get(0)?.let { it1 ->
+                                            Text(
+                                                text = it1.placa,
+                                                fontSize = 15.sp,
                                                 fontFamily = FontFamily(Font(R.font.poppins_semibold))
-                                            ) }
-                                        drivers!!.van?.get(0)?.let { it1 -> Text(
-                                            text = it1.placa,
-                                            fontSize = 15.sp,
-                                            fontFamily = FontFamily(Font(R.font.poppins_semibold))
-                                        ) }
+                                            )
+                                        }
 
                                         Spacer(modifier = Modifier.padding(3.dp))
 
