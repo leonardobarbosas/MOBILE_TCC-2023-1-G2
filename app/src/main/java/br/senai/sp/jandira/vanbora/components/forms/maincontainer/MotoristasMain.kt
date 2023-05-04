@@ -1,7 +1,6 @@
 package br.senai.sp.jandira.vanbora.components.forms.maincontainer
 
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,17 +19,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.Header
-import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
-import br.senai.sp.jandira.vanbora.ui.activities.client.Avaliacao
-import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call

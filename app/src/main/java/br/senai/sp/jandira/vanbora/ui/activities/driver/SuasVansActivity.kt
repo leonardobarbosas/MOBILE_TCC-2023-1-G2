@@ -20,7 +20,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -86,6 +88,7 @@ fun SuaVan() {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(20.dp)
             .paint(
                 painter = painterResource(id = R.drawable.background2),
                 contentScale = ContentScale.Crop
@@ -101,7 +104,8 @@ fun SuaVan() {
                 fontSize = 45.sp,
                 style = MaterialTheme.typography.h2.copy(
                     fontFamily = FontFamily(Font(R.font.poppins_semibold)),
-                    color = Color(android.graphics.Color.parseColor("#E0B441"))
+                    color = Color(android.graphics.Color.parseColor("#E0B441")),
+                    shadow = Shadow(color = Color.Black, offset = Offset(0F, 4F), blurRadius = 5f)
                 )
             )
             Spacer(modifier = Modifier.padding(5.dp))
@@ -109,7 +113,9 @@ fun SuaVan() {
                 text = stringResource(id = R.string.suas_vans_vans),
                 fontSize = 45.sp,
                 style = MaterialTheme.typography.h2.copy(
-                    fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                    fontFamily = FontFamily(Font(R.font.poppins_semibold)),
+                    color = Color(android.graphics.Color.parseColor("#FFFFFF")),
+                    shadow = Shadow(color = Color.Black, offset = Offset(0F, 4F), blurRadius = 5f)
                 )
             )
         }
@@ -121,10 +127,11 @@ fun SuaVan() {
                     Card(
                         modifier = Modifier
                             .fillMaxSize()
-                            .height(200.dp)
+                            .height(330.dp)
                             .padding(6.dp)
                             .clickable {
-                                val vanSelect = Intent(context, "---TELA DE INFO VAN---"::class.java)
+                                val vanSelect =
+                                    Intent(context, "---TELA DE INFO VAN---"::class.java)
 
 
 
@@ -132,7 +139,9 @@ fun SuaVan() {
                             },
                         shape = RoundedCornerShape(
                             topStart = 20.dp,
-                            topEnd = 20.dp
+                            topEnd = 20.dp,
+                            bottomEnd = 5.dp,
+                            bottomStart = 5.dp
                         )
                     ) {
                         Column {
@@ -142,7 +151,7 @@ fun SuaVan() {
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(130.dp)
+                                    .height(190.dp)
                             )
                             Card(
                                 modifier = Modifier
@@ -151,9 +160,19 @@ fun SuaVan() {
                                 backgroundColor = Color(247, 233, 194, 255)
                             ) {
                                 Row() {
-                                    Column {
-                                        Text(text = "${drivers!!.van?.get(0)?.modelo}")
-                                        drivers!!.van?.get(0)?.let { Text(text = it.placa)}
+                                    Column (modifier = Modifier.padding(14.dp)) {
+//
+                                        drivers!!.van?.get(0)?.modelo?.get(0)
+                                            ?.let { it1 -> Text(
+                                                text = it1.modelo,
+                                                fontSize = 20.sp,
+                                                fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                            ) }
+                                        drivers!!.van?.get(0)?.let { it1 -> Text(
+                                            text = it1.placa,
+                                            fontSize = 15.sp,
+                                            fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                        ) }
 
                                         Spacer(modifier = Modifier.padding(3.dp))
 
@@ -162,31 +181,31 @@ fun SuaVan() {
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                             }
@@ -195,31 +214,31 @@ fun SuaVan() {
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarHalf,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                             }
@@ -228,31 +247,31 @@ fun SuaVan() {
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                             }
@@ -261,31 +280,31 @@ fun SuaVan() {
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarHalf,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                             }
@@ -294,31 +313,31 @@ fun SuaVan() {
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                             }
@@ -327,31 +346,31 @@ fun SuaVan() {
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarHalf,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                             }
@@ -360,31 +379,31 @@ fun SuaVan() {
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                             }
@@ -393,31 +412,31 @@ fun SuaVan() {
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarHalf,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                             }
@@ -426,31 +445,31 @@ fun SuaVan() {
                                                 Icon(
                                                     imageVector = Icons.Filled.Star,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                             }
@@ -459,42 +478,53 @@ fun SuaVan() {
                                                 Icon(
                                                     imageVector = Icons.Filled.StarHalf,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                                 Icon(
                                                     imageVector = Icons.Filled.StarBorder,
                                                     contentDescription = "",
-                                                    modifier = Modifier.size(5.dp),
+                                                    modifier = Modifier.size(30.dp),
                                                     tint = Color(238, 179, 31, 255)
                                                 )
                                             }
                                         }
                                     }
                                     Column(
-                                        modifier = Modifier.padding(end = 16.dp),
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .padding(10.dp),
                                         verticalArrangement = Arrangement.Center,
                                         horizontalAlignment = Alignment.CenterHorizontally
-                                    ){
-                                        Text(text = "${drivers!!.van?.get(0)?.quantidade_vagas}")
+                                    ) {
+                                        Text(
+                                            text = "${drivers!!.van?.get(0)?.quantidade_vagas}",
+                                            fontSize = 20.sp,
+                                            fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                        )
+                                        Text(
+                                            text = stringResource(id = R.string.vagas_vans),
+                                            fontSize = 15.sp,
+                                            fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                                        )
                                     }
                                 }
                             }
