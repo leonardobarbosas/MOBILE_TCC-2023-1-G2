@@ -37,6 +37,7 @@ import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,6 +52,10 @@ class SuasVansActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val systemUi = rememberSystemUiController()
+                    SideEffect {
+                        systemUi.setStatusBarColor(color = Color(255, 255, 255, 0), darkIcons = true)
+                    }
                     SuaVan()
                 }
             }
@@ -131,10 +136,7 @@ fun SuaVan() {
                             .padding(6.dp)
                             .clickable {
                                 val vanSelect =
-                                    Intent(context, "---TELA DE INFO VAN---"::class.java)
-
-
-
+                                    Intent(context, EditarDadosVan::class.java)
                                 context.startActivity(vanSelect)
                             },
                         shape = RoundedCornerShape(
