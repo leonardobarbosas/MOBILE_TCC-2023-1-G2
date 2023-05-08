@@ -64,7 +64,6 @@ class SuasVansActivity : ComponentActivity() {
 }
 
 @Composable
-
 fun SuaVan() {
 
     val context = LocalContext.current

@@ -32,6 +32,7 @@ import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.ui.theme.VanboraTheme
 import br.senai.sp.jandira.vanbora.model.driver.Driver
+import br.senai.sp.jandira.vanbora.model.driver.Modelo
 import br.senai.sp.jandira.vanbora.model.driver.Van
 import br.senai.sp.jandira.vanbora.ui.activities.client.EditarPerfilActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.Motorista
@@ -93,6 +94,7 @@ fun EditarVan() {
     var message by remember {
         mutableStateOf("")
     }
+
 
     val context = LocalContext.current
 
@@ -400,5 +402,5 @@ fun EditarVan() {
 //            }
 //
 //        }
-    }
-}
+//    }
+//}
