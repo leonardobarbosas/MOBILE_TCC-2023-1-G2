@@ -12,6 +12,9 @@ data class ContractX(
     val tipo_contrato: TipoContrato,
     val tipo_pagamento: TipoPagamento,
     val usuario: User,
-    val valo_contrato: Int = 0
-)
+){
+    override fun toString(): String {
+        return "ContractX(id=$id, 'escola=$escola', 'idade_passageiro=$idade_passageiro', 'motorista=$motorista', 'nome_passageiro=$nome_passageiro', 'tipo_contrato=$tipo_contrato','tipo_pagamento=$tipo_pagamento', 'usuario=$usuario'"
+    }
+}
 

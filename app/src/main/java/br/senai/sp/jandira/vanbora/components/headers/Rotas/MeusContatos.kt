@@ -60,21 +60,21 @@ fun MeusContratos(
 
         val idContract = intent.getStringExtra("id")
 
-        val contractCall =
-            GetFunctionsCall.getContractCall().getContractId(id = idContract.toString())
+        val contractCall = GetFunctionsCall.getContractCall().getContractId(id = idContract.toString())
 
         var contracts by remember {
             mutableStateOf<Contract?>(null)
         }
-        contractCall.enqueue(object : Callback<Contract> {
+
+        contractCall.enqueue(object: Callback<Contract> {
             override fun onResponse(call: Call<Contract>, response: Response<Contract>) {
                 contracts = response.body()!!
+                Log.i("ds3m", "onResponse: $contracts")
             }
 
             override fun onFailure(call: Call<Contract>, t: Throwable) {
                 Log.i("ds3m", "onFailure: $t")
             }
-
         })
 
         Header()
@@ -215,16 +215,15 @@ fun MeusContratos(
                                                         viewModel.onDismissDialog()
                                                     },
                                                     onConfirm = {
-                                                        var contract = ContractX(
+                                                        val contract = ContractX(
                                                             contracts!!.contracts[0].escola,
                                                             contracts!!.contracts[0].id,
-                                                            contracts!!.contracts[0]!!.idade_passageiro,
+                                                            contracts!!.contracts[0].idade_passageiro,
                                                             contracts!!.contracts[0].motorista,
                                                             contracts!!.contracts[0].nome_passageiro,
                                                             contracts!!.contracts[0].tipo_contrato,
                                                             contracts!!.contracts[0].tipo_pagamento,
                                                             contracts!!.contracts[0].usuario,
-                                                            contracts!!.contracts[0].valo_contrato,
                                                         )
 
                                                         val callContractDelete = GetFunctionsCall.getContractCall().deleteContract(contract.id)

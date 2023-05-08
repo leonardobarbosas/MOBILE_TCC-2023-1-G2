@@ -71,6 +71,8 @@ fun Contrato() {
                         .padding(start = 10.dp, end = 10.dp),
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
+                    Text(text = "Verificar informações de contrato")
+
                     Text(text = "Nome do Responsável: $nomeResponsavel")
                     Text(text = "Nome do Passageiro: $nomePassageiro")
                     Text(text = "Idade do Passageiro: $idadePassageiro")

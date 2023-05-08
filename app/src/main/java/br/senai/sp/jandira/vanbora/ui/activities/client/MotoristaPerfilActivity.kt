@@ -149,7 +149,13 @@ fun Perfil() {
             ){
                 Button(
                     onClick = {
-                        context.startActivity(Intent(context, EnviarContratoActivity::class.java))
+
+                        val intentSelect = Intent(context, EnviarContratoActivity::class.java)
+
+                        intentSelect.putExtra("id_motorista", driver?.id)
+                        intentSelect.putExtra("id_usuario", idUser)
+
+                        context.startActivity(intentSelect)
                     },
                     colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
                 ) {

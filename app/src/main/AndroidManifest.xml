@@ -41,7 +41,7 @@
             android:label="@string/title_activity_editar_perfil"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.client.EnviarContratoActivity"
             android:exported="false"
             android:label="@string/title_activity_enviar_contrato"
             android:theme="@style/Theme.Vanbora" />
@@ -81,7 +81,7 @@
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".ui.activities.client.EnviarContratoActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Vanbora">
             <intent-filter>

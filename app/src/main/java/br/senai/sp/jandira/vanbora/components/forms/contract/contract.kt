@@ -29,7 +29,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.model.contract.TipoTransporteList
+import br.senai.sp.jandira.vanbora.functions_click.RegisterNewContract
+import br.senai.sp.jandira.vanbora.model.contract.*
+import br.senai.sp.jandira.vanbora.model.driver.Driver
+import br.senai.sp.jandira.vanbora.model.driver.Van
+import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,7 +41,7 @@ import retrofit2.Response
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun EnviarContrato(){
+fun EnviarContrato() {
 
     Column(
         modifier = Modifier
@@ -47,6 +51,40 @@ fun EnviarContrato(){
     ) {
 
         val context = LocalContext.current
+
+        val intent = (context as EnviarContratoActivity).intent
+
+        val idUser = intent.getStringExtra("id_usuario")
+        val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
+        var user by remember {
+            mutableStateOf<User?>(null)
+        }
+        userCall.enqueue(object : Callback<User>{
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                user = response.body()
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.i("ds3m", "onFailure")
+            }
+        })
+
+
+        val idDriver = intent.getStringExtra("id_motorista")
+        val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
+        var driver by remember {
+            mutableStateOf<Driver?>(null)
+        }
+        driverCall.enqueue(object : Callback<Driver>{
+            override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
+                driver = response.body()
+            }
+
+            override fun onFailure(call: Call<Driver>, t: Throwable) {
+                Log.i("ds3m", "onFailure")
+            }
+        })
+
 
         var nomeResponsavelState by rememberSaveable() {
             mutableStateOf("")
@@ -73,49 +111,77 @@ fun EnviarContrato(){
         }
 
 
-
-
+        //Tipo de Transporte
         val tipoTransporteCall = GetFunctionsCall.getTipoTransporteCall().getAllContracts()
-
-
         var tipoTransportes by remember {
             mutableStateOf(TipoTransporteList(listOf()))
         }
-
-        tipoTransporteCall.enqueue(object : Callback<TipoTransporteList>{
+        tipoTransporteCall.enqueue(object : Callback<TipoTransporteList> {
             override fun onResponse(
                 call: Call<TipoTransporteList>,
                 response: Response<TipoTransporteList>
             ) {
-                Log.i("ds3m", "onResponse: ${response.body()!!}")
+                tipoTransportes = response.body()!!
             }
 
             override fun onFailure(call: Call<TipoTransporteList>, t: Throwable) {
                 Log.i("ds3m", "onFailure: ${t.message}")
             }
-        } )
-        
+        })
+
+        //Escola
+        val escolaCall = GetFunctionsCall.getEscolaCall().getAllSchools()
+        var escolas by remember {
+            mutableStateOf(EscolaList(listOf()))
+        }
+        escolaCall.enqueue(object : Callback<EscolaList> {
+            override fun onResponse(call: Call<EscolaList>, response: Response<EscolaList>) {
+                escolas = response.body()!!
+            }
+
+            override fun onFailure(call: Call<EscolaList>, t: Throwable) {
+                Log.i("ds3m", "onFailure: ${t.message}")
+            }
+        })
+
+        //Tipo de Pagamento
+        val tipoPagamentoCall = GetFunctionsCall.getTipoPagamentoCall().getAllPayments()
+        var tipoPagamentos by remember {
+            mutableStateOf(TipoPagamentoList(listOf()))
+        }
+        tipoPagamentoCall.enqueue(object : Callback<TipoPagamentoList> {
+            override fun onResponse(
+                call: Call<TipoPagamentoList>,
+                response: Response<TipoPagamentoList>
+            ) {
+                tipoPagamentos = response.body()!!
+            }
+
+            override fun onFailure(call: Call<TipoPagamentoList>, t: Throwable) {
+                Log.i("ds3m", "onFailure: ${t.message}")
+            }
+
+        })
+
 
         //Tipo Transporte
         var mExpanded by remember { mutableStateOf(false) }
-        val selects = listOf(
-            tipoTransportes
-        )
         var mSelectedText by remember { mutableStateOf("") }
         var mTextFieldSize by remember { mutableStateOf(Size.Zero) }
         val icon = if (mExpanded)
             Icons.Filled.KeyboardArrowUp
         else
             Icons.Filled.KeyboardArrowDown
+        var idTipoContrato by remember {
+            mutableStateOf(0)
+        }
+
 
         //Tipo Pagamento
+        var idTipoPagamento by remember {
+            mutableStateOf(0)
+        }
         var nExpanded by remember { mutableStateOf(false) }
-        val nSelects = listOf(
-            stringResource(id = R.string.diario),
-            stringResource(id = R.string.semanal),
-            stringResource(id = R.string.mensal),
-            stringResource(id = R.string.anual)
-        )
         var nSelectedText by remember { mutableStateOf("") }
         var nTextFieldSize by remember { mutableStateOf(Size.Zero) }
         val nIcon = if (nExpanded)
@@ -123,12 +189,12 @@ fun EnviarContrato(){
         else
             Icons.Filled.KeyboardArrowDown
 
+
         //Escola - Teste
+        var idEscola by remember {
+            mutableStateOf(0)
+        }
         var escolaState by remember { mutableStateOf(false) }
-        val escolaSelects = listOf(
-            stringResource(id = R.string.escola),
-            stringResource(id = R.string.escola_error),
-        )
         var escolaSelectedText by remember { mutableStateOf("") }
         var escolaTextFieldSize by remember { mutableStateOf(Size.Zero) }
         val escolaIcon = if (nExpanded)
@@ -316,12 +382,13 @@ fun EnviarContrato(){
                 modifier = Modifier
                     .width(with(LocalDensity.current) { mTextFieldSize.width.toDp() })
             ) {
-                selects.map { label ->
+                tipoTransportes.typesContracts.map {
                     DropdownMenuItem(onClick = {
-                        mSelectedText = label.toString()
+                        idTipoContrato = it.id
+                        mSelectedText = it.tipo_contrato
                         mExpanded = false
                     }) {
-                        Text(text = label.toString())
+                        Text(text = it.tipo_contrato)
                     }
                 }
             }
@@ -363,12 +430,13 @@ fun EnviarContrato(){
                 modifier = Modifier
                     .width(with(LocalDensity.current) { escolaTextFieldSize.width.toDp() })
             ) {
-                escolaSelects.forEach { label ->
+                escolas.schools.map {
                     DropdownMenuItem(onClick = {
-                        escolaSelectedText = label
+                        idEscola = it.id
+                        escolaSelectedText = it.nome
                         escolaState = false
                     }) {
-                        Text(text = label)
+                        Text(text = it.nome)
                     }
                 }
             }
@@ -410,12 +478,13 @@ fun EnviarContrato(){
                 modifier = Modifier
                     .width(with(LocalDensity.current) { nTextFieldSize.width.toDp() })
             ) {
-                nSelects.forEach { label ->
+                tipoPagamentos.typesPayment.map {
                     DropdownMenuItem(onClick = {
-                        nSelectedText = label
+                        idTipoPagamento = it.id
+                        nSelectedText = it.tipo_pagamento
                         nExpanded = false
                     }) {
-                        Text(text = label)
+                        Text(text = it.tipo_pagamento)
                     }
                 }
             }
@@ -426,17 +495,57 @@ fun EnviarContrato(){
         Button(
             onClick = {
 
-//                RegisterNewContract(
-//                    nomeResponsavel = nomeResponsavelState,
-//                    nomePassageiro = nomeResponsavelState,
-//                    idadePassageiro = idadePassageiroState,
-//                    tipoPagamento = mSelectedText,
-//                    tipoTransporte = nSelectedText,
-//                    escola = escolaSelectedText,
-//                    usuario = usuario,
-//                    motorista = motorista,
-//                    context = context
-//                )
+
+                RegisterNewContract(
+                    nomePassageiro = nomeResponsavelState,
+                    idadePassageiro = idadePassageiroState,
+                    tipoPagamento = TipoPagamento(
+                        id = idTipoPagamento,
+                        tipo_pagamento = mSelectedText,
+                        status_tipo_pagamento = 1
+                    ),
+                    tipoTransporte = TipoContrato(
+                        id = idTipoContrato,
+                        tipo_contrato = nSelectedText,
+                        status_tipo_contrato = 1
+                    ),
+                    escola = Escola(
+                        id = idEscola,
+                        nome = escolaSelectedText,
+                        status_escola = 1
+                    ),
+                    usuario = User(
+                        cep = user!!.cep,
+                        cpf = user!!.cpf,
+                        data_nascimento = user!!.data_nascimento,
+                        email = user!!.email,
+                        foto = user!!.foto,
+                        id = user!!.id,
+                        nome = user!!.nome,
+                        rg = user!!.rg,
+                        senha = user!!.senha,
+                        telefone = user!!.telefone,
+                        status_usuario = user!!.status_usuario,
+                    ),
+                    motorista = Driver(
+                        avaliacao = driver!!.avaliacao,
+                        cnh = driver!!.cnh,
+                        cpf = driver!!.cpf,
+                        data_nascimento = driver!!.data_nascimento,
+                        descricao = driver!!.descricao,
+                        email = driver!!.email,
+                        foto = driver!!.foto,
+                        id = driver!!.id,
+                        inicio_carreira = driver!!.inicio_carreira,
+                        nome = driver!!.nome,
+                        rg = driver!!.rg,
+                        senha = driver!!.senha,
+                        status_motorista = driver!!.status_motorista,
+                        telefone = driver!!.telefone,
+                        van = driver!!.van
+                    ),
+                    context = context
+                )
 
                 val intentSelect = Intent(context, ContratoActivity::class.java)
 

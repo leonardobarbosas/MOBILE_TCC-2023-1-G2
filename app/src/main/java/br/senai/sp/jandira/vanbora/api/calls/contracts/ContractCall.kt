@@ -9,7 +9,7 @@ import retrofit2.http.*
 interface ContractCall {
 
     //GET CONTRACT PER ID
-    @GET("contracts/{id}")
+    @GET("contracts/user/{id}")
     fun getContractId(@Path("id")id: String): Call<Contract>
 
     @GET("contract/{id}")

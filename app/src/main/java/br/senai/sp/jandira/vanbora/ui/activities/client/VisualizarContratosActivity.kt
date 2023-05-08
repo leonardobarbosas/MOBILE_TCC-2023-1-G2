@@ -100,7 +100,6 @@ fun VisualizarContratos() {
                     Text(text = "Tipo de Pagamento: ${contracts?.tipo_pagamento?.tipo_pagamento}")
                     Text(text = "Tipo de Contrato: ${contracts?.tipo_contrato?.tipo_contrato}")
                     Text(text = "Escola: ${contracts?.escola?.nome}")
-                    Text(text = "Preço: ${contracts?.valo_contrato}")
 
                     Spacer(modifier = Modifier.padding(10.dp))
 
