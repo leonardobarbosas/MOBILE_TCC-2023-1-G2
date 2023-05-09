@@ -28,6 +28,7 @@ import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.HeaderPerfil
 import br.senai.sp.jandira.vanbora.model.driver.Driver
+import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -35,7 +36,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PerfilActivity : ComponentActivity() {
+class MotoristaPerfilActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -64,26 +65,38 @@ fun Perfil() {
 
     val context = LocalContext.current
 
-    val intent = (context as PerfilActivity).intent
+    val intent = (context as MotoristaPerfilActivity).intent
 
-    val idUser = intent.getStringExtra("id")
+    val idDriver = intent.getStringExtra("id_motorista")
 
-    val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idUser.toString())
+    val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
 
     var driver by remember {
         mutableStateOf<Driver?>(null)
     }
 
-
     driverCall.enqueue(object : Callback<Driver> {
         override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
             driver = response.body()!!
-            Log.i("ds3m", "onResponse: ${response.body()!!}")
-            Log.i("ds3m", "onResponse: ${response.body()!!.nome}")
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
-            Log.i("ds3m", "onFailure: $t")
+            Log.i("ds3m", "onFailure call driver: $t")
+        }
+    })
+
+
+    val idUser = intent.getStringExtra("id_usuario")
+    val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
+    var user by remember {
+        mutableStateOf<User?>(null)
+    }
+    userCall.enqueue(object : Callback<User> {
+        override fun onResponse(call: Call<User>, response: Response<User>) {
+            user = response.body()!!
+        }
+        override fun onFailure(call: Call<User>, t: Throwable) {
+            Log.i("ds3m", "onFailure $t")
         }
     })
 
@@ -152,7 +165,7 @@ fun Perfil() {
 
                         val intentSelect = Intent(context, EnviarContratoActivity::class.java)
 
-                        intentSelect.putExtra("id_motorista", driver?.id)
+                        intentSelect.putExtra("id_motorista", idDriver)
                         intentSelect.putExtra("id_usuario", idUser)
 
                         context.startActivity(intentSelect)
@@ -294,11 +307,11 @@ fun Avaliacao() {
 
     val context = LocalContext.current
 
-    val intent = (context as PerfilActivity).intent
+    val intent = (context as MotoristaPerfilActivity).intent
 
-    val idUser = intent.getStringExtra("id")
+    val idDriver = intent.getStringExtra("id_motorista")
 
-    val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idUser.toString())
+    val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
 
     var driver by remember {
         mutableStateOf<Driver?>(null)
@@ -319,7 +332,7 @@ fun Avaliacao() {
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
-            Log.i("ds3m", "onFailure: $t")
+            Log.i("ds3m", "onFailure call driver if: $t")
         }
     })
 

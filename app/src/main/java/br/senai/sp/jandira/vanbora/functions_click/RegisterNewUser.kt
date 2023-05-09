@@ -40,8 +40,8 @@ fun RegisterNewUser(
 
     userCallSave.enqueue(object : Callback<User>{
         override fun onResponse(call: Call<User>, response: Response<User>) {
-            val teste = response.body()!!
-            Log.i("ds3m", "onResponse: ${teste.nome}")
+            val users = response.body()!!
+            Log.i("ds3m", "onResponse: ${users.nome}")
             Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show()
         }
 

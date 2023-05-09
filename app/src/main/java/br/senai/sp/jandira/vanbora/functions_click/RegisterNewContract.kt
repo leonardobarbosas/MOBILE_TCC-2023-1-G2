@@ -37,20 +37,20 @@ fun RegisterNewContract(
         usuario = usuario,
         motorista = motorista
     )
+    Log.i("ds3m", "$contract ")
 
     val contractCallSave = GetFunctionsCall.getContractCall().postContract(contract)
 
-    contractCallSave.enqueue(object : Callback<ContractX>{
+    contractCallSave.enqueue(object :Callback<ContractX>{
         override fun onResponse(call: Call<ContractX>, response: Response<ContractX>) {
-            val teste = response.body()!!
-            Log.i("ds3m", "onResponse: $teste")
-            Toast.makeText(context, "Contrato criado com sucesso!", Toast.LENGTH_SHORT).show()
+            Log.i("ds3m", "onResponse: ${ response.body()}")
         }
 
         override fun onFailure(call: Call<ContractX>, t: Throwable) {
             Log.i("ds3m", "onFailure: ${t.message.toString()}")
         }
     })
+
 
     context.startActivity(Intent(context, MotoristasActivity::class.java))
 

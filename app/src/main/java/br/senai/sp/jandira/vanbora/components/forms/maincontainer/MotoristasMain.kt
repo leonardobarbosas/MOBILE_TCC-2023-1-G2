@@ -20,18 +20,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.Header
-import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
-import br.senai.sp.jandira.vanbora.ui.activities.client.Avaliacao
+import br.senai.sp.jandira.vanbora.model.user.User
+import br.senai.sp.jandira.vanbora.ui.activities.client.EnviarContratoActivity
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristaPerfilActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,6 +46,24 @@ fun MotoristasMain() {
     var filterState by remember {
         mutableStateOf("")
     }
+
+
+    val intent = (context as MotoristasActivity).intent
+    val idUser = intent.getStringExtra("id")
+    val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
+    var user by remember {
+        mutableStateOf<User?>(null)
+    }
+    userCall.enqueue(object : Callback<User> {
+        override fun onResponse(call: Call<User>, response: Response<User>) {
+            user = response.body()!!
+        }
+
+        override fun onFailure(call: Call<User>, t: Throwable) {
+            Log.i("ds3m", "onFailure $t")
+        }
+    })
+    
 
     val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
 
@@ -131,9 +148,11 @@ fun MotoristasMain() {
                             .height(200.dp)
                             .padding(6.dp)
                             .clickable {
-                                val intentSelect = Intent(context, PerfilActivity::class.java)
+                                val intentSelect =
+                                    Intent(context, MotoristaPerfilActivity::class.java)
 
-                                intentSelect.putExtra("id", driver.id.toString())
+                                intentSelect.putExtra("id_motorista", driver.id.toString())
+                                intentSelect.putExtra("id_usuario", idUser.toString())
 
                                 context.startActivity(intentSelect)
                             },

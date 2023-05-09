@@ -1,6 +1,7 @@
 package br.senai.sp.jandira.vanbora.ui.activities.client
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -14,13 +15,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.forms.contract.EnviarContrato
 import br.senai.sp.jandira.vanbora.components.headers.HeaderPerfil
 import br.senai.sp.jandira.vanbora.components.headers.header.HeaderContrato
 import br.senai.sp.jandira.vanbora.components.headers.header.HeaderEnviarContrato
+import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class EnviarContratoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +56,7 @@ class EnviarContratoActivity : ComponentActivity() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun EnvioDeContrato() {
+
 
 
     Column(

@@ -32,8 +32,8 @@ import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.model.contract.Contract
 import br.senai.sp.jandira.vanbora.model.contract.ContractX
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristaPerfilActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.VisualizarContratosActivity
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
@@ -95,7 +95,7 @@ fun MeusContratos(
                                 .height(200.dp)
                                 .padding(6.dp)
                                 .clickable {
-                                    val intentSelect = Intent(context, PerfilActivity::class.java)
+                                    val intentSelect = Intent(context, MotoristaPerfilActivity::class.java)
 
                                     intentSelect.putExtra("id", contract.motorista.id.toString())
 

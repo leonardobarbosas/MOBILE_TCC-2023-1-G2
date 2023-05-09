@@ -18,7 +18,7 @@ interface ContractCall {
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("contract")
     fun postContract(@Body contract: ContractX): Call<ContractX>
-
+//Call<ContractX>
     @DELETE("contract/{id}")
     fun deleteContract(@Path("id") id: Int): Call<String>
 }

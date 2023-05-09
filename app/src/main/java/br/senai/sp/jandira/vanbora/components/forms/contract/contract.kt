@@ -54,34 +54,36 @@ fun EnviarContrato() {
 
         val intent = (context as EnviarContratoActivity).intent
 
-        val idUser = intent.getStringExtra("id_usuario")
-        val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
-        var user by remember {
+        var usuario by remember {
             mutableStateOf<User?>(null)
         }
-        userCall.enqueue(object : Callback<User>{
+        val idUser = intent.getStringExtra("id_usuario")
+        Log.i("ds3m", "idUser: $idUser")
+        val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
+        userCall.enqueue(object: Callback<User>{
             override fun onResponse(call: Call<User>, response: Response<User>) {
-                user = response.body()
+                usuario = response.body()!!
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.i("ds3m", "onFailure")
+                Log.i("ds3m", "onFailure $t")
             }
         })
 
 
-        val idDriver = intent.getStringExtra("id_motorista")
-        val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
         var driver by remember {
             mutableStateOf<Driver?>(null)
         }
+        val idDriver = intent.getStringExtra("id_motorista")
+        Log.i("ds3m", "idDriver: $idDriver")
+        val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
         driverCall.enqueue(object : Callback<Driver>{
             override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
-                driver = response.body()
+                driver = response.body()!!
             }
 
             override fun onFailure(call: Call<Driver>, t: Throwable) {
-                Log.i("ds3m", "onFailure")
+                Log.i("ds3m", "onFailure driver")
             }
         })
 
@@ -125,7 +127,7 @@ fun EnviarContrato() {
             }
 
             override fun onFailure(call: Call<TipoTransporteList>, t: Throwable) {
-                Log.i("ds3m", "onFailure: ${t.message}")
+                Log.i("ds3m", "onFailure tipotransporte: ${t.message}")
             }
         })
 
@@ -140,7 +142,7 @@ fun EnviarContrato() {
             }
 
             override fun onFailure(call: Call<EscolaList>, t: Throwable) {
-                Log.i("ds3m", "onFailure: ${t.message}")
+                Log.i("ds3m", "onFailure escolas: ${t.message}")
             }
         })
 
@@ -158,7 +160,7 @@ fun EnviarContrato() {
             }
 
             override fun onFailure(call: Call<TipoPagamentoList>, t: Throwable) {
-                Log.i("ds3m", "onFailure: ${t.message}")
+                Log.i("ds3m", "onFailure tipo pagament: ${t.message}")
             }
 
         })
@@ -256,7 +258,7 @@ fun EnviarContrato() {
             value = nomePassageiroState, onValueChange = {
                 nomePassageiroState = it
 
-                if (it == "" || it == null) {
+                if (it == "") {
                     isNomePassageiroError
                 }
 
@@ -304,7 +306,7 @@ fun EnviarContrato() {
             value = idadePassageiroState, onValueChange = {
                 idadePassageiroState = it
 
-                if (it == "" || it == null) {
+                if (it == "") {
                     isIdadePassageiroError
                 }
 
@@ -443,7 +445,7 @@ fun EnviarContrato() {
         }
 
         //Tipo de pagamento
-        Column() {
+        Column {
             OutlinedTextField(
                 value = nSelectedText,
                 onValueChange = { nSelectedText = it },
@@ -515,17 +517,17 @@ fun EnviarContrato() {
                         status_escola = 1
                     ),
                     usuario = User(
-                        cep = user!!.cep,
-                        cpf = user!!.cpf,
-                        data_nascimento = user!!.data_nascimento,
-                        email = user!!.email,
-                        foto = user!!.foto,
-                        id = user!!.id,
-                        nome = user!!.nome,
-                        rg = user!!.rg,
-                        senha = user!!.senha,
-                        telefone = user!!.telefone,
-                        status_usuario = user!!.status_usuario,
+                        cep = usuario!!.cep,
+                        cpf = usuario!!.cpf,
+                        data_nascimento = usuario!!.data_nascimento,
+                        email = usuario!!.email,
+                        foto = usuario!!.foto,
+                        id = idUser!!.toInt(),
+                        nome = usuario!!.nome,
+                        rg = usuario!!.rg,
+                        senha = usuario!!.senha,
+                        telefone = usuario!!.telefone,
+                        status_usuario = usuario!!.status_usuario,
                     ),
                     motorista = Driver(
                         avaliacao = driver!!.avaliacao,
@@ -535,7 +537,7 @@ fun EnviarContrato() {
                         descricao = driver!!.descricao,
                         email = driver!!.email,
                         foto = driver!!.foto,
-                        id = driver!!.id,
+                        id = idDriver!!.toInt(),
                         inicio_carreira = driver!!.inicio_carreira,
                         nome = driver!!.nome,
                         rg = driver!!.rg,
@@ -558,7 +560,6 @@ fun EnviarContrato() {
 
                 context.startActivity(intentSelect)
 
-                Log.i("ds3m", "EnviarContrato: $nSelectedText")
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
         ) {
