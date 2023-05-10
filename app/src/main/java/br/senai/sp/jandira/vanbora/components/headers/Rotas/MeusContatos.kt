@@ -32,6 +32,7 @@ import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.model.contract.Contract
 import br.senai.sp.jandira.vanbora.model.contract.ContractX
+import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristaPerfilActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.VisualizarContratosActivity
@@ -57,6 +58,25 @@ fun MeusContratos(
         val context = LocalContext.current
 
         val intent = (context as MotoristasActivity).intent
+
+        val idPerfil = intent.getStringExtra("id_usuario")
+
+        val perfilCall = GetFunctionsCall.getUserCall().getUserById(id = idPerfil.toString())
+
+        var perfil by remember {
+            mutableStateOf<User?>(null)
+        }
+
+        perfilCall.enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                perfil = response.body()!!
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.i("ds3m", "onFailure")
+            }
+        })
+
 
         val idContract = intent.getStringExtra("id")
 
@@ -169,6 +189,10 @@ fun MeusContratos(
                                                         intentSelect.putExtra(
                                                             "id",
                                                             contract.id.toString()
+                                                        )
+                                                        intentSelect.putExtra(
+                                                            "id_usuario",
+                                                            idPerfil
                                                         )
 
                                                         context.startActivity(intentSelect)

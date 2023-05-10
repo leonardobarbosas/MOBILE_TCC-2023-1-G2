@@ -33,7 +33,7 @@ fun HeaderVisualizar(){
 
     val intent = (context as VisualizarContratosActivity).intent
 
-    val idPerfil = intent.getStringExtra("id")
+    val idPerfil = intent.getStringExtra("id_usuario")
 
     val perfilCall = GetFunctionsCall.getUserCall().getUserById(id = idPerfil.toString())
 

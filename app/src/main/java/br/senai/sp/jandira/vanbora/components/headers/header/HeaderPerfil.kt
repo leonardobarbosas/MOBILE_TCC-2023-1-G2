@@ -30,7 +30,7 @@ fun HeaderPerfil(){
 
     val intent = (context as MotoristaPerfilActivity).intent
 
-    val idPerfil = intent.getStringExtra("id")
+    val idPerfil = intent.getStringExtra("id_usuario")
 
     val perfilCall = GetFunctionsCall.getUserCall().getUserById(id = idPerfil.toString())
 

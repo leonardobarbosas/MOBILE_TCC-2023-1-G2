@@ -28,6 +28,7 @@ import br.senai.sp.jandira.vanbora.components.confirm.Dialog
 import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.HeaderPerfil
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewContract
+import br.senai.sp.jandira.vanbora.model.contract.ContractX
 import br.senai.sp.jandira.vanbora.model.contract.Escola
 import br.senai.sp.jandira.vanbora.model.contract.TipoContrato
 import br.senai.sp.jandira.vanbora.model.contract.TipoPagamento
@@ -69,10 +70,9 @@ fun Contrato(
     var usuario by remember {
         mutableStateOf<User?>(null)
     }
-    val idUser = intent.getStringExtra("id_usuario")
-    Log.i("ds3m", "idUser: $idUser")
+    val idUser = intent.getStringExtra("id_usuario").toString()
     val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
-    userCall.enqueue(object: Callback<User> {
+    userCall.enqueue(object : Callback<User> {
         override fun onResponse(call: Call<User>, response: Response<User>) {
             usuario = response.body()!!
         }
@@ -86,8 +86,7 @@ fun Contrato(
     var driver by remember {
         mutableStateOf<Driver?>(null)
     }
-    val idDriver = intent.getStringExtra("id_motorista")
-    Log.i("ds3m", "idDriver: $idDriver")
+    val idDriver = intent.getStringExtra("id_motorista").toString()
     val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
     driverCall.enqueue(object : Callback<Driver> {
         override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
@@ -99,16 +98,24 @@ fun Contrato(
         }
     })
 
-    val idTipoPagamento = intent.getStringExtra("id_tipo_pagamento")
-    val idTipoContrato = intent.getStringExtra("id_tipo_contrato")
-    val idEscola = intent.getStringExtra("id_escola")
-    val escola = intent.getStringExtra("tipo_escola")
-    val tipoContrato = intent.getStringExtra("tipo_contrato")
-    val tipoPagamento = intent.getStringExtra("tipo_pagamento")
+    val idTipoPagamento = intent.getStringExtra("id_tipo_pagamento").toString()
+    val idTipoContrato = intent.getStringExtra("id_tipo_contrato").toString()
+    val idEscola = intent.getStringExtra("id_escola").toString()
+    val escola = intent.getStringExtra("tipo_escola").toString()
+    val tipoContrato = intent.getStringExtra("tipo_contrato").toString()
+    val tipoPagamento = intent.getStringExtra("tipo_pagamento").toString()
 
-    val nomeResponsavel = intent.getStringExtra("nome_responsavel")
-    val nomePassageiro = intent.getStringExtra("nome_passageiro")
-    val idadePassageiro = intent.getStringExtra("idade_passageiro")
+    val nomeResponsavel = intent.getStringExtra("nome_responsavel").toString()
+    val nomePassageiro = intent.getStringExtra("nome_passageiro").toString()
+    val idadePassageiro = intent.getStringExtra("idade_passageiro").toString()
+
+    Log.i("ds3m", "id nomePassageiro: $nomePassageiro")
+    Log.i("ds3m", "id idadePassageiro: $idadePassageiro")
+    Log.i("ds3m", "id idTipoPagamento: ${idTipoPagamento.toInt()}")
+    Log.i("ds3m", "id idTipoContrato: ${idTipoContrato.toInt()}")
+    Log.i("ds3m", "id idEscola: ${idEscola.toInt()}")
+    Log.i("ds3m", "id idUser: ${idUser.toInt()}")
+    Log.i("ds3m", "id idDriver: ${idDriver.toInt()}")
 
 
 
@@ -160,68 +167,35 @@ fun Contrato(
                             ) {
                                 Text(text = stringResource(R.string.send_contract))
                             }
-                            if(viewModel.isDialogShown){
+                            if (viewModel.isDialogShown) {
                                 Dialog(
                                     onDismiss = {
                                         viewModel.onDismissDialog()
                                     },
                                     onConfirm = {
-                                        Log.i("ds3m", "Contrato: teste")
-//                                        RegisterNewContract(
-//                                        nomePassageiro = nomePassageiro.toString(),
-//                                        idadePassageiro = idadePassageiro.toString(),
-//                                        tipoPagamento = TipoPagamento(
-//                                            id = idTipoPagamento!!.toInt(),
-//                                            tipo_pagamento = tipoPagamento.toString(),
-//                                            status_tipo_pagamento = 1
-//                                        ),
-//                                        tipoTransporte = TipoContrato(
-//                                            id = idTipoContrato!!.toInt(),
-//                                            tipo_contrato = tipoContrato.toString(),
-//                                            status_tipo_contrato = 1
-//                                        ),
-//                                        escola = Escola(
-//                                            id = idEscola!!.toInt(),
-//                                            nome = escola.toString(),
-//                                            status_escola = 1
-//                                        ),
-//                                        usuario = User(
-//                                            cep = usuario!!.cep,
-//                                            cpf = usuario!!.cpf,
-//                                            data_nascimento = usuario!!.data_nascimento,
-//                                            email = usuario!!.email,
-//                                            foto = usuario!!.foto,
-//                                            id = idUser!!.toInt(),
-//                                            nome = usuario!!.nome,
-//                                            rg = usuario!!.rg,
-//                                            senha = usuario!!.senha,
-//                                            telefone = usuario!!.telefone,
-//                                            status_usuario = usuario!!.status_usuario,
-//                                        ),
-//                                        motorista = Driver(
-//                                            avaliacao = driver!!.avaliacao,
-//                                            cnh = driver!!.cnh,
-//                                            cpf = driver!!.cpf,
-//                                            data_nascimento = driver!!.data_nascimento,
-//                                            descricao = driver!!.descricao,
-//                                            email = driver!!.email,
-//                                            foto = driver!!.foto,
-//                                            id = idDriver!!.toInt(),
-//                                            inicio_carreira = driver!!.inicio_carreira,
-//                                            nome = driver!!.nome,
-//                                            rg = driver!!.rg,
-//                                            senha = driver!!.senha,
-//                                            status_motorista = driver!!.status_motorista,
-//                                            telefone = driver!!.telefone,
-//                                            van = driver!!.van
-//                                        ),
-//                                        context = context
-//                                    )
-                                        
 
-                                        Toast.makeText(context, "Contrato criado com sucesso!", Toast.LENGTH_SHORT).show()
 
-                                        val intentSelect = Intent(context, MotoristasActivity::class.java)
+
+                                        RegisterNewContract(
+                                            nomePassageiro = nomePassageiro,
+                                            idadePassageiro = idadePassageiro,
+                                            tipoPagamento = idTipoPagamento.toInt(),
+                                            tipoTransporte =  idTipoContrato.toInt(),
+                                            escola = idEscola.toInt(),
+                                            usuario = idUser.toInt(),
+                                            motorista = idDriver.toInt(),
+                                            context = context
+                                        )
+
+
+                                        Toast.makeText(
+                                            context,
+                                            "Contrato criado com sucesso!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+
+                                        val intentSelect =
+                                            Intent(context, MotoristasActivity::class.java)
 
                                         intentSelect.putExtra("id", idUser)
 

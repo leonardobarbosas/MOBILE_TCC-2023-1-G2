@@ -59,7 +59,7 @@ fun EnviarContrato() {
         }
         val idUser = intent.getStringExtra("id_usuario")
         val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
-        userCall.enqueue(object: Callback<User>{
+        userCall.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 usuario = response.body()!!
             }
@@ -75,7 +75,7 @@ fun EnviarContrato() {
         }
         val idDriver = intent.getStringExtra("id_motorista")
         val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
-        driverCall.enqueue(object : Callback<Driver>{
+        driverCall.enqueue(object : Callback<Driver> {
             override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
                 driver = response.body()!!
             }
@@ -492,17 +492,23 @@ fun EnviarContrato() {
 
         Spacer(modifier = Modifier.padding(16.dp))
 
+
+
+
+
         Button(
             onClick = {
-
+                Log.i("ds3m", "id idTipoPagamento: ${idTipoPagamento}")
+                Log.i("ds3m", "id idTipoContrato: ${idTipoContrato}")
+                Log.i("ds3m", "id idEscola: ${idEscola}")
 
                 val intentSelect = Intent(context, ContratoActivity::class.java)
 
-                intentSelect.putExtra("id_tipo_pagamento", idTipoPagamento)
+                intentSelect.putExtra("id_tipo_pagamento", idTipoPagamento.toString())
                 intentSelect.putExtra("tipo_pagamento", nSelectedText)
-                intentSelect.putExtra("id_tipo_contrato", idTipoContrato)
+                intentSelect.putExtra("id_tipo_contrato", idTipoContrato.toString())
                 intentSelect.putExtra("tipo_contrato", mSelectedText)
-                intentSelect.putExtra("id_escola", idEscola)
+                intentSelect.putExtra("id_escola", idEscola.toString())
                 intentSelect.putExtra("tipo_escola", escolaSelectedText)
                 intentSelect.putExtra("nome_responsavel", nomeResponsavelState)
                 intentSelect.putExtra("nome_passageiro", nomePassageiroState)

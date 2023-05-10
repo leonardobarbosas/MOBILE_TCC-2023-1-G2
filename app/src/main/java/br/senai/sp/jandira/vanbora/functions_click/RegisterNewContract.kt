@@ -6,8 +6,10 @@ import android.util.Log
 import android.widget.Toast
 import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.model.contract.ContractPost
 import br.senai.sp.jandira.vanbora.model.contract.ContractX
 import br.senai.sp.jandira.vanbora.model.contract.Escola
+import br.senai.sp.jandira.vanbora.model.contract.ResponseJson
 import br.senai.sp.jandira.vanbora.model.contract.TipoContrato
 import br.senai.sp.jandira.vanbora.model.contract.TipoPagamento
 import br.senai.sp.jandira.vanbora.model.driver.Driver
@@ -20,33 +22,33 @@ import retrofit2.Response
 fun RegisterNewContract(
     nomePassageiro: String,
     idadePassageiro: String,
-    tipoTransporte: TipoContrato,
-    escola: Escola,
-    tipoPagamento: TipoPagamento,
-    usuario: User,
-    motorista: Driver,
+    tipoTransporte: Int,
+    escola: Int,
+    tipoPagamento: Int,
+    usuario: Int,
+    motorista: Int,
     context: Context
 ) {
 
-    val contract = ContractX(
+    val contract = ContractPost(
         nome_passageiro = nomePassageiro,
-        idade_passageiro = idadePassageiro.toInt(),
-        tipo_contrato = tipoTransporte,
-        escola = escola,
-        tipo_pagamento = tipoPagamento,
-        usuario = usuario,
-        motorista = motorista
+        idade_passageiro = idadePassageiro,
+        id_tipo_contrato = tipoTransporte,
+        id_escola = escola,
+        id_tipo_pagamento = tipoPagamento,
+        id_usuario = usuario,
+        id_motorista = motorista
     )
-    Log.i("ds3m", "$contract ")
 
     val contractCallSave = GetFunctionsCall.getContractCall().postContract(contract)
 
-    contractCallSave.enqueue(object :Callback<ContractX>{
-        override fun onResponse(call: Call<ContractX>, response: Response<ContractX>) {
-            Log.i("ds3m", "onResponse: ${ response.body()}")
+    contractCallSave.enqueue(object :Callback<ResponseJson>{
+        override fun onResponse(call: Call<ResponseJson>, response: Response<ResponseJson>) {
+            var contract = response
+            Log.i("ds3m", "response.body: $contract")
         }
 
-        override fun onFailure(call: Call<ContractX>, t: Throwable) {
+        override fun onFailure(call: Call<ResponseJson>, t: Throwable) {
             Log.i("ds3m", "onFailure: ${t.message.toString()}")
         }
     })
