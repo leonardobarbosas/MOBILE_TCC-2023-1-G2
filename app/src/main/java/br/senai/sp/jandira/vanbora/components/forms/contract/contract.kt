@@ -58,7 +58,6 @@ fun EnviarContrato() {
             mutableStateOf<User?>(null)
         }
         val idUser = intent.getStringExtra("id_usuario")
-        Log.i("ds3m", "idUser: $idUser")
         val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
         userCall.enqueue(object: Callback<User>{
             override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -75,7 +74,6 @@ fun EnviarContrato() {
             mutableStateOf<Driver?>(null)
         }
         val idDriver = intent.getStringExtra("id_motorista")
-        Log.i("ds3m", "idDriver: $idDriver")
         val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
         driverCall.enqueue(object : Callback<Driver>{
             override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
@@ -498,65 +496,19 @@ fun EnviarContrato() {
             onClick = {
 
 
-                RegisterNewContract(
-                    nomePassageiro = nomeResponsavelState,
-                    idadePassageiro = idadePassageiroState,
-                    tipoPagamento = TipoPagamento(
-                        id = idTipoPagamento,
-                        tipo_pagamento = mSelectedText,
-                        status_tipo_pagamento = 1
-                    ),
-                    tipoTransporte = TipoContrato(
-                        id = idTipoContrato,
-                        tipo_contrato = nSelectedText,
-                        status_tipo_contrato = 1
-                    ),
-                    escola = Escola(
-                        id = idEscola,
-                        nome = escolaSelectedText,
-                        status_escola = 1
-                    ),
-                    usuario = User(
-                        cep = usuario!!.cep,
-                        cpf = usuario!!.cpf,
-                        data_nascimento = usuario!!.data_nascimento,
-                        email = usuario!!.email,
-                        foto = usuario!!.foto,
-                        id = idUser!!.toInt(),
-                        nome = usuario!!.nome,
-                        rg = usuario!!.rg,
-                        senha = usuario!!.senha,
-                        telefone = usuario!!.telefone,
-                        status_usuario = usuario!!.status_usuario,
-                    ),
-                    motorista = Driver(
-                        avaliacao = driver!!.avaliacao,
-                        cnh = driver!!.cnh,
-                        cpf = driver!!.cpf,
-                        data_nascimento = driver!!.data_nascimento,
-                        descricao = driver!!.descricao,
-                        email = driver!!.email,
-                        foto = driver!!.foto,
-                        id = idDriver!!.toInt(),
-                        inicio_carreira = driver!!.inicio_carreira,
-                        nome = driver!!.nome,
-                        rg = driver!!.rg,
-                        senha = driver!!.senha,
-                        status_motorista = driver!!.status_motorista,
-                        telefone = driver!!.telefone,
-                        van = driver!!.van
-                    ),
-                    context = context
-                )
-
                 val intentSelect = Intent(context, ContratoActivity::class.java)
 
+                intentSelect.putExtra("id_tipo_pagamento", idTipoPagamento)
+                intentSelect.putExtra("tipo_pagamento", nSelectedText)
+                intentSelect.putExtra("id_tipo_contrato", idTipoContrato)
+                intentSelect.putExtra("tipo_contrato", mSelectedText)
+                intentSelect.putExtra("id_escola", idEscola)
+                intentSelect.putExtra("tipo_escola", escolaSelectedText)
                 intentSelect.putExtra("nome_responsavel", nomeResponsavelState)
                 intentSelect.putExtra("nome_passageiro", nomePassageiroState)
                 intentSelect.putExtra("idade_passageiro", idadePassageiroState)
-                intentSelect.putExtra("tipo_pagamento", mSelectedText)
-                intentSelect.putExtra("escola", nSelectedText)
-                intentSelect.putExtra("tipo_transporte", nSelectedText)
+                intentSelect.putExtra("id_usuario", idUser)
+                intentSelect.putExtra("id_motorista", idDriver)
 
                 context.startActivity(intentSelect)
 

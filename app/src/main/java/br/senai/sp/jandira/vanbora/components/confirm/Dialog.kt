@@ -1,5 +1,7 @@
 package br.senai.sp.jandira.vanbora.components.confirm
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -16,12 +18,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.contract.Contract
+import br.senai.sp.jandira.vanbora.model.contract.ContractX
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CustomDialog(
+fun Dialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
@@ -59,7 +66,7 @@ fun CustomDialog(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Você deseja cancelar o contrato?",
+                        text = "Você deseja enviar o contrato?",
                         style = MaterialTheme.typography.h6,
                         textAlign = TextAlign.Center
                     )
