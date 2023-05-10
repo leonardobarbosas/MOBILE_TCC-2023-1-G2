@@ -106,6 +106,6 @@
     <string name="isnumero_vans_error">Número de Vagas inválido</string>
     <string name="ispreco_servico_error">Preço inválido</string>
     <string name="preco_servico">Preço do Serviço</string>
-
+    <string name="tipo_contrato">Tipo de Contrato:</string>
 
 </resources>

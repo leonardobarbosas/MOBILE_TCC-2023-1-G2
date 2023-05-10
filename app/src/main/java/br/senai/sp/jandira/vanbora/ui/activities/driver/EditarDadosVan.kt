@@ -63,6 +63,10 @@ class EditarDadosVan : ComponentActivity() {
 @Composable
 fun EditarVan() {
 
+    var fotoState by rememberSaveable() {
+        mutableStateOf("")
+    }
+
     var placaState by rememberSaveable() {
         mutableStateOf("")
     }
@@ -72,7 +76,7 @@ fun EditarVan() {
     }
 
     var modeloVanState by rememberSaveable() {
-        mutableStateOf("")
+        mutableStateOf<Modelo>(Modelo())
     }
 
     var isModeloError by remember {
@@ -80,7 +84,7 @@ fun EditarVan() {
     }
 
     var numeroVagasState by rememberSaveable() {
-        mutableStateOf("")
+        mutableStateOf(0)
     }
 
     var isNumeroVagasError by remember {
@@ -205,202 +209,202 @@ fun EditarVan() {
             )
         }
 
-        //Modelo da Van
-        OutlinedTextField(
-            value = modeloVanState,
-            onValueChange = {
-                modeloVanState = it
-
-                if (it == "" || it == null) {
-                    isModeloError
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-            label = {
-                Text(
-                    text = stringResource(id = R.string.modelo_van)
-                )
-            },
-            placeholder = {
-                van?.modelo?.get(0).let {
-                    if (it != null) {
-                        Text(
-                            text = it.modelo,
-                            textAlign = TextAlign.Center,
-                            style = TextStyle(
-                                color = Color.Red
-                            )
-                        )
-                    }
-                }
-            },
-            trailingIcon = {
-                if (isModeloError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )
-            },
-            isError = isModeloError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0, 0, 0, 255),
-                unfocusedBorderColor = Color(0, 0, 0, 255)
-            )
-        )
-        if (isModeloError) {
-            Text(
-                text = stringResource(id = R.string.ismodelo_error),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 52.dp),
-                color = Color.Red,
-                fontSize = 15.sp,
-                textAlign = TextAlign.End
-            )
-        }
-
-        //Numero de Vagas
-        OutlinedTextField(
-            value = numeroVagasState,
-            onValueChange = {
-                numeroVagasState = it
-
-                if (it == "" || it == null) {
-                    isNumeroVagasError
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-            label = {
-                Text(
-                    text = stringResource(id = R.string.numero_vagas)
-                )
-            },
-            placeholder = {
-                van?.let {
-                    Text(
-                        text = it.quantidade_vagas.toString(),
-                        textAlign = TextAlign.Center,
-                        style = TextStyle(
-                            color = Color.Black
-                        )
-                    )
-                }
-            },
-            trailingIcon = {
-                if (isNumeroVagasError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )
-            },
-            isError = isNumeroVagasError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0, 0, 0, 255),
-                unfocusedBorderColor = Color(0, 0, 0, 255)
-            )
-        )
-        if (isNumeroVagasError) {
-            Text(
-                text = stringResource(id = R.string.isnumero_vans_error),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 52.dp),
-                color = Color.Red,
-                fontSize = 15.sp,
-                textAlign = TextAlign.End
-            )
-        }
+//        //Modelo da Van
+//        OutlinedTextField(
+//            value = modeloVanState,
+//            onValueChange = { it ->
+//                modeloVanState = it
+//
+//                if (it == "" || it == null) {
+//                    isModeloError
+//                }
+//            },
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+//            label = {
+//                Text(
+//                    text = stringResource(id = R.string.modelo_van)
+//                )
+//            },
+//            placeholder = {
+//                van?.modelo?.get(0).let {
+//                    if (it != null) {
+//                        Text(
+//                            text = it.modelo,
+//                            textAlign = TextAlign.Center,
+//                            style = TextStyle(
+//                                color = Color.Red
+//                            )
+//                        )
+//                    }
+//                }
+//            },
+//            trailingIcon = {
+//                if (isModeloError) Icon(
+//                    imageVector = Icons.Default.Warning,
+//                    contentDescription = ""
+//                )
+//            },
+//            isError = isModeloError,
+//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//            colors = TextFieldDefaults.outlinedTextFieldColors(
+//                focusedBorderColor = Color(0, 0, 0, 255),
+//                unfocusedBorderColor = Color(0, 0, 0, 255)
+//            )
+//        )
+//        if (isModeloError) {
+//            Text(
+//                text = stringResource(id = R.string.ismodelo_error),
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(end = 52.dp),
+//                color = Color.Red,
+//                fontSize = 15.sp,
+//                textAlign = TextAlign.End
+//            )
+//        }
+//
+//        //Numero de Vagas
+//        OutlinedTextField(
+//            value = numeroVagasState,
+//            onValueChange = {it ->
+//                numeroVagasState = it
+//
+//                if (it == "" || it == null) {
+//                    isNumeroVagasError
+//                }
+//            },
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+//            label = {
+//                Text(
+//                    text = stringResource(id = R.string.numero_vagas)
+//                )
+//            },
+//            placeholder = {
+//                van?.let {
+//                    Text(
+//                        text = it.quantidade_vagas.toString(),
+//                        textAlign = TextAlign.Center,
+//                        style = TextStyle(
+//                            color = Color.Black
+//                        )
+//                    )
+//                }
+//            },
+//            trailingIcon = {
+//                if (isNumeroVagasError) Icon(
+//                    imageVector = Icons.Default.Warning,
+//                    contentDescription = ""
+//                )
+//            },
+//            isError = isNumeroVagasError,
+//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//            colors = TextFieldDefaults.outlinedTextFieldColors(
+//                focusedBorderColor = Color(0, 0, 0, 255),
+//                unfocusedBorderColor = Color(0, 0, 0, 255)
+//            )
+//        )
+//        if (isNumeroVagasError) {
+//            Text(
+//                text = stringResource(id = R.string.isnumero_vans_error),
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(end = 52.dp),
+//                color = Color.Red,
+//                fontSize = 15.sp,
+//                textAlign = TextAlign.End
+//            )
+//        }
 
         Spacer(modifier = Modifier.padding(26.dp))
 
-//        Row(
-//            modifier = Modifier.fillMaxWidth(),
-//            horizontalArrangement = Arrangement.SpaceAround
-//        ) {
-//            Button(
-//                onClick = {
-//                    var van = Van(
-//                        placaState,
-//                        modeloVanState,
-//                        van!!.id,
-//                        van.foto,
-//                        numeroVagasState,
-//                        status_van = 1
-//                    )
-//
-//                    var vanPutCall = GetFunctionsCall.getVanCall().putVan(van.id.toString(), van)
-//
-//                    vanPutCall.enqueue(object : Callback<String> {
-//                        override fun onResponse(call: Call<String>, response: Response<String>) {
-//                            code = response.code().toString()
-//                            message = response.body().toString()
-//                        }
-//
-//                        override fun onFailure(call: Call<String>, t: Throwable) {
-//                            Log.i("ds3m", "onFailure: $t")
-//                        }
-//                    })
-//
-//                    if (code == "201") {
-//                        Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
-//                    } else {
-//                        Toast.makeText(
-//                            context,
-//                            "Van atualizada com sucesso",
-//                            Toast.LENGTH_SHORT
-//                        )
-//                            .show()
-//
-//                        if (van != null) {
-//                            val intentSelect = Intent(context, MotoristasActivity()::class.java)
-//                            intentSelect.putExtra("id", van.id.toString())
-//                        }
-//                    }
-//                },
-//                colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
-//            ) {
-//                Text(
-//                    text = stringResource(id = R.string.save)
-//                )
-//            }
-//
-//            Button(
-//                onClick = {
-//                    var van = Van(
-//                        placaState,
-//                        modeloVanState,
-//                        numeroVagasState,
-//                        van!!.id,
-//                        van!!.foto,
-//                        status_van = 1
-//                    )
-//
-//                    val callVanDelete = GetFunctionsCall.getVanCall().deleteVan(van.id)
-//                    callVanDelete.enqueue(object : Callback<String> {
-//                        override fun onResponse(call: Call<String>, response: Response<String>) {
-//                            Toast.makeText(context, "Van deletada com sucesso", Toast.LENGTH_SHORT)
-//                                .show()
-//                            val intentSelect = Intent(context, SuaVan()::class.java)
-//                            context.startActivity(intentSelect)
-//                        }
-//
-//                        override fun onFailure(call: Call<String>, t: Throwable) {
-//                            Log.i("ds3m", "onFailure: $t")
-//                        }
-//
-//                    })
-//                },
-//                colors = ButtonDefaults.buttonColors(Color(250,210,69,255))
-//            ) {
-//                Text(
-//                    text = stringResource(id = R.string.delete)
-//                )
-//            }
-//
-//        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            Button(
+                onClick = {
+                    var van = Van(
+                        placaState,
+                        modelo = listOf<Modelo>(modeloVanState),
+                        id = van!!.id,
+//                        foto = van!!.foto,
+                        quantidade_vagas = numeroVagasState,
+                        status_van = 1
+                    )
+
+                    var vanPutCall = GetFunctionsCall.getVanCall().putVan(van.id.toString(), van)
+
+                    vanPutCall.enqueue(object : Callback<String> {
+                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                            code = response.code().toString()
+                            message = response.body().toString()
+                        }
+
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            Log.i("ds3m", "onFailure: $t")
+                        }
+                    })
+
+                    if (code == "201") {
+                        Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Van atualizada com sucesso",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+
+                        if (van != null) {
+                            val intentSelect = Intent(context, MotoristasActivity()::class.java)
+                            intentSelect.putExtra("id", van.id.toString())
+                        }
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
+            ) {
+                Text(
+                    text = stringResource(id = R.string.save)
+                )
+            }
+
+            Button(
+                onClick = {
+                    var van = Van(
+                        placaState,
+                        modelo = listOf<Modelo>(modeloVanState),
+                        id = van!!.id,
+//                        foto = van!!.foto,
+                        quantidade_vagas = numeroVagasState,
+                        status_van = 1
+                    )
+
+                    val callVanDelete = GetFunctionsCall.getVanCall().deleteVan(van.id)
+                    callVanDelete.enqueue(object : Callback<String> {
+                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                            Toast.makeText(context, "Van deletada com sucesso", Toast.LENGTH_SHORT)
+                                .show()
+                            val intentSelect = Intent(context, SuasVansActivity::class.java)
+                            context.startActivity(intentSelect)
+                        }
+
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            Log.i("ds3m", "onFailure: $t")
+                        }
+
+                    })
+                },
+                colors = ButtonDefaults.buttonColors(Color(250,210,69,255))
+            ) {
+                Text(
+                    text = stringResource(id = R.string.delete)
+                )
+            }
+
+        }
     }
 }
