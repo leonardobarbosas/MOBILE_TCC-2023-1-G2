@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
 import br.senai.sp.jandira.vanbora.model.user.User
@@ -39,7 +40,9 @@ import retrofit2.Response
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun MotoristasMain() {
+fun MotoristasMain(
+    viewModel: MainViewModel
+) {
 
     var context = LocalContext.current
 
@@ -63,7 +66,7 @@ fun MotoristasMain() {
             Log.i("ds3m", "onFailure $t")
         }
     })
-    
+
 
     val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
 
@@ -125,14 +128,26 @@ fun MotoristasMain() {
 
                 Spacer(modifier = Modifier.padding(6.dp))
 
-                Icon(
-                    imageVector = Icons.Filled.FilterList,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .height(46.dp)
-                        .width(46.dp),
-                    tint = Color.Black
-                )
+                Button(
+                    onClick = {
+                        viewModel.onPurchaseClick()
+                    },
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(255, 248, 228, 255)
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.FilterList,
+                        contentDescription = "",
+                        modifier = Modifier
+                            .height(46.dp)
+                            .width(46.dp),
+                        tint = Color.Black
+                    )
+                }
+
+
 
             }
 

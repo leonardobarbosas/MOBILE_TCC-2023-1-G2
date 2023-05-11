@@ -175,10 +175,10 @@ fun Contrato(
                                     onConfirm = {
 
 
-
                                         RegisterNewContract(
                                             nomePassageiro = nomePassageiro,
                                             idadePassageiro = idadePassageiro,
+                                            statusContrato = 0,
                                             tipoPagamento = idTipoPagamento.toInt(),
                                             tipoTransporte =  idTipoContrato.toInt(),
                                             escola = idEscola.toInt(),

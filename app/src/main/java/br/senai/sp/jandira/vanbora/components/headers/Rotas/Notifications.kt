@@ -2,6 +2,7 @@ package br.senai.sp.jandira.vanbora.components.headers.Rotas
 
 import android.content.Intent
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -11,7 +12,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
@@ -23,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
@@ -42,7 +47,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun MeusContratos(
+fun Notifications (
     viewModel: MainViewModel
 ) {
     Column(
@@ -73,7 +78,7 @@ fun MeusContratos(
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.i("ds3m", "onFailure user - meus contratos: $t")
+                Log.i("ds3m", "onFailure user - notificacoes: $t")
             }
         })
 
@@ -93,16 +98,16 @@ fun MeusContratos(
             }
 
             override fun onFailure(call: Call<Contract>, t: Throwable) {
-                Log.i("ds3m", "onFailure contract - meus contratos: $t")
+                Log.i("ds3m", "onFailure contract - notificacoes: $t")
             }
         })
 
         Header()
 
         Column(
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Seus Contratos", fontSize = 32.sp)
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
@@ -110,16 +115,21 @@ fun MeusContratos(
                 contracts?.let {
                     items(it.contracts) { contract ->
 
-                        if (contract.status_contrato == 1){
+                        if (contract.status_contrato == 0){
+
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(200.dp)
-                                    .padding(6.dp)
+                                    .height(250.dp)
+                                    .padding(16.dp)
                                     .clickable {
-                                        val intentSelect = Intent(context, MotoristaPerfilActivity::class.java)
+                                        val intentSelect =
+                                            Intent(context, MotoristaPerfilActivity::class.java)
 
-                                        intentSelect.putExtra("id", contract.motorista.id.toString())
+                                        intentSelect.putExtra(
+                                            "id_motorista",
+                                            contract.motorista.id.toString()
+                                        )
 
                                         context.startActivity(intentSelect)
                                     },
@@ -143,23 +153,21 @@ fun MeusContratos(
                                         contentScale = ContentScale.Crop,
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .height(130.dp)
+                                            .height(100.dp)
                                     )
 
                                     Card(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .fillMaxHeight(1f),
+                                            .fillMaxHeight(),
                                         backgroundColor = Color(247, 233, 194, 255)
                                     ) {
-                                        Row(
+                                        Column(
                                             modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically
+                                            verticalArrangement = Arrangement.SpaceAround,
+                                            horizontalAlignment = Alignment.CenterHorizontally
                                         ) {
-                                            Row(
-                                                modifier = Modifier.padding(start = 16.dp)
-                                            ) {
+                                            Row() {
                                                 Image(
                                                     painter = rememberAsyncImagePainter(contract.motorista.foto),
                                                     contentDescription = "",
@@ -220,69 +228,81 @@ fun MeusContratos(
 
 
                                             Column(
-                                                modifier = Modifier.padding(end = 16.dp),
+                                                modifier = Modifier.padding(),
                                                 horizontalAlignment = Alignment.CenterHorizontally
                                             ) {
-                                                Button(
-                                                    onClick = {
-                                                        viewModel.onPurchaseClick()
-                                                    },
-                                                    shape = CircleShape,
-                                                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+                                                Row(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    horizontalArrangement = Arrangement.Center
                                                 ) {
-                                                    Image(
-                                                        imageVector = Icons.Filled.Delete,
-                                                        contentDescription = ""
-                                                    )
-                                                }
-                                                if(viewModel.isDialogShown){
-                                                    CustomDialog(
-                                                        onDismiss = {
-                                                            viewModel.onDismissDialog()
+                                                    Button(
+                                                        onClick = { /*TODO*/ },
+                                                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(251, 211, 69, 255)
+                                                        )
+                                                    ) {
+                                                        Text(text = "Contrato em espera")
+                                                    }
+                                                    
+                                                    Spacer(modifier = Modifier.padding(6.dp))
+                                                    
+                                                    Button(
+                                                        onClick = {
+                                                            viewModel.onPurchaseClick()
                                                         },
-                                                        onConfirm = {
-                                                            val contract = ContractX(
-                                                                contracts!!.contracts[0].escola,
-                                                                contracts!!.contracts[0].id,
-                                                                contracts!!.contracts[0].status_contrato,
-                                                                contracts!!.contracts[0].idade_passageiro,
-                                                                contracts!!.contracts[0].motorista,
-                                                                contracts!!.contracts[0].nome_passageiro,
-                                                                contracts!!.contracts[0].tipo_contrato,
-                                                                contracts!!.contracts[0].tipo_pagamento,
-                                                                contracts!!.contracts[0].usuario,
-                                                            )
+                                                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+                                                    ) {
+                                                        Text(text = "Cancelar contrato")
+                                                    }
+                                                    if(viewModel.isDialogShown){
+                                                        CustomDialog(
+                                                            onDismiss = {
+                                                                viewModel.onDismissDialog()
+                                                            },
+                                                            onConfirm = {
+                                                                val contract = ContractX(
+                                                                    contracts!!.contracts[0].escola,
+                                                                    contracts!!.contracts[0].id,
+                                                                    contracts!!.contracts[0].status_contrato,
+                                                                    contracts!!.contracts[0].idade_passageiro,
+                                                                    contracts!!.contracts[0].motorista,
+                                                                    contracts!!.contracts[0].nome_passageiro,
+                                                                    contracts!!.contracts[0].tipo_contrato,
+                                                                    contracts!!.contracts[0].tipo_pagamento,
+                                                                    contracts!!.contracts[0].usuario,
+                                                                )
 
-                                                            val callContractDelete = GetFunctionsCall.getContractCall().deleteContract(contract.id)
-                                                            callContractDelete.enqueue(object: Callback<String> {
-                                                                override fun onResponse(
-                                                                    call: Call<String>, response: Response<String>
-                                                                ) {
-                                                                    Toast.makeText(context, "Contrato encerrado com sucesso", Toast.LENGTH_SHORT).show()
-                                                                    simulateHotReload(context)
+                                                                val callContractDelete = GetFunctionsCall.getContractCall().deleteContract(contract.id)
+                                                                callContractDelete.enqueue(object: Callback<String> {
+                                                                    override fun onResponse(
+                                                                        call: Call<String>, response: Response<String>
+                                                                    ) {
+                                                                        Toast.makeText(context, "Contrato encerrado com sucesso", Toast.LENGTH_SHORT).show()
+                                                                        simulateHotReload(context)
 
-                                                                }
-                                                                override fun onFailure(call: Call<String>, t: Throwable) {
-                                                                    Log.i("ds3m", "fali")
-                                                                }
+                                                                    }
+                                                                    override fun onFailure(call: Call<String>, t: Throwable) {
+                                                                        Log.i("ds3m", "fali")
+                                                                    }
 
-                                                            })
+                                                                })
 
-                                                        }
-                                                    )
+                                                            }
+                                                        )
+                                                    }
                                                 }
-                                            }
+                                                }
                                         }
                                     }
                                 }
                             }
+
                         }
 
                     }
                 }
             }
+
         }
+
     }
 }
-
-//addd

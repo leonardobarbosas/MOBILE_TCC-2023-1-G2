@@ -38,13 +38,6 @@ fun HeaderPerfil(){
         mutableStateOf<User?>(null)
     }
 
-    var code by remember {
-        mutableStateOf("")
-    }
-
-    var message by remember {
-        mutableStateOf("")
-    }
 
     perfilCall.enqueue(object : Callback<User> {
         override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -67,11 +60,9 @@ fun HeaderPerfil(){
                 modifier = Modifier
                     .size(40.dp)
                     .clickable {
-                            if (perfil != null) {
                                 val intentSelect = Intent(context, MotoristasActivity::class.java)
                                 intentSelect.putExtra("id", perfil?.id.toString())
                                 context.startActivity(intentSelect)
-                            }
 
                     }
             )

@@ -97,7 +97,7 @@ fun Navigation(navController: NavHostController) {
         }
 
         composable(Destinos.RotaNotificacoes.route) {
-            LocalizeSe()
+            Notifications(viewModel = MainViewModel())
         }
 
         composable(Destinos.RotaMeusContratos.route) {
