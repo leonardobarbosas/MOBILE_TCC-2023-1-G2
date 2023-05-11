@@ -79,13 +79,13 @@ fun HeaderMotorista() {
                 .border(2.dp, Color.Gray, CircleShape)
                 .clickable {
 
-//                    val intentSelect = Intent(context, EditarPerfilActivity::class.java)
-//
-//                    intentSelect.putExtra("id", login?.id.toString())
-//
-//                    login?.id.toString() to EditarPerfilActivity::class.java
-//
-//                    context.startActivity(intentSelect)
+                    val intentSelect = Intent(context, EditarPerfilActivity::class.java)
+
+                    intentSelect.putExtra("id", login?.id.toString())
+
+                    login?.id.toString() to EditarPerfilActivity::class.java
+
+                    context.startActivity(intentSelect)
 
                 }
         )

@@ -16,4 +16,5 @@ sealed class Destinos(
     object RotaNotificacoes: Destinos(Icons.Filled.Notifications, "Notificações", "Notificações")
     object RotaContate: Destinos(Icons.Filled.Phone, "Contate-nos", "Contate-nos")
     object RotaMotoristas: Destinos(Icons.Filled.AirportShuttle, "Motoristas", "Motoristas")
+    object RotaSuaVan: Destinos(Icons.Filled.Search, "Suas Vans", "Suas Vans")
 }

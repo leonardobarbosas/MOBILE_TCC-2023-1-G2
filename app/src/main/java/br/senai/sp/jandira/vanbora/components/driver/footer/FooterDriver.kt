@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.senai.sp.jandira.vanbora.components.headers.Destinos
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.*
+import br.senai.sp.jandira.vanbora.ui.activities.driver.SuaVan
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -36,7 +37,7 @@ fun FooterDriver() {
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
-        Destinos.RotaMotoristas,
+        Destinos.RotaSuaVan,
         Destinos.RotaMeusContratos,
         Destinos.RotaNotificacoes,
         Destinos.RotaContate,
@@ -89,7 +90,7 @@ fun RowScope.AddItem(
 @Composable
 fun Navigation(navController: NavHostController) {
 
-    NavHost(navController, startDestination = Destinos.RotaMotoristas.route) {
+    NavHost(navController, startDestination = Destinos.RotaSuaVan.route) {
 
         composable(Destinos.RotaPerfil.route) {
             VerPerfil()
@@ -110,6 +111,11 @@ fun Navigation(navController: NavHostController) {
         composable(Destinos.RotaMotoristas.route) {
             Motoristas()
         }
+
+        composable(Destinos.RotaSuaVan.route) {
+            SuaVan()
+        }
+
 
     }
 }

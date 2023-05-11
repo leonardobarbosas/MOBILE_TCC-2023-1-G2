@@ -93,7 +93,6 @@ fun SuaVan() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp)
             .paint(
                 painter = painterResource(id = R.drawable.background2),
                 contentScale = ContentScale.Crop
@@ -101,7 +100,6 @@ fun SuaVan() {
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         HeaderMotorista()
 
         Row(
@@ -538,11 +536,11 @@ fun SuaVan() {
                                 }
                             }
                         }
-
                     }
                 }
             }
         }
+
     }
 }
 
