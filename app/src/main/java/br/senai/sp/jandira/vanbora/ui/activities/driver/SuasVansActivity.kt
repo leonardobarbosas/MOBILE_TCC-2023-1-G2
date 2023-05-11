@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.components.headers.headerDriver.HeaderMotorista
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
@@ -100,6 +101,9 @@ fun SuaVan() {
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        HeaderMotorista()
+
         Row(
 
         ) {
