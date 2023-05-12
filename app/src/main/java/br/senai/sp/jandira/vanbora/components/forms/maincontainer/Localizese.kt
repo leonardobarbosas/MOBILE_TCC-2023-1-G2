@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Whatsapp
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -20,7 +23,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 
 @Composable
-fun Localizese () {
+fun Localizese() {
 
     val context = LocalContext.current
 
@@ -57,115 +60,77 @@ fun Localizese () {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
+            Icon(
+                imageVector = Icons.Filled.Whatsapp,
+                contentDescription = "wpp",
+                tint = Color(9, 150, 12, 255)
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
             Text(
-                text = stringResource(id = R.string.vanbora_title1),
-                fontSize = 32.sp,
+                text = "Nosso Whats-app: ",
+                fontSize = 15.sp,
                 style = MaterialTheme.typography.body1,
             )
-
+            Text(
+                text = "+55 (11) 99402-6755",
+                fontSize = 15.sp,
+                style = MaterialTheme.typography.body1,
+            )
         }
 
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
+        Spacer(modifier = Modifier.height(20.dp))
 
-        //CEP
-        OutlinedTextField(
-            value = cepState,
-            onValueChange = {
-                cepState = it
-
-                if (it == "" || it == null) {
-                    isCepError
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 22.dp, end = 22.dp),
-            label = {
-                Text(text = stringResource(id = R.string.cep))
-            },
-            trailingIcon = {
-                if (isCepError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )
-            },
-            isError = isCepError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0, 0, 0, 255),
-                unfocusedBorderColor = Color(0, 0, 0, 255)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Email,
+                contentDescription = "email",
+                tint = Color(0, 0, 0, 255)
             )
-        )
 
-        Spacer(
-            modifier = Modifier.height(5.dp)
-        )
+            Spacer(modifier = Modifier.height(5.dp))
 
-        //NMR DA CASA
-        OutlinedTextField(
-            value = numeroCasaState,
-            onValueChange = {
-                numeroCasaState = it
-
-                if (it == "" || it == null) {
-                    isNumeroCasaError
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 22.dp, end = 22.dp),
-            label = {
-                Text(text = stringResource(id = R.string.nmr))
-            },
-            trailingIcon = {
-                if (isNumeroCasaError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )
-            },
-            isError = isNumeroCasaError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0, 0, 0, 255),
-                unfocusedBorderColor = Color(0, 0, 0, 255)
+            Text(
+                text = "Nosso Email: ",
+                fontSize = 15.sp,
+                style = MaterialTheme.typography.body1,
             )
-        )
-
-        Spacer(
-            modifier = Modifier.height(5.dp)
-        )
-
-        //Complementos
-        OutlinedTextField(
-            value = complementosState,
-            onValueChange = {
-                complementosState = it
-
-                if (it == "" || it == null) {
-                    isComplementosError
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 22.dp, end = 22.dp),
-            label = {
-                Text(text = stringResource(id = R.string.complementos))
-            },
-            trailingIcon = {
-                if (isComplementosError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )
-            },
-            isError = isComplementosError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0, 0, 0, 255),
-                unfocusedBorderColor = Color(0, 0, 0, 255)
+            Text(
+                text = "nexusgamer@gmail.com",
+                fontSize = 15.sp,
+                style = MaterialTheme.typography.body1,
             )
-        )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Phone,
+                contentDescription = "email",
+                tint = Color(55, 106, 252, 255)
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Text(
+                text = "Nosso Telefone: ",
+                fontSize = 15.sp,
+                style = MaterialTheme.typography.body1,
+            )
+            Text(
+                text = "+55 (11) 99402-6755",
+                fontSize = 15.sp,
+                style = MaterialTheme.typography.body1,
+            )
+        }
 
 
 
@@ -196,19 +161,6 @@ fun Localizese () {
             }
         }
 
-        Button(
-            onClick = {
-                isCepError = cepState.length == 0
-                isNumeroCasaError = numeroCasaState.length == 0
-                isComplementosError = complementosState.length == 0
-            },
-            colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
-
-        ) {
-            Text(
-                text = stringResource(id = R.string.save)
-            )
-        }
 
     }
 }
