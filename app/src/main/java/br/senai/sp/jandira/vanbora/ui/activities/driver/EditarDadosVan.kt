@@ -76,7 +76,8 @@ fun EditarVan() {
     }
 
     var modeloVanState by rememberSaveable() {
-        mutableStateOf<Modelo>(Modelo())
+//        mutableStateOf<Modelo>(Modelo())
+        mutableStateOf("")
     }
 
     var isModeloError by remember {
@@ -209,9 +210,12 @@ fun EditarVan() {
             )
         }
 
-//        //Modelo da Van
-//        OutlinedTextField(
-//            value = modeloVanState,
+        //Modelo da Van
+        OutlinedTextField(
+            value = modeloVanState,
+            onValueChange = {
+                            modeloVanState = it
+            },
 //            onValueChange = { it ->
 //                modeloVanState = it
 //
@@ -219,105 +223,87 @@ fun EditarVan() {
 //                    isModeloError
 //                }
 //            },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-//            label = {
-//                Text(
-//                    text = stringResource(id = R.string.modelo_van)
-//                )
-//            },
-//            placeholder = {
-//                van?.modelo?.get(0).let {
-//                    if (it != null) {
-//                        Text(
-//                            text = it.modelo,
-//                            textAlign = TextAlign.Center,
-//                            style = TextStyle(
-//                                color = Color.Red
-//                            )
-//                        )
-//                    }
-//                }
-//            },
-//            trailingIcon = {
-//                if (isModeloError) Icon(
-//                    imageVector = Icons.Default.Warning,
-//                    contentDescription = ""
-//                )
-//            },
-//            isError = isModeloError,
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-//            colors = TextFieldDefaults.outlinedTextFieldColors(
-//                focusedBorderColor = Color(0, 0, 0, 255),
-//                unfocusedBorderColor = Color(0, 0, 0, 255)
-//            )
-//        )
-//        if (isModeloError) {
-//            Text(
-//                text = stringResource(id = R.string.ismodelo_error),
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(end = 52.dp),
-//                color = Color.Red,
-//                fontSize = 15.sp,
-//                textAlign = TextAlign.End
-//            )
-//        }
-//
-//        //Numero de Vagas
-//        OutlinedTextField(
-//            value = numeroVagasState,
-//            onValueChange = {it ->
-//                numeroVagasState = it
-//
-//                if (it == "" || it == null) {
-//                    isNumeroVagasError
-//                }
-//            },
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-//            label = {
-//                Text(
-//                    text = stringResource(id = R.string.numero_vagas)
-//                )
-//            },
-//            placeholder = {
-//                van?.let {
-//                    Text(
-//                        text = it.quantidade_vagas.toString(),
-//                        textAlign = TextAlign.Center,
-//                        style = TextStyle(
-//                            color = Color.Black
-//                        )
-//                    )
-//                }
-//            },
-//            trailingIcon = {
-//                if (isNumeroVagasError) Icon(
-//                    imageVector = Icons.Default.Warning,
-//                    contentDescription = ""
-//                )
-//            },
-//            isError = isNumeroVagasError,
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-//            colors = TextFieldDefaults.outlinedTextFieldColors(
-//                focusedBorderColor = Color(0, 0, 0, 255),
-//                unfocusedBorderColor = Color(0, 0, 0, 255)
-//            )
-//        )
-//        if (isNumeroVagasError) {
-//            Text(
-//                text = stringResource(id = R.string.isnumero_vans_error),
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(end = 52.dp),
-//                color = Color.Red,
-//                fontSize = 15.sp,
-//                textAlign = TextAlign.End
-//            )
-//        }
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+            label = {Text( text = stringResource(id = R.string.modelo_van) )},
+            placeholder = {
+                van?.modelo?.get(0).let {
+                    it?.modelo
+                }
+            },
+            trailingIcon = {
+                if (isModeloError) {Icon(
+                    imageVector = Icons.Default.Warning,
+                    contentDescription = ""
+                )}
+            },
+            isError = isModeloError,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0, 0, 0, 255),
+                unfocusedBorderColor = Color(0, 0, 0, 255)
+            )
+        )
+        if (isModeloError) {
+            Text(
+                text = stringResource(id = R.string.ismodelo_error),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 52.dp),
+                color = Color.Red,
+                fontSize = 15.sp,
+                textAlign = TextAlign.End
+            )
+        }
+
+        //Numero de Vagas
+        OutlinedTextField(
+            value = numeroVagasState,
+            onValueChange = { it ->
+                numeroVagasState = it
+
+                if (it == "" || it == null) {
+                    isNumeroVagasError
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+            label = {Text(text = stringResource(id = R.string.numero_vagas))},
+            placeholder = van?.let {
+                    Text(
+                        text = it.quantidade_vagas.toString(),
+                        textAlign = TextAlign.Center,
+                        style = TextStyle(
+                            color = Color.Black
+                        )
+                    )
+                },
+            trailingIcon = {
+                if (isNumeroVagasError) {Icon(
+                    imageVector = Icons.Default.Warning,
+                    contentDescription = ""
+                )}
+            },
+            isError = isNumeroVagasError,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0, 0, 0, 255),
+                unfocusedBorderColor = Color(0, 0, 0, 255)
+            )
+        )
+        if (isNumeroVagasError) {
+            Text(
+                text = stringResource(id = R.string.isnumero_vans_error),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 52.dp),
+                color = Color.Red,
+                fontSize = 15.sp,
+                textAlign = TextAlign.End
+            )
+        }
 
         Spacer(modifier = Modifier.padding(26.dp))
 
