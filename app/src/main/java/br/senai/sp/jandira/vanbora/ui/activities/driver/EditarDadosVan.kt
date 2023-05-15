@@ -27,15 +27,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.ui.theme.VanboraTheme
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.Modelo
 import br.senai.sp.jandira.vanbora.model.driver.Van
-import br.senai.sp.jandira.vanbora.ui.activities.client.EditarPerfilActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.Motorista
+import br.senai.sp.jandira.vanbora.model.posts.van.PostPutVan
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -214,7 +212,7 @@ fun EditarVan() {
         OutlinedTextField(
             value = modeloVanState,
             onValueChange = {
-                            modeloVanState = it
+                modeloVanState = it
             },
 //            onValueChange = { it ->
 //                modeloVanState = it
@@ -226,17 +224,19 @@ fun EditarVan() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-            label = {Text( text = stringResource(id = R.string.modelo_van) )},
+            label = { Text(text = stringResource(id = R.string.modelo_van)) },
             placeholder = {
                 van?.modelo?.get(0).let {
                     it?.modelo
                 }
             },
             trailingIcon = {
-                if (isModeloError) {Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )}
+                if (isModeloError) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
+                }
             },
             isError = isModeloError,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -259,32 +259,29 @@ fun EditarVan() {
 
         //Numero de Vagas
         OutlinedTextField(
-            value = numeroVagasState,
-            onValueChange = { it ->
-                numeroVagasState = it
+            value = numeroVagasState.toString(),
+            onValueChange = {
+                numeroVagasState = it.toInt()
 
-                if (it == "" || it == null) {
+                if (numeroVagasState == 0 || numeroVagasState == null) {
                     isNumeroVagasError
                 }
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-            label = {Text(text = stringResource(id = R.string.numero_vagas))},
-            placeholder = van?.let {
-                    Text(
-                        text = it.quantidade_vagas.toString(),
-                        textAlign = TextAlign.Center,
-                        style = TextStyle(
-                            color = Color.Black
-                        )
-                    )
-                },
+            label = { Text(text = stringResource(id = R.string.numero_vagas)) },
+            placeholder = {
+                Text(
+                    text = van!!.quantidade_vagas.toString(),
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(color = Color.Black)
+                )
+            },
             trailingIcon = {
-                if (isNumeroVagasError) {Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )}
+                if (isNumeroVagasError) {
+                    Icon(imageVector = Icons.Default.Warning, contentDescription = "")
+                }
             },
             isError = isNumeroVagasError,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -293,6 +290,7 @@ fun EditarVan() {
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
+
         if (isNumeroVagasError) {
             Text(
                 text = stringResource(id = R.string.isnumero_vans_error),
@@ -313,18 +311,18 @@ fun EditarVan() {
         ) {
             Button(
                 onClick = {
-                    var van = Van(
-                        placaState,
-                        modelo = listOf<Modelo>(modeloVanState),
-                        id = van!!.id,
-//                        foto = van!!.foto,
-                        quantidade_vagas = numeroVagasState,
+                    var vanPut = PostPutVan(
+                        foto = "https://firebasestorage.googleapis.com/v0/b/tcc-project-firebase.appspot.com/o/vans-profile-picture%2Fdownload%20(3).jpg?alt=media&token=1006e2bf-7988-4746-8e09-1ff58346f350",
+                        id_modelo = 2,
+                        id_motorista = idDriver.toString().toInt(),
+                        placa = placaState,
+                        quantidade_vagas = numeroVagasState.toString(),
                         status_van = 1
                     )
 
-                    var vanPutCall = GetFunctionsCall.getVanCall().putVan(van.id.toString(), van)
+                    var vanPutCall = GetFunctionsCall.getVanCall().putVan(van!!.id.toString(), vanPut)
 
-                    vanPutCall.enqueue(object : Callback<String> {
+                    vanPutCall.enqueue(object : Callback<String>{
                         override fun onResponse(call: Call<String>, response: Response<String>) {
                             code = response.code().toString()
                             message = response.body().toString()
@@ -334,6 +332,17 @@ fun EditarVan() {
                             Log.i("ds3m", "onFailure: $t")
                         }
                     })
+
+//                    vanPutCall.enqueue(object : Callback<String> {
+//                        override fun onResponse(call: Call<String>, response: Response<String>) {
+//                            code = response.code().toString()
+//                            message = response.body().toString()
+//                        }
+//
+//                        override fun onFailure(call: Call<String>, t: Throwable) {
+//                            Log.i("ds3m", "onFailure: $t")
+//                        }
+//                    })
 
                     if (code == "201") {
                         Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
@@ -345,10 +354,10 @@ fun EditarVan() {
                         )
                             .show()
 
-                        if (van != null) {
-                            val intentSelect = Intent(context, MotoristasActivity()::class.java)
-                            intentSelect.putExtra("id", van.id.toString())
-                        }
+//                        if (van != null) {
+//                            val intentSelect = Intent(context, MotoristasActivity()::class.java)
+//                            intentSelect.putExtra("id", van.id.toString())
+//                        }
                     }
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
@@ -358,38 +367,38 @@ fun EditarVan() {
                 )
             }
 
-            Button(
-                onClick = {
-                    var van = Van(
-                        placaState,
-                        modelo = listOf<Modelo>(modeloVanState),
-                        id = van!!.id,
-//                        foto = van!!.foto,
-                        quantidade_vagas = numeroVagasState,
-                        status_van = 1
-                    )
-
-                    val callVanDelete = GetFunctionsCall.getVanCall().deleteVan(van.id)
-                    callVanDelete.enqueue(object : Callback<String> {
-                        override fun onResponse(call: Call<String>, response: Response<String>) {
-                            Toast.makeText(context, "Van deletada com sucesso", Toast.LENGTH_SHORT)
-                                .show()
-                            val intentSelect = Intent(context, SuasVansActivity::class.java)
-                            context.startActivity(intentSelect)
-                        }
-
-                        override fun onFailure(call: Call<String>, t: Throwable) {
-                            Log.i("ds3m", "onFailure: $t")
-                        }
-
-                    })
-                },
-                colors = ButtonDefaults.buttonColors(Color(250,210,69,255))
-            ) {
-                Text(
-                    text = stringResource(id = R.string.delete)
-                )
-            }
+//            Button(
+//                onClick = {
+//                    var van = Van(
+//                        placaState,
+//                        modelo = listOf<Modelo>(modeloVanState),
+//                        id = van!!.id,
+//                       foto = van!!.foto,
+//                        quantidade_vagas = numeroVagasState,
+//                        status_van = 1
+//                    )
+//
+//                    val callVanDelete = GetFunctionsCall.getVanCall().deleteVan(van.id)
+//                    callVanDelete.enqueue(object : Callback<String> {
+//                        override fun onResponse(call: Call<String>, response: Response<String>) {
+//                            Toast.makeText(context, "Van deletada com sucesso", Toast.LENGTH_SHORT)
+//                                .show()
+//                            val intentSelect = Intent(context, SuasVansActivity::class.java)
+//                            context.startActivity(intentSelect)
+//                        }
+//
+//                        override fun onFailure(call: Call<String>, t: Throwable) {
+//                            Log.i("ds3m", "onFailure: $t")
+//                        }
+//
+//                    })
+//                },
+//                colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
+//            ) {
+//                Text(
+//                    text = stringResource(id = R.string.delete)
+//                )
+//            }
 
         }
     }

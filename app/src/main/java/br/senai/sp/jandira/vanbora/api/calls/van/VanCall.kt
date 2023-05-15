@@ -4,6 +4,7 @@ package br.senai.sp.jandira.vanbora.api.calls.van
 import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
 import br.senai.sp.jandira.vanbora.model.driver.Van
 import br.senai.sp.jandira.vanbora.model.driver.VanList
+import br.senai.sp.jandira.vanbora.model.posts.van.PostPutVan
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -17,7 +18,7 @@ interface VanCall {
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @PUT("van/{id}")
-    fun putVan(@Path("id") id: String, @Body van: Van): Call<String>
+    fun putVan(@Path("id") id: String, @Body van: PostPutVan): Call<String>
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("van")
