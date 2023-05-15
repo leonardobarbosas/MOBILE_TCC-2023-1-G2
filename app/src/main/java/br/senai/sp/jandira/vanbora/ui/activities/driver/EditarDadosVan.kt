@@ -31,14 +31,11 @@ import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.ui.theme.VanboraTheme
 import br.senai.sp.jandira.vanbora.model.driver.Driver
-import br.senai.sp.jandira.vanbora.model.driver.Modelo
 import br.senai.sp.jandira.vanbora.model.driver.Van
 import br.senai.sp.jandira.vanbora.model.posts.van.PostPutVan
-import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.security.KeyException
 
 class EditarDadosVan : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -370,11 +367,11 @@ fun EditarVan() {
 //            Button(
 //                onClick = {
 //                    var van = Van(
-//                        placaState,
-//                        modelo = listOf<Modelo>(modeloVanState),
-//                        id = van!!.id,
-//                       foto = van!!.foto,
-//                        quantidade_vagas = numeroVagasState,
+//                        foto = "https://firebasestorage.googleapis.com/v0/b/tcc-project-firebase.appspot.com/o/vans-profile-picture%2Fdownload%20(3).jpg?alt=media&token=1006e2bf-7988-4746-8e09-1ff58346f350",
+//                        id_modelo = 2,
+//                        id_motorista = idDriver.toString().toInt(),
+//                        placa = placaState,
+//                        quantidade_vagas = numeroVagasState.toString().toInt(),
 //                        status_van = 1
 //                    )
 //
