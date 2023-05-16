@@ -37,7 +37,6 @@ fun HeaderMotorista() {
     val intent = (context as SuasVansActivity).intent
 
     val idLogin = intent.getStringExtra("id")
-    Log.i("ds3m", "Header: $idLogin")
 
     val loginCall = GetFunctionsCall.getDriverCall().getDriverById(id = idLogin.toString())
 

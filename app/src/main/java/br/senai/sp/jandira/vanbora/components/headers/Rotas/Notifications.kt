@@ -12,10 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
@@ -23,10 +20,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -84,6 +86,7 @@ fun Notifications (
 
 
         val idContract = intent.getStringExtra("id")
+        Log.i("ds3m", "Notifications idContract: $idContract")
 
         val contractCall = GetFunctionsCall.getContractCall().getContractId(id = idContract.toString())
 
@@ -108,6 +111,19 @@ fun Notifications (
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Row(
+
+            ) {
+                Text(
+                    text = "Notificações",
+                    fontSize = 45.sp,
+                    style = MaterialTheme.typography.h2.copy(
+                        fontFamily = FontFamily(Font(R.font.poppins_semibold)),
+                        color = Color(android.graphics.Color.parseColor("#FFFFFF")),
+                        shadow = Shadow(color = Color.Black, offset = Offset(0F, 4F), blurRadius = 5f)
+                    )
+                )
+            }
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize()

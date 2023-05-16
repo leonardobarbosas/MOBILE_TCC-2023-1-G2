@@ -19,10 +19,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
@@ -102,7 +107,29 @@ fun MeusContratos(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Seus Contratos", fontSize = 32.sp)
+            Row(
+
+            ) {
+                Text(
+                    text = "Seus",
+                    fontSize = 45.sp,
+                    style = MaterialTheme.typography.h2.copy(
+                        fontFamily = FontFamily(Font(R.font.poppins_semibold)),
+                        color = Color(android.graphics.Color.parseColor("#E0B441")),
+                        shadow = Shadow(color = Color.Black, offset = Offset(0F, 4F), blurRadius = 5f)
+                    )
+                )
+                Spacer(modifier = Modifier.padding(5.dp))
+                Text(
+                    text = "Contratos",
+                    fontSize = 45.sp,
+                    style = MaterialTheme.typography.h2.copy(
+                        fontFamily = FontFamily(Font(R.font.poppins_semibold)),
+                        color = Color(android.graphics.Color.parseColor("#FFFFFF")),
+                        shadow = Shadow(color = Color.Black, offset = Offset(0F, 4F), blurRadius = 5f)
+                    )
+                )
+            }
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize()

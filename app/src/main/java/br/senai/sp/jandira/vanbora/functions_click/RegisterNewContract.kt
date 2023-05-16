@@ -39,7 +39,6 @@ fun RegisterNewContract(
     contractCallSave.enqueue(object :Callback<ResponseJson>{
         override fun onResponse(call: Call<ResponseJson>, response: Response<ResponseJson>) {
             var contract = response
-            Log.i("ds3m", "response.body: $contract")
         }
 
         override fun onFailure(call: Call<ResponseJson>, t: Throwable) {
