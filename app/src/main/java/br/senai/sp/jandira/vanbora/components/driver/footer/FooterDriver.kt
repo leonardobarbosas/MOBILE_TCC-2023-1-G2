@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.*
+import br.senai.sp.jandira.vanbora.components.headers.RotasDriver.DestinosDriver
 import br.senai.sp.jandira.vanbora.components.headers.RotasDriver.Notificacoes
 import br.senai.sp.jandira.vanbora.components.headers.RotasDriver.SeusContratos
 import br.senai.sp.jandira.vanbora.components.headers.RotasDriver.SuasEscolas
@@ -102,7 +103,7 @@ fun Navigation(navController: NavHostController) {
         }
 
         composable(DestinosDriver.RotaSeusContratos.route) {
-            SeusContratos()
+            SeusContratos(viewModel = MainViewModel())
         }
 
         composable(DestinosDriver.RotaSuasEscolas.route) {
