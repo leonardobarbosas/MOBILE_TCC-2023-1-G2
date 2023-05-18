@@ -38,6 +38,8 @@ import br.senai.sp.jandira.vanbora.components.headers.headerDriver.HeaderMotoris
 import br.senai.sp.jandira.vanbora.functions_click.RegiterNewSchool
 import br.senai.sp.jandira.vanbora.model.contract.EscolaDriver
 import br.senai.sp.jandira.vanbora.model.contract.EscolaList
+import br.senai.sp.jandira.vanbora.model.contract.ResponseJson
+import br.senai.sp.jandira.vanbora.model.contract.SchoolPost
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.ui.activities.driver.SuasVansActivity
 import retrofit2.Call
@@ -173,6 +175,55 @@ fun SuasEscolas() {
                                 Button(
                                     onClick = {
 
+                                        val escola = SchoolPost(
+                                            driver!!.id,
+                                            escola.id_escola
+                                        )
+
+                                        Log.i("ds3m", "SuasEscolas: $escola")
+
+                                        val callEscolaDelete = GetFunctionsCall.getEscolaCall().deleteDriverSchool(escola = escola)
+
+                                        callEscolaDelete.enqueue(object : Callback<ResponseJson>{
+                                            override fun onResponse(
+                                                call: Call<ResponseJson>,
+                                                response: Response<ResponseJson>
+                                            ) {
+                                                Log.i("ds3m", "${response.code()}")
+                                            }
+
+                                            override fun onFailure(
+                                                call: Call<ResponseJson>,
+                                                t: Throwable
+                                            ) {
+                                                Log.i("ds3m", "$t")
+                                            }
+                                        })
+//                                        val callEscolaDelete = GetFunctionsCall.getEscolaCall()
+//                                            .deleteDriverSchool(escola)
+//                                        callEscolaDelete.enqueue(object : Callback<ResponseJson> {
+//                                            override fun onResponse(
+//                                                call: Call<ResponseJson>,
+//                                                response: Response<ResponseJson>
+//                                            ) {
+//                                                Toast.makeText(
+//                                                    context,
+//                                                    "Escola Deletada com sucesso",
+//                                                    Toast.LENGTH_SHORT
+//                                                ).show()
+//                                                simulateHotReload(context)
+//                                                Log.i("ds3m", "${response.code()}")
+//                                            }
+//
+//                                            override fun onFailure(
+//                                                call: Call<ResponseJson>,
+//                                                t: Throwable
+//                                            ) {
+//                                                Log.i("ds3m", "$t")
+//                                            }
+//
+//                                        })
+
                                     },
                                     shape = CircleShape,
                                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
@@ -189,7 +240,7 @@ fun SuasEscolas() {
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.padding(20.dp))
 
             Column(
@@ -245,12 +296,13 @@ fun SuasEscolas() {
                 Button(
                     onClick = {
 
-                              RegiterNewSchool(
-                                  escola = saveState,
-                                  motorista = escolas.schools[0].id_motorista,
-                              )
+                        RegiterNewSchool(
+                            escola = saveState,
+                            motorista = escolas.schools[0].id_motorista,
+                        )
 
-                        Toast.makeText(context, "Escola criada com sucesso!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Escola criada com sucesso!", Toast.LENGTH_SHORT)
+                            .show()
 
 //                        simulateHotReload(SuasVansActivity::class.java)
                     },

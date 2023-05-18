@@ -4,6 +4,7 @@ import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
 import br.senai.sp.jandira.vanbora.model.contract.*
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -25,5 +26,9 @@ interface EscolaCall {
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("driverSchool")
     fun postDriverSchool(@Body escola: SchoolPost): Call<ResponseJson>
+
+    @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
+    @DELETE("driverSchools/delete")
+    fun deleteDriverSchool(@Body escola: SchoolPost): Call<ResponseJson>
 
 }

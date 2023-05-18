@@ -4,7 +4,7 @@ package br.senai.sp.jandira.vanbora.api.calls.van
 import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
 import br.senai.sp.jandira.vanbora.model.driver.Van
 import br.senai.sp.jandira.vanbora.model.driver.VanList
-import br.senai.sp.jandira.vanbora.model.posts.van.PostPutVan
+import br.senai.sp.jandira.vanbora.model.van.PostPutVan
 import retrofit2.Call
 import retrofit2.http.*
 
