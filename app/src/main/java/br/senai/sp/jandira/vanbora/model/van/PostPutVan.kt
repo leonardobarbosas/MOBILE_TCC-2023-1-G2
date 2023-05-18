@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.vanbora.model.posts.van
+package br.senai.sp.jandira.vanbora.model.van
 
 data class PostPutVan(
     val foto: String,

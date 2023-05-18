@@ -32,7 +32,7 @@ import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.ui.theme.VanboraTheme
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.Van
-import br.senai.sp.jandira.vanbora.model.posts.van.PostPutVan
+import br.senai.sp.jandira.vanbora.model.van.PostPutVan
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
