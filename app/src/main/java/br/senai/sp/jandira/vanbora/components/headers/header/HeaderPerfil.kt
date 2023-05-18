@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.HeaderCadastroLogin
 import br.senai.sp.jandira.vanbora.model.user.User
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristaPerfilActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,9 +28,9 @@ fun HeaderPerfil(){
 
     val context = LocalContext.current
 
-    val intent = (context as PerfilActivity).intent
+    val intent = (context as MotoristaPerfilActivity).intent
 
-    val idPerfil = intent.getStringExtra("id")
+    val idPerfil = intent.getStringExtra("id_usuario")
 
     val perfilCall = GetFunctionsCall.getUserCall().getUserById(id = idPerfil.toString())
 
@@ -38,13 +38,6 @@ fun HeaderPerfil(){
         mutableStateOf<User?>(null)
     }
 
-    var code by remember {
-        mutableStateOf("")
-    }
-
-    var message by remember {
-        mutableStateOf("")
-    }
 
     perfilCall.enqueue(object : Callback<User> {
         override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -67,11 +60,9 @@ fun HeaderPerfil(){
                 modifier = Modifier
                     .size(40.dp)
                     .clickable {
-                            if (perfil != null) {
                                 val intentSelect = Intent(context, MotoristasActivity::class.java)
                                 intentSelect.putExtra("id", perfil?.id.toString())
                                 context.startActivity(intentSelect)
-                            }
 
                     }
             )

@@ -39,7 +39,6 @@ class MotoristasActivity : ComponentActivity() {
                         )
                     }
 
-
                     Header()
 
                     Motorista()
@@ -51,7 +50,6 @@ class MotoristasActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Motorista() {
 
@@ -65,11 +63,7 @@ fun Motorista() {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
 
-
-
         Motoristas()
-
-
 
     }
 }

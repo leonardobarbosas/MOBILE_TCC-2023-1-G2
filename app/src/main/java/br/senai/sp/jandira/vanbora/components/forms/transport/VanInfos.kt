@@ -1,3 +1,4 @@
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewDriver
 import br.senai.sp.jandira.vanbora.model.driver.Van
+import br.senai.sp.jandira.vanbora.model.user.User
 
 @Composable
 fun VanInfos(
@@ -218,6 +220,8 @@ fun VanInfos(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
     }
+
+
 
     //BUTTON
     Column() {

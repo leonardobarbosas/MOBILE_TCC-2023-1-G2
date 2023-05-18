@@ -21,6 +21,12 @@
             android:value="AIzaSyAYk7lMFAb_tZjVD1zcDlipBE-LyA4PqSI" />
 
         <activity
+            android:name=".ui.activities.driver.EditarDadosVan"
+            android:exported="false"
+            android:label="@string/title_activity_editar_vans"
+            android:theme="@style/Theme.Vanbora" />
+
+        <activity
             android:name=".ui.activities.driver.SuasVansActivity"
             android:exported="false"
             android:label="@string/title_activity_suas_vans"
@@ -46,7 +52,7 @@
             android:label="@string/title_activity_enviar_contrato"
             android:theme="@style/Theme.Vanbora" />
         <activity
-            android:name=".ui.activities.client.PerfilActivity"
+            android:name=".ui.activities.client.MotoristaPerfilActivity"
             android:exported="false"
             android:label="@string/title_activity_perfil"
             android:theme="@style/Theme.Vanbora" />

@@ -97,8 +97,15 @@
     <string name="title_activity_visualizar_contratos">VisualizarContratosActivity</string>
     <string name="title_activity_contrato">ContratoActivity</string>
     <string name="title_activity_suas_vans">SuasVansActivity</string>
+    <string name="title_activity_editar_vans">SuasVansActivity</string>
     <string name="suas_vans_suas">Suas</string>
     <string name="suas_vans_vans">Vans</string>
-
+    <string name="vagas_vans">Vagas</string>
+    <string name="isplaca_error">Placa invalida</string>
+    <string name="ismodelo_error">Modelo invalido</string>
+    <string name="isnumero_vans_error">Número de Vagas inválido</string>
+    <string name="ispreco_servico_error">Preço inválido</string>
+    <string name="preco_servico">Preço do Serviço</string>
+    <string name="tipo_contrato">Tipo de Contrato:</string>
 
 </resources>

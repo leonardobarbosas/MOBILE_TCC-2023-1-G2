@@ -28,15 +28,6 @@ fun FooterLogin(){
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
-
-        ) {
-            Text(
-                text = stringResource(id = R.string.google)
-            )
-        }
 
         Spacer(modifier = Modifier.height(20.dp))
 

@@ -27,4 +27,17 @@ interface DriverCall {
     @POST("driver/login")
     fun loginDriverClient(@Body driver: Driver): Call<LoginDriverClientJwtModel>
 
+    @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
+    @POST("filter-drivers/")
+    fun filterByName(@Query("driverName")driverName: String): Call<DriverList>
+
+    @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
+    @POST("filter-drivers/")
+    fun filterBySchool(@Query("school")school: String): Call<DriverList>
+
+    @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
+    @POST("filter-drivers/")
+    fun filterByPrice(@Query("price")price: String): Call<DriverList>
+
+
 }
