@@ -91,6 +91,7 @@ fun Contrato(
     driverCall.enqueue(object : Callback<Driver> {
         override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
             driver = response.body()!!
+            Log.i("ds3m", "onResponse: $driver")
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
@@ -109,13 +110,7 @@ fun Contrato(
     val nomePassageiro = intent.getStringExtra("nome_passageiro").toString()
     val idadePassageiro = intent.getStringExtra("idade_passageiro").toString()
 
-    Log.i("ds3m", "id nomePassageiro: $nomePassageiro")
-    Log.i("ds3m", "id idadePassageiro: $idadePassageiro")
-    Log.i("ds3m", "id idTipoPagamento: ${idTipoPagamento.toInt()}")
-    Log.i("ds3m", "id idTipoContrato: ${idTipoContrato.toInt()}")
-    Log.i("ds3m", "id idEscola: ${idEscola.toInt()}")
-    Log.i("ds3m", "id idUser: ${idUser.toInt()}")
-    Log.i("ds3m", "id idDriver: ${idDriver.toInt()}")
+
 
 
 
@@ -146,6 +141,7 @@ fun Contrato(
                     Text(text = "Tipo de Pagamento: $tipoPagamento")
                     Text(text = "Tipo de Contrato: $tipoContrato")
                     Text(text = "Escola: $escola")
+                    Text(text = "Preço: ${driver?.id_preco?.faixa_preco.toString()}")
 
                     Spacer(modifier = Modifier.padding(10.dp))
 

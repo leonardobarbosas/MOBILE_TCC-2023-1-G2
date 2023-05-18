@@ -130,16 +130,16 @@ fun EnviarContrato() {
         })
 
         //Escola
-        val escolaCall = GetFunctionsCall.getEscolaCall().getAllSchools()
+        val escolaCall = GetFunctionsCall.getEscolaCall().getSchoolByDriver(id = idDriver.toString())
         var escolas by remember {
-            mutableStateOf(EscolaList(listOf()))
+            mutableStateOf(EscolaDriver(listOf()))
         }
-        escolaCall.enqueue(object : Callback<EscolaList> {
-            override fun onResponse(call: Call<EscolaList>, response: Response<EscolaList>) {
+        escolaCall.enqueue(object : Callback<EscolaDriver> {
+            override fun onResponse(call: Call<EscolaDriver>, response: Response<EscolaDriver>) {
                 escolas = response.body()!!
             }
 
-            override fun onFailure(call: Call<EscolaList>, t: Throwable) {
+            override fun onFailure(call: Call<EscolaDriver>, t: Throwable) {
                 Log.i("ds3m", "onFailure escolas: ${t.message}")
             }
         })
@@ -433,10 +433,10 @@ fun EnviarContrato() {
                 escolas.schools.map {
                     DropdownMenuItem(onClick = {
                         idEscola = it.id
-                        escolaSelectedText = it.nome
+                        escolaSelectedText = it.nome_escola
                         escolaState = false
                     }) {
-                        Text(text = it.nome)
+                        Text(text = it.nome_escola)
                     }
                 }
             }
