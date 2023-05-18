@@ -32,6 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewUser
+import br.senai.sp.jandira.vanbora.ui.activities.client.UserActivityComplements
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 
 @Composable
 fun UserInfos(
@@ -91,9 +95,11 @@ fun UserInfos(
         mutableStateOf<Bitmap?>(null)
     }
 
-    val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()){ uri: Uri? ->
-        imageUri = uri
-    }
+    
+
+    var storage = FirebaseStorage.getInstance()
+
+
 
     //Main
     Column(
@@ -101,7 +107,6 @@ fun UserInfos(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
 
 
         //RG
