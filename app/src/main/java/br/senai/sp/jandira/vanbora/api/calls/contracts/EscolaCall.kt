@@ -28,7 +28,7 @@ interface EscolaCall {
     fun postDriverSchool(@Body escola: SchoolPost): Call<ResponseJson>
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
-    @DELETE("driverSchools/delete")
-    fun deleteDriverSchool(@Body escola: SchoolPost): Call<ResponseJson>
+    @DELETE("driverSchool/escola/{id_school}/motorista/{id_driver}")
+    fun deleteDriverSchool(@Path("id_school") idSchool: Int, @Path("id_driver") idDriver: Int): Call<SchoolPost>
 
 }

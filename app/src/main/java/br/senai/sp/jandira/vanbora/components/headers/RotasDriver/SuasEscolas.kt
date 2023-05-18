@@ -176,53 +176,24 @@ fun SuasEscolas() {
                                     onClick = {
 
                                         val escola = SchoolPost(
-                                            driver!!.id,
-                                            escola.id_escola
+                                            escola.id_escola,
+                                            idDriver.toString().toInt()
                                         )
 
-                                        Log.i("ds3m", "SuasEscolas: $escola")
 
-                                        val callEscolaDelete = GetFunctionsCall.getEscolaCall().deleteDriverSchool(escola = escola)
+                                        val callEscolaDelete = GetFunctionsCall.getEscolaCall().deleteDriverSchool(escola.id_escola, escola.id_motorista)
 
-                                        callEscolaDelete.enqueue(object : Callback<ResponseJson>{
-                                            override fun onResponse(
-                                                call: Call<ResponseJson>,
-                                                response: Response<ResponseJson>
-                                            ) {
-                                                Log.i("ds3m", "${response.code()}")
+                                        callEscolaDelete.enqueue(object : Callback<SchoolPost>{
+                                            override fun onResponse(call: Call<SchoolPost>, response: Response<SchoolPost>) {
+                                                Toast.makeText(context, "Escola deletada com sucesso", Toast.LENGTH_SHORT).show()
+                                                simulateHotReload(context)
                                             }
 
-                                            override fun onFailure(
-                                                call: Call<ResponseJson>,
-                                                t: Throwable
-                                            ) {
+                                            override fun onFailure(call: Call<SchoolPost>, t: Throwable) {
                                                 Log.i("ds3m", "$t")
                                             }
                                         })
-//                                        val callEscolaDelete = GetFunctionsCall.getEscolaCall()
-//                                            .deleteDriverSchool(escola)
-//                                        callEscolaDelete.enqueue(object : Callback<ResponseJson> {
-//                                            override fun onResponse(
-//                                                call: Call<ResponseJson>,
-//                                                response: Response<ResponseJson>
-//                                            ) {
-//                                                Toast.makeText(
-//                                                    context,
-//                                                    "Escola Deletada com sucesso",
-//                                                    Toast.LENGTH_SHORT
-//                                                ).show()
-//                                                simulateHotReload(context)
-//                                                Log.i("ds3m", "${response.code()}")
-//                                            }
-//
-//                                            override fun onFailure(
-//                                                call: Call<ResponseJson>,
-//                                                t: Throwable
-//                                            ) {
-//                                                Log.i("ds3m", "$t")
-//                                            }
-//
-//                                        })
+
 
                                     },
                                     shape = CircleShape,
