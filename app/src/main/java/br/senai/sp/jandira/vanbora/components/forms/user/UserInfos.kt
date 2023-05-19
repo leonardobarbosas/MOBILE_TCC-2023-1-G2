@@ -1,29 +1,27 @@
 package br.senai.sp.jandira.vanbora.components.forms.user
 
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,16 +30,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewUser
-import br.senai.sp.jandira.vanbora.ui.activities.client.UserActivityComplements
-import com.google.firebase.ktx.Firebase
+import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
 
 @Composable
 fun UserInfos(
     name: String,
     email: String,
-    senha: String
+    senha: String,
 ) {
 
     var rgState by rememberSaveable() {
@@ -86,20 +82,49 @@ fun UserInfos(
 
     val scrollState = rememberScrollState()
 
-    //image
-    var imageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
     var context = LocalContext.current
-    var bitmap = remember{
-        mutableStateOf<Bitmap?>(null)
-    }
-
-    
 
     var storage = FirebaseStorage.getInstance()
 
+    var selectedImage by remember {
+        mutableStateOf(listOf<Uri>())
+    }
 
+
+    var imageIcon by remember {
+
+        mutableStateOf<Painter?>(null)
+
+    }
+
+    var succesImg by remember {
+        mutableStateOf(1)
+    }
+
+
+    val gallerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents(),
+        onResult = { uriList ->
+            succesImg = 2
+            selectedImage = uriList
+
+            Log.i("ds3m", "UserInfos: ${selectedImage[0].encodedUserInfo}")
+//            val mountainsRef = storage.reference.child("users-profile-picture/${selectedImage[0].}")
+//
+//            val uploadTask = mountainsRef.putFile(selectedImage[0])
+//
+//            uploadTask.addOnSuccessListener {
+//                mountainsRef.downloadUrl.addOnSuccessListener { uri->
+//                    Log.i("ds3m", "UserInfos: $uri")
+//                }
+//            }
+
+        })
+    if (succesImg == 1) {
+        imageIcon = painterResource(id = R.drawable.baseline_linked_camera_24_back)
+    } else if (succesImg == 2) {
+        imageIcon = rememberAsyncImagePainter(model = selectedImage[0])
+    }
 
     //Main
     Column(
@@ -108,7 +133,12 @@ fun UserInfos(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-
+        Icon(painter = imageIcon!!, contentDescription = "", modifier = Modifier
+            .clickable {
+                gallerLauncher.launch("image/*")
+            }
+            .size(200.dp)
+        )
         //RG
         OutlinedTextField(
             value = rgState, onValueChange = {
@@ -351,7 +381,18 @@ fun UserInfos(
     ) {
         Button(
             onClick = {
-                RegisterNewUser(cep = cepState, cpf = cpfState, data_nascimento = dataNascimentoState, email = email, foto = "url_foto", nome = name, rg = rgState, senha = senha, telefone = telefoneState, context = context)
+                RegisterNewUser(
+                    cep = cepState,
+                    cpf = cpfState,
+                    data_nascimento = dataNascimentoState,
+                    email = email,
+                    foto = "url_foto",
+                    nome = name,
+                    rg = rgState,
+                    senha = senha,
+                    telefone = telefoneState,
+                    context = context
+                )
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
