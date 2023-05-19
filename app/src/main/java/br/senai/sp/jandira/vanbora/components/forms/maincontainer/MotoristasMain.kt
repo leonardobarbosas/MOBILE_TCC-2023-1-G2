@@ -1,5 +1,8 @@
 package br.senai.sp.jandira.vanbora.components.forms.maincontainer
 
+import android.util.Log
+import android.widget.Toast
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -24,24 +27,57 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
-import br.senai.sp.jandira.vanbora.ui.activities.client.PerfilActivity
+import br.senai.sp.jandira.vanbora.model.user.User
+import br.senai.sp.jandira.vanbora.ui.activities.client.EnviarContratoActivity
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristaPerfilActivity
+import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-@Preview(showSystemUi = true, showBackground = true)
+@SuppressLint("RememberReturnType")
 @Composable
-fun MotoristasMain() {
+fun MotoristasMain(
+    viewModel: MainViewModel
+) {
 
     var context = LocalContext.current
+
 
     var filterState by remember {
         mutableStateOf("")
     }
+
+    var driverByName by remember {
+        mutableStateOf<DriverList?>(null)
+    }
+
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+
+
+    val intent = (context as MotoristasActivity).intent
+    val idUser = intent.getStringExtra("id")
+    val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
+    var user by remember {
+        mutableStateOf<User?>(null)
+    }
+    userCall.enqueue(object : Callback<User> {
+        override fun onResponse(call: Call<User>, response: Response<User>) {
+            user = response.body()!!
+        }
+
+        override fun onFailure(call: Call<User>, t: Throwable) {
+            Log.i("ds3m", "onFailure $t")
+        }
+    })
+
 
     val driversCall = GetFunctionsCall.getDriverCall().getAllDrivers()
 
@@ -49,14 +85,27 @@ fun MotoristasMain() {
         mutableStateOf(DriverList(listOf()))
     }
 
-    driversCall.enqueue(object : Callback<DriverList> {
-        override fun onResponse(call: Call<DriverList>, response: Response<DriverList>) {
-            drivers = response.body()!!
-        }
+    var statusRequisition by remember {
+        mutableStateOf(0)
+    }
 
-        override fun onFailure(call: Call<DriverList>, t: Throwable) {
-        }
-    })
+    if (statusRequisition == 1) {
+        Log.i("ds3m", "onResponse: $statusRequisition")
+        drivers = driverByName!!
+
+        Log.i("ds3m", "onFailure: $drivers")
+    } else if (statusRequisition == 0) {
+        driversCall.enqueue(object : Callback<DriverList> {
+            override fun onResponse(call: Call<DriverList>, response: Response<DriverList>) {
+                drivers = response.body()!!
+            }
+
+            override fun onFailure(call: Call<DriverList>, t: Throwable) {
+            }
+        })
+    }
+
+
 
 
     Column(
@@ -103,14 +152,119 @@ fun MotoristasMain() {
 
                 Spacer(modifier = Modifier.padding(6.dp))
 
-                Icon(
-                    imageVector = Icons.Filled.FilterList,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .height(46.dp)
-                        .width(46.dp),
-                    tint = Color.Black
-                )
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                        .wrapContentSize(Alignment.TopEnd)
+                ){
+                    IconButton(
+                        onClick = { expanded = !expanded }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.FilterList,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .height(46.dp)
+                                .width(46.dp),
+                            tint = Color.Black
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            onClick = {
+                                if (filterState != null && filterState != "") {
+
+                                    val filterByName =
+                                        GetFunctionsCall.getDriverCall().filterByName(filterState)
+
+                                    filterByName.enqueue(object : Callback<DriverList> {
+                                        override fun onResponse(
+                                            call: Call<DriverList>,
+                                            response: Response<DriverList>
+                                        ) {
+                                            driverByName = response.body()!!
+
+                                            statusRequisition = 1
+                                        }
+
+                                        override fun onFailure(
+                                            call: Call<DriverList>,
+                                            t: Throwable
+                                        ) {
+                                            Log.i("ds3m", "onFailure: $t")
+                                        }
+                                    })
+
+                                }
+                            }
+                        ){
+                            Text(text = "Nome")
+                        }
+                        DropdownMenuItem(
+                            onClick = {
+                                if (filterState != null && filterState != "") {
+
+                                    val filterByName =
+                                        GetFunctionsCall.getDriverCall().filterBySchool(filterState)
+
+                                    filterByName.enqueue(object : Callback<DriverList> {
+                                        override fun onResponse(
+                                            call: Call<DriverList>,
+                                            response: Response<DriverList>
+                                        ) {
+                                            driverByName = response.body()!!
+
+                                            statusRequisition = 1
+                                        }
+
+                                        override fun onFailure(
+                                            call: Call<DriverList>,
+                                            t: Throwable
+                                        ) {
+                                            Log.i("ds3m", "onFailure: $t")
+                                        }
+                                    })
+
+                                }
+                            }
+                        ){
+                            Text(text = "Escola")
+                        }
+                        DropdownMenuItem(
+                            onClick = {
+                                if (filterState != null && filterState != "") {
+
+                                    val filterByName =
+                                        GetFunctionsCall.getDriverCall().filterByPrice(filterState)
+
+                                    filterByName.enqueue(object : Callback<DriverList> {
+                                        override fun onResponse(
+                                            call: Call<DriverList>,
+                                            response: Response<DriverList>
+                                        ) {
+                                            driverByName = response.body()!!
+
+                                            statusRequisition = 1
+                                        }
+
+                                        override fun onFailure(
+                                            call: Call<DriverList>,
+                                            t: Throwable
+                                        ) {
+                                            Log.i("ds3m", "onFailure: $t")
+                                        }
+                                    })
+
+                                }
+                            }
+                        ){
+                            Text(text = "Preço")
+                        }
+                    }
+                }
+
 
             }
 
@@ -126,9 +280,11 @@ fun MotoristasMain() {
                             .height(200.dp)
                             .padding(6.dp)
                             .clickable {
-                                val intentSelect = Intent(context, PerfilActivity::class.java)
+                                val intentSelect =
+                                    Intent(context, MotoristaPerfilActivity::class.java)
 
-                                intentSelect.putExtra("id", driver.id.toString())
+                                intentSelect.putExtra("id_motorista", driver.id.toString())
+                                intentSelect.putExtra("id_usuario", idUser.toString())
 
                                 context.startActivity(intentSelect)
                             },
@@ -475,8 +631,8 @@ fun MotoristasMain() {
                                         verticalArrangement = Arrangement.Center,
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        Text(text = "${driver.van!!.get(0)?.quantidade_vagas}")
-                                        if (driver.van.get(0)?.quantidade_vagas == 1) {
+                                        Text(text = "${driver.van!![0].quantidade_vagas}")
+                                        if (driver.van[0].quantidade_vagas == 1) {
                                             Text(
                                                 text = "Vaga",
                                                 fontSize = 12.sp,

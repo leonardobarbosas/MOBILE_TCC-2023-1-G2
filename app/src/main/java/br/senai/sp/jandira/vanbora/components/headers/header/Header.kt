@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.EditarPerfilActivity
+import br.senai.sp.jandira.vanbora.ui.activities.client.EnviarContratoActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
@@ -35,7 +36,6 @@ fun Header() {
     val intent = (context as MotoristasActivity).intent
 
     val idLogin = intent.getStringExtra("id")
-    Log.i("ds3m", "Header: $idLogin")
 
     val loginCall = GetFunctionsCall.getUserCall().getUserById(id = idLogin.toString())
 
@@ -78,10 +78,13 @@ fun Header() {
                 .clickable {
 
                     val intentSelect = Intent(context, EditarPerfilActivity::class.java)
-
                     intentSelect.putExtra("id", login?.id.toString())
 
+                    val contractId = Intent(context, EnviarContratoActivity::class.java)
+                    intentSelect.putExtra("id_usuario", login?.id.toString())
+
                     login?.id.toString() to EditarPerfilActivity::class.java
+                    login?.id.toString() to EnviarContratoActivity::class.java
 
                     context.startActivity(intentSelect)
 

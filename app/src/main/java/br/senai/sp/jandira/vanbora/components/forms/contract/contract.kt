@@ -15,27 +15,31 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.functions_click.RegisterNewContract
+import br.senai.sp.jandira.vanbora.model.contract.*
+import br.senai.sp.jandira.vanbora.model.driver.Driver
+import br.senai.sp.jandira.vanbora.model.driver.Van
+import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun EnviarContrato() {
 
@@ -47,6 +51,40 @@ fun EnviarContrato() {
     ) {
 
         val context = LocalContext.current
+
+        val intent = (context as EnviarContratoActivity).intent
+
+        var usuario by remember {
+            mutableStateOf<User?>(null)
+        }
+        val idUser = intent.getStringExtra("id_usuario")
+        val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
+        userCall.enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                usuario = response.body()!!
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.i("ds3m", "onFailure $t")
+            }
+        })
+
+
+        var driver by remember {
+            mutableStateOf<Driver?>(null)
+        }
+        val idDriver = intent.getStringExtra("id_motorista")
+        val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
+        driverCall.enqueue(object : Callback<Driver> {
+            override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
+                driver = response.body()!!
+            }
+
+            override fun onFailure(call: Call<Driver>, t: Throwable) {
+                Log.i("ds3m", "onFailure driver")
+            }
+        })
+
 
         var nomeResponsavelState by rememberSaveable() {
             mutableStateOf("")
@@ -73,31 +111,93 @@ fun EnviarContrato() {
         }
 
 
+        //Tipo de Transporte
+        val tipoTransporteCall = GetFunctionsCall.getTipoTransporteCall().getAllContracts()
+        var tipoTransportes by remember {
+            mutableStateOf(TipoTransporteList(listOf()))
+        }
+        tipoTransporteCall.enqueue(object : Callback<TipoTransporteList> {
+            override fun onResponse(
+                call: Call<TipoTransporteList>,
+                response: Response<TipoTransporteList>
+            ) {
+                tipoTransportes = response.body()!!
+            }
+
+            override fun onFailure(call: Call<TipoTransporteList>, t: Throwable) {
+                Log.i("ds3m", "onFailure tipotransporte: ${t.message}")
+            }
+        })
+
+        //Escola
+        val escolaCall = GetFunctionsCall.getEscolaCall().getAllSchools()
+        var escolas by remember {
+            mutableStateOf(EscolaList(listOf()))
+        }
+        escolaCall.enqueue(object : Callback<EscolaList> {
+            override fun onResponse(call: Call<EscolaList>, response: Response<EscolaList>) {
+                escolas = response.body()!!
+            }
+
+            override fun onFailure(call: Call<EscolaList>, t: Throwable) {
+                Log.i("ds3m", "onFailure escolas: ${t.message}")
+            }
+        })
+
+        //Tipo de Pagamento
+        val tipoPagamentoCall = GetFunctionsCall.getTipoPagamentoCall().getAllPayments()
+        var tipoPagamentos by remember {
+            mutableStateOf(TipoPagamentoList(listOf()))
+        }
+        tipoPagamentoCall.enqueue(object : Callback<TipoPagamentoList> {
+            override fun onResponse(
+                call: Call<TipoPagamentoList>,
+                response: Response<TipoPagamentoList>
+            ) {
+                tipoPagamentos = response.body()!!
+            }
+
+            override fun onFailure(call: Call<TipoPagamentoList>, t: Throwable) {
+                Log.i("ds3m", "onFailure tipo pagament: ${t.message}")
+            }
+
+        })
+
+
         //Tipo Transporte
         var mExpanded by remember { mutableStateOf(false) }
-        val selects = listOf(
-            stringResource(id = R.string.ida),
-            stringResource(id = R.string.volta),
-            stringResource(id = R.string.ida_e_volta)
-        )
         var mSelectedText by remember { mutableStateOf("") }
         var mTextFieldSize by remember { mutableStateOf(Size.Zero) }
         val icon = if (mExpanded)
             Icons.Filled.KeyboardArrowUp
         else
             Icons.Filled.KeyboardArrowDown
+        var idTipoContrato by remember {
+            mutableStateOf(0)
+        }
+
 
         //Tipo Pagamento
+        var idTipoPagamento by remember {
+            mutableStateOf(0)
+        }
         var nExpanded by remember { mutableStateOf(false) }
-        val nSelects = listOf(
-            stringResource(id = R.string.diario),
-            stringResource(id = R.string.semanal),
-            stringResource(id = R.string.mensal),
-            stringResource(id = R.string.anual)
-        )
         var nSelectedText by remember { mutableStateOf("") }
         var nTextFieldSize by remember { mutableStateOf(Size.Zero) }
         val nIcon = if (nExpanded)
+            Icons.Filled.KeyboardArrowUp
+        else
+            Icons.Filled.KeyboardArrowDown
+
+
+        //Escola - Teste
+        var idEscola by remember {
+            mutableStateOf(0)
+        }
+        var escolaState by remember { mutableStateOf(false) }
+        var escolaSelectedText by remember { mutableStateOf("") }
+        var escolaTextFieldSize by remember { mutableStateOf(Size.Zero) }
+        val escolaIcon = if (nExpanded)
             Icons.Filled.KeyboardArrowUp
         else
             Icons.Filled.KeyboardArrowDown
@@ -156,7 +256,7 @@ fun EnviarContrato() {
             value = nomePassageiroState, onValueChange = {
                 nomePassageiroState = it
 
-                if (it == "" || it == null) {
+                if (it == "") {
                     isNomePassageiroError
                 }
 
@@ -204,7 +304,7 @@ fun EnviarContrato() {
             value = idadePassageiroState, onValueChange = {
                 idadePassageiroState = it
 
-                if (it == "" || it == null) {
+                if (it == "") {
                     isIdadePassageiroError
                 }
 
@@ -282,26 +382,27 @@ fun EnviarContrato() {
                 modifier = Modifier
                     .width(with(LocalDensity.current) { mTextFieldSize.width.toDp() })
             ) {
-                selects.forEach { label ->
+                tipoTransportes.typesContracts.map {
                     DropdownMenuItem(onClick = {
-                        mSelectedText = label
+                        idTipoContrato = it.id
+                        mSelectedText = it.tipo_contrato
                         mExpanded = false
                     }) {
-                        Text(text = label)
+                        Text(text = it.tipo_contrato)
                     }
                 }
             }
         }
 
-        //Tipo de transporte
+        //Escola
         Column() {
             OutlinedTextField(
-                value = nSelectedText,
-                onValueChange = { nSelectedText = it },
+                value = escolaSelectedText,
+                onValueChange = { escolaSelectedText = it },
                 modifier = Modifier
                     .fillMaxWidth()
                     .onGloballyPositioned { coordinates ->
-                        nTextFieldSize = coordinates.size.toSize()
+                        escolaTextFieldSize = coordinates.size.toSize()
                     }
                     .padding(top = 4.dp, start = 52.dp, end = 52.dp),
                 label = {
@@ -314,8 +415,8 @@ fun EnviarContrato() {
                     )
                 },
                 trailingIcon = {
-                    Icon(nIcon, "contentDescription",
-                        Modifier.clickable { nExpanded = !nExpanded })
+                    Icon(escolaIcon, "contentDescription",
+                        Modifier.clickable { escolaState = !escolaState })
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color(0, 0, 0, 255),
@@ -324,24 +425,25 @@ fun EnviarContrato() {
             )
 
             DropdownMenu(
-                expanded = nExpanded,
-                onDismissRequest = { nExpanded = false },
+                expanded = escolaState,
+                onDismissRequest = { escolaState = false },
                 modifier = Modifier
-                    .width(with(LocalDensity.current) { nTextFieldSize.width.toDp() })
+                    .width(with(LocalDensity.current) { escolaTextFieldSize.width.toDp() })
             ) {
-                nSelects.forEach { label ->
+                escolas.schools.map {
                     DropdownMenuItem(onClick = {
-                        nSelectedText = label
-                        nExpanded = false
+                        idEscola = it.id
+                        escolaSelectedText = it.nome
+                        escolaState = false
                     }) {
-                        Text(text = label)
+                        Text(text = it.nome)
                     }
                 }
             }
         }
 
-        //Tipo de transporte
-        Column() {
+        //Tipo de pagamento
+        Column {
             OutlinedTextField(
                 value = nSelectedText,
                 onValueChange = { nSelectedText = it },
@@ -376,12 +478,13 @@ fun EnviarContrato() {
                 modifier = Modifier
                     .width(with(LocalDensity.current) { nTextFieldSize.width.toDp() })
             ) {
-                nSelects.forEach { label ->
+                tipoPagamentos.typesPayment.map {
                     DropdownMenuItem(onClick = {
-                        nSelectedText = label
+                        idTipoPagamento = it.id
+                        nSelectedText = it.tipo_pagamento
                         nExpanded = false
                     }) {
-                        Text(text = label)
+                        Text(text = it.tipo_pagamento)
                     }
                 }
             }
@@ -389,20 +492,32 @@ fun EnviarContrato() {
 
         Spacer(modifier = Modifier.padding(16.dp))
 
+
+
+
+
         Button(
             onClick = {
+                Log.i("ds3m", "id idTipoPagamento: ${idTipoPagamento}")
+                Log.i("ds3m", "id idTipoContrato: ${idTipoContrato}")
+                Log.i("ds3m", "id idEscola: ${idEscola}")
+
                 val intentSelect = Intent(context, ContratoActivity::class.java)
 
+                intentSelect.putExtra("id_tipo_pagamento", idTipoPagamento.toString())
+                intentSelect.putExtra("tipo_pagamento", nSelectedText)
+                intentSelect.putExtra("id_tipo_contrato", idTipoContrato.toString())
+                intentSelect.putExtra("tipo_contrato", mSelectedText)
+                intentSelect.putExtra("id_escola", idEscola.toString())
+                intentSelect.putExtra("tipo_escola", escolaSelectedText)
                 intentSelect.putExtra("nome_responsavel", nomeResponsavelState)
                 intentSelect.putExtra("nome_passageiro", nomePassageiroState)
                 intentSelect.putExtra("idade_passageiro", idadePassageiroState)
-                intentSelect.putExtra("tipo_pagamento", mSelectedText)
-                intentSelect.putExtra("escola", nSelectedText)
-                intentSelect.putExtra("tipo_transporte", nSelectedText)
+                intentSelect.putExtra("id_usuario", idUser)
+                intentSelect.putExtra("id_motorista", idDriver)
 
                 context.startActivity(intentSelect)
 
-                Log.i("ds3m", "EnviarContrato: $nSelectedText")
             },
             colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
         ) {
@@ -414,4 +529,7 @@ fun EnviarContrato() {
 
     }
 }
+
+
+
 

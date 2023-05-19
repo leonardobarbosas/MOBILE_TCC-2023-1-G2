@@ -40,7 +40,7 @@ fun RegisterNewDriver (
         data_nascimento = data_nascimento,
         inicio_carreira = inicio_carreira,
         foto = foto,
-        descricao = descricao,
+        descricao = descricao
     )
 
     val driverCallSave = GetFunctionsCall.getDriverCall().saveDriver(driver)

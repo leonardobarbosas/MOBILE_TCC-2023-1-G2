@@ -31,20 +31,12 @@ fun HeaderContrato(){
 
     val intent = (context as EnviarContratoActivity).intent
 
-    val idPerfil = intent.getStringExtra("id")
+    val idPerfil = intent.getStringExtra("id_usuario")
 
     val perfilCall = GetFunctionsCall.getUserCall().getUserById(id = idPerfil.toString())
 
     var perfil by remember {
         mutableStateOf<User?>(null)
-    }
-
-    var code by remember {
-        mutableStateOf("")
-    }
-
-    var message by remember {
-        mutableStateOf("")
     }
 
     perfilCall.enqueue(object : Callback<User> {
@@ -61,7 +53,9 @@ fun HeaderContrato(){
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Row(modifier = Modifier.background(Color.White).padding(end = 25.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier
+            .background(Color.White)
+            .padding(end = 25.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "",

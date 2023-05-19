@@ -17,9 +17,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import br.senai.sp.jandira.vanbora.components.headers.Destinos
+import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.*
-import br.senai.sp.jandira.vanbora.ui.activities.driver.SuaVan
+import br.senai.sp.jandira.vanbora.components.headers.RotasDriver.DestinosDriver
+import br.senai.sp.jandira.vanbora.components.headers.RotasDriver.Notificacoes
+import br.senai.sp.jandira.vanbora.components.headers.RotasDriver.SeusContratos
+import br.senai.sp.jandira.vanbora.components.headers.RotasDriver.SuasEscolas
+import br.senai.sp.jandira.vanbora.ui.activities.driver.Vans
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -37,10 +41,10 @@ fun FooterDriver() {
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
-        Destinos.RotaSuaVan,
-        Destinos.RotaMeusContratos,
-        Destinos.RotaNotificacoes,
-        Destinos.RotaContate,
+        DestinosDriver.RotaSuasVans,
+        DestinosDriver.RotaSuasEscolas,
+        DestinosDriver.RotaNotificacoes,
+        DestinosDriver.RotaSeusContratos,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -58,7 +62,7 @@ fun BottomBar(navController: NavHostController) {
 
 @Composable
 fun RowScope.AddItem(
-    screen: Destinos,
+    screen: DestinosDriver,
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
@@ -90,30 +94,24 @@ fun RowScope.AddItem(
 @Composable
 fun Navigation(navController: NavHostController) {
 
-    NavHost(navController, startDestination = Destinos.RotaSuaVan.route) {
+    NavHost(navController, startDestination = DestinosDriver.RotaSuasVans.route) {
 
-        composable(Destinos.RotaPerfil.route) {
-            VerPerfil()
+
+
+        composable(DestinosDriver.RotaNotificacoes.route) {
+            Notificacoes(viewModel = MainViewModel())
         }
 
-        composable(Destinos.RotaNotificacoes.route) {
-            LocalizeSe()
+        composable(DestinosDriver.RotaSeusContratos.route) {
+            SeusContratos(viewModel = MainViewModel())
         }
 
-        composable(Destinos.RotaMeusContratos.route) {
-            MeusContratos()
+        composable(DestinosDriver.RotaSuasEscolas.route) {
+            SuasEscolas()
         }
 
-        composable(Destinos.RotaContate.route) {
-            ContateNos()
-        }
-
-        composable(Destinos.RotaMotoristas.route) {
-            Motoristas()
-        }
-
-        composable(Destinos.RotaSuaVan.route) {
-            SuaVan()
+        composable(DestinosDriver.RotaSuasVans.route) {
+            Vans()
         }
 
 
