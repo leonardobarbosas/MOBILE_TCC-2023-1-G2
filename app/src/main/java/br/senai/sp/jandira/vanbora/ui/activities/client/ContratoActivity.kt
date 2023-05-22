@@ -184,11 +184,7 @@ fun Contrato(
                                         )
 
 
-                                        Toast.makeText(
-                                            context,
-                                            "Contrato criado com sucesso!",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        Toast.makeText(context, "Contrato criado com sucesso!", Toast.LENGTH_SHORT).show()
 
                                         val intentSelect =
                                             Intent(context, MotoristasActivity::class.java)

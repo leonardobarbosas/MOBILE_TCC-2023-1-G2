@@ -18,7 +18,6 @@ interface EscolaCall {
     @GET("driverSchools/{id}")
     fun getSchoolByDriver(@Path("id")id: String): Call<EscolaDriver>
 
-
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("school")
     fun postSchool(@Body nome: TheSchoolPost): Call<SchoolReturnPost>

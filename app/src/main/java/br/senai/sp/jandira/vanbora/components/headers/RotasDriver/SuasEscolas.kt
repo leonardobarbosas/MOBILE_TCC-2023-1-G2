@@ -89,8 +89,7 @@ fun SuasEscolas() {
         })
 
 
-        val escolaCall =
-            GetFunctionsCall.getEscolaCall().getSchoolByDriver(id = idDriver.toString())
+        val escolaCall = GetFunctionsCall.getEscolaCall().getSchoolByDriver(id = idDriver.toString())
         var escolas by remember {
             mutableStateOf(EscolaDriver(listOf()))
         }
@@ -193,6 +192,9 @@ fun SuasEscolas() {
                                                 Log.i("ds3m", "$t")
                                             }
                                         })
+
+                                        Toast.makeText(context, "Escola deletada com sucesso!", Toast.LENGTH_SHORT).show()
+                                        simulateHotReload(context)
 
 
                                     },
