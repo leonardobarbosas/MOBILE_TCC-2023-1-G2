@@ -505,7 +505,8 @@ fun Perfil() {
                                                             })
 
 
-                                                        }
+                                                        },
+                                                        colors = ButtonDefaults.buttonColors(Color.Red)
                                                     ) {
                                                         Image(
                                                             imageVector = Icons.Filled.Delete,
