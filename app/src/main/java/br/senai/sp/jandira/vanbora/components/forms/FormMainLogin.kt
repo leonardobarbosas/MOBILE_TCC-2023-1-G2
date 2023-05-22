@@ -23,20 +23,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.LoginDriverClient
 import br.senai.sp.jandira.vanbora.functions_click.LoginUserCLient
-import br.senai.sp.jandira.vanbora.model.driver.Van
-import br.senai.sp.jandira.vanbora.model.user.User
-import br.senai.sp.jandira.vanbora.room.model.LoginCredentials
 
 @Composable
 fun FormMainLogin(){
-
-    var loginCredentials = remember {
-        LoginCredentials(0, "", "")
-    }
-
-    var loggedInUser by remember {
-        mutableStateOf<User?>(null)
-    }
 
     var emailState by rememberSaveable() {
         mutableStateOf("")
@@ -97,8 +86,8 @@ fun FormMainLogin(){
             textAlign = TextAlign.Center,
         )
         OutlinedTextField(
-            value = loginCredentials.email, onValueChange = {
-                loginCredentials.email = it
+            value = emailState, onValueChange = {
+                emailState = it
 
                 if (it == "" || it == null) {
                     isEmailError
@@ -156,8 +145,8 @@ fun FormMainLogin(){
 
 
         OutlinedTextField(
-            value = loginCredentials.password, onValueChange = {
-                loginCredentials.password = it
+            value = senhaState, onValueChange = {
+                senhaState = it
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -245,16 +234,11 @@ fun FormMainLogin(){
                     isEmailError = emailState.length == 0
                     isSenhaError = senhaState.length == 0
 
-                    LaunchedEffect(Unit){
-                        val user = loginUser(LoginCredentials)
-                        loggedInUser = user
+                    if (checkedStateDriver.value){
+                        LoginDriverClient(emailProps = emailState,  senhaProps = senhaState, context = context)
+                    }else if (checkedStateUser.value){
+                        LoginUserCLient(emailProps = emailState,  senhaProps = senhaState, context = context)
                     }
-
-//                    if (checkedStateDriver.value){
-//                        LoginDriverClient(emailProps = emailState,  senhaProps = senhaState, context = context)
-//                    }else if (checkedStateUser.value){
-//                        LoginUserCLient(emailProps = emailState,  senhaProps = senhaState, context = context)
-//                    }
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
