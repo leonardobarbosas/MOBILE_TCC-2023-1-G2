@@ -48,6 +48,7 @@
     <string name="cnh">CNH</string>
     <string name="telefone">Telefone</string>
     <string name="data_nascimento">Data de nascimento</string>
+    <string name="numero_casa">Número da Casa</string>
     <string name="inicio_carreira">Inicio da carreira</string>
     <string name="descricao">Descricao</string>
     <string name="placa_van">Placa da van:</string>

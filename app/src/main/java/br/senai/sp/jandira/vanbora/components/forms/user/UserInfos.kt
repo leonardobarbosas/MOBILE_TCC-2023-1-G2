@@ -1,14 +1,18 @@
 package br.senai.sp.jandira.vanbora.components.forms.user
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.OpenableColumns
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
@@ -60,6 +64,10 @@ fun UserInfos(
         mutableStateOf("")
     }
 
+    var numeroCasaState by rememberSaveable() {
+        mutableStateOf("")
+    }
+
     var isRgError by remember() {
         mutableStateOf(false)
     }
@@ -80,6 +88,10 @@ fun UserInfos(
         mutableStateOf(false)
     }
 
+    var isNumeroCasaError by remember() {
+        mutableStateOf(false)
+    }
+
     val scrollState = rememberScrollState()
 
     var context = LocalContext.current
@@ -87,7 +99,7 @@ fun UserInfos(
     var storage = FirebaseStorage.getInstance()
 
     var selectedImage by remember {
-        mutableStateOf(listOf<Uri>())
+        mutableStateOf<Uri?>(null)
     }
 
 
@@ -101,35 +113,45 @@ fun UserInfos(
         mutableStateOf(1)
     }
 
+    var urlImage by remember {
+        mutableStateOf("")
+    }
+
 
     val gallerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetMultipleContents(),
-        onResult = { uriList ->
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
             succesImg = 2
-            selectedImage = uriList
 
-            Log.i("ds3m", "UserInfos: ${selectedImage[0].encodedUserInfo}")
-//            val mountainsRef = storage.reference.child("users-profile-picture/${selectedImage[0].}")
-//
-//            val uploadTask = mountainsRef.putFile(selectedImage[0])
-//
-//            uploadTask.addOnSuccessListener {
-//                mountainsRef.downloadUrl.addOnSuccessListener { uri->
-//                    Log.i("ds3m", "UserInfos: $uri")
-//                }
-//            }
+            selectedImage = uri
+
+            val imageName = getImageDisplayNameFromUri(context, selectedImage!!)
+
+
+            val mountainsRef =
+                storage.reference.child("users-profile-picture/${imageName.toString()}")
+
+            val uploadTask = mountainsRef.putFile(selectedImage!!)
+
+            uploadTask.addOnSuccessListener {
+                mountainsRef.downloadUrl.addOnSuccessListener { url ->
+                    urlImage = url.toString()
+                }
+            }
 
         })
     if (succesImg == 1) {
         imageIcon = painterResource(id = R.drawable.baseline_linked_camera_24_back)
     } else if (succesImg == 2) {
-        imageIcon = rememberAsyncImagePainter(model = selectedImage[0])
+        imageIcon = rememberAsyncImagePainter(model = selectedImage)
     }
 
     //Main
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth(
+            )
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -374,32 +396,75 @@ fun UserInfos(
             )
         }
 
-    }
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            onClick = {
-                RegisterNewUser(
-                    cep = cepState,
-                    cpf = cpfState,
-                    data_nascimento = dataNascimentoState,
-                    email = email,
-                    foto = "url_foto",
-                    nome = name,
-                    rg = rgState,
-                    senha = senha,
-                    telefone = telefoneState,
-                    context = context
+        //Numero Casa
+        OutlinedTextField(
+            value = numeroCasaState, onValueChange = {
+                numeroCasaState = it
+
+                if (it == "" || it == null) {
+                    isNumeroCasaError
+                }
+
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+            label = {
+                Text(
+                    text = stringResource(id = R.string.numero_casa),
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(
+                        color = Color.Black,
+                    )
                 )
             },
-            colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
-
-        ) {
-            Text(
-                text = stringResource(id = R.string.save)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0, 0, 0, 255),
+                unfocusedBorderColor = Color(0, 0, 0, 255)
             )
+        )
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = {
+                    RegisterNewUser(
+                        cep = cepState,
+                        cpf = cpfState,
+                        data_nascimento = dataNascimentoState,
+                        email = email,
+                        foto = urlImage,
+                        nome = name,
+                        rg = rgState,
+                        senha = senha,
+                        telefone = telefoneState,
+                        numero_casa = numeroCasaState,
+                        context = context
+                    )
+                },
+                colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
+
+            ) {
+                Text(
+                    text = stringResource(id = R.string.save)
+                )
+            }
+        }
+
+    }
+
+}
+
+
+private fun getImageDisplayNameFromUri(context: Context, uri: Uri): String? {
+    val contentResolver = context.contentResolver
+    val cursor = contentResolver.query(uri, null, null, null, null)
+    cursor?.use {
+        if (it.moveToFirst()) {
+            return it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
         }
     }
+    return null
 }
