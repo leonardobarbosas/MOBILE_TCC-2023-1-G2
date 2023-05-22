@@ -22,7 +22,7 @@ interface VanCall {
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("van")
-    fun saveVan(@Body van: Van): Call<Van>
+    fun saveVan(@Body van: PostPutVan): Call<String>
 
     @DELETE("van/{id}")
     fun deleteVan(@Path("id") id: Int): Call<String>

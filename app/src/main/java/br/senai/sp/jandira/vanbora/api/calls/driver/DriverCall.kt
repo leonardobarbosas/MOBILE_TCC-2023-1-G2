@@ -4,6 +4,7 @@ import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
 import br.senai.sp.jandira.vanbora.model.driver.LoginDriverClientJwtModel
+import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
 import br.senai.sp.jandira.vanbora.model.user.LoginUserClientJwtModel
 import br.senai.sp.jandira.vanbora.model.user.User
 import retrofit2.Call
@@ -15,13 +16,16 @@ interface DriverCall {
     @GET("driver/{id}")
     fun getDriverById(@Path("id")id: String): Call<Driver>
 
+    @GET("driver/id/{cpf}")
+    fun getDriverIdByCpf(@Path("cpf") cpf: String): Call<Int>
+
     //GET ALL USERS
     @GET("drivers")
     fun getAllDrivers(): Call<DriverList>
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("driver")
-    fun saveDriver(@Body driver: Driver): Call<Driver>
+    fun saveDriver(@Body driver: DriverPost): Call<String>
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("driver/login")

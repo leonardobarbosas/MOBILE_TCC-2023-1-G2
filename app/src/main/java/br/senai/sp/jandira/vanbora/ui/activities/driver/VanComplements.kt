@@ -2,6 +2,7 @@ package br.senai.sp.jandira.vanbora.ui.activities.driver
 
 import VanInfos
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -18,8 +19,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.components.headers.HeaderComplements
+import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
 import br.senai.sp.jandira.vanbora.ui.theme.VanboraTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.gson.Gson
+import retrofit2.converter.gson.GsonConverterFactory
 
 class VanComplements : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,18 +52,13 @@ fun VanInfosActivity(){
 
     val context = LocalContext.current
 
-    val intent = (context as DriverActivityComplements).intent
+    val intent = (context as VanComplements).intent
 
-    val name = intent.getStringExtra("name").toString()
-    val email = intent.getStringExtra("email").toString()
-    val senha = intent.getStringExtra("senha").toString()
-    val rg = intent.getStringExtra("rg").toString()
-    val cpf = intent.getStringExtra("cpf").toString()
-    val cnh = intent.getStringExtra("cnh").toString()
-    val descricao = intent.getStringExtra("descricao").toString()
-    val telefone = intent.getStringExtra("telefone").toString()
-    val inicio_carreira = intent.getStringExtra("inicio_carreira").toString()
-    val data_nascimento = intent.getStringExtra("data_nascimento").toString()
+    val name = intent.getStringExtra("driver")
+
+    val driver =Gson().fromJson(name.toString(), DriverPost::class.java)
+
+    Log.i("ds3m", "VanInfosActivity: $driver")
 
 
     Column(
@@ -85,7 +84,7 @@ fun VanInfosActivity(){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            VanInfos(name, email, senha, rg, cpf, cnh, descricao, telefone, inicio_carreira, data_nascimento)
+            VanInfos(driver = driver)
 
         }
     }

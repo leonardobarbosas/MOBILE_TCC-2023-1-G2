@@ -458,7 +458,7 @@ fun UserInfos(
 }
 
 
-private fun getImageDisplayNameFromUri(context: Context, uri: Uri): String? {
+fun getImageDisplayNameFromUri(context: Context, uri: Uri): String? {
     val contentResolver = context.contentResolver
     val cursor = contentResolver.query(uri, null, null, null, null)
     cursor?.use {

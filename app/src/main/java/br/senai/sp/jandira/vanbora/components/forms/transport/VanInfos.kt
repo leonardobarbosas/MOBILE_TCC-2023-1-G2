@@ -4,6 +4,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
@@ -19,27 +20,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewDriver
+import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.Van
+import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
 import br.senai.sp.jandira.vanbora.model.user.User
+import br.senai.sp.jandira.vanbora.model.van.PostPutVan
+import coil.compose.rememberAsyncImagePainter
+import com.google.firebase.storage.FirebaseStorage
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun VanInfos(
-    email: String,
-    senha: String,
-    rg: String,
-    cpf: String,
-    descricao: String,
-    cnh: String,
-    telefone: String,
-    inicio_carreira: String,
-    name: String,
-    data_nascimento: String,
+    driver: DriverPost,
 ) {
 
     var placaVan by rememberSaveable {
@@ -71,20 +74,61 @@ fun VanInfos(
     val scrollState = rememberScrollState()
 
 
-    //image
-    var imageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
     var context = LocalContext.current
 
-    var bitmap = remember {
-        mutableStateOf<Bitmap?>(null)
+    var imageIcon by remember {
+        mutableStateOf<Painter?>(null)
     }
 
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
-            imageUri = uri
-        }
+    var succesImg by remember {
+        mutableStateOf(1)
+    }
+
+    var urlImage by remember {
+        mutableStateOf("")
+    }
+
+    var selectedImage by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    var storage = FirebaseStorage.getInstance()
+
+    val gallerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            succesImg = 2
+
+            selectedImage = uri
+
+            val imageName =
+                br.senai.sp.jandira.vanbora.components.forms.user.getImageDisplayNameFromUri(
+                    context,
+                    selectedImage!!
+                )
+            Log.i("ds3m", "DriverInfos: ${imageName.toString()}")
+
+            val mountainsRef =
+                storage.reference.child("vans-profile-picture/${imageName.toString()}")
+
+            val uploadTask = mountainsRef.putFile(selectedImage!!)
+
+            uploadTask.addOnSuccessListener {
+                mountainsRef.downloadUrl.addOnSuccessListener { url ->
+                    urlImage = url.toString()
+                }
+            }
+
+        })
+
+    if (succesImg == 1) {
+        imageIcon = painterResource(id = R.drawable.baseline_linked_camera_24_back)
+    } else if (succesImg == 2) {
+        imageIcon = rememberAsyncImagePainter(model = selectedImage)
+    }
+
+
+
 
     //IMAGE
     Column(
@@ -92,37 +136,16 @@ fun VanInfos(
             .fillMaxWidth()
             .fillMaxHeight(0.15f)
             .padding(start = 80.dp, end = 80.dp)
-            .background(Color(156, 156, 156, 0))
-            .clickable {
-                launcher.launch("image/*")
-            },
+            .background(Color(156, 156, 156, 0)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        imageUri?.let {
-            if (Build.VERSION.SDK_INT < 28) {
-                bitmap.value = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
-            } else {
-                val source = ImageDecoder.createSource(context.contentResolver, it)
-                bitmap.value = ImageDecoder.decodeBitmap(source)
+        Icon(painter = imageIcon!!, contentDescription = "", modifier = Modifier
+            .clickable {
+                gallerLauncher.launch("image/*")
             }
-
-            bitmap.value?.let { btm ->
-                Image(
-                    bitmap = btm.asImageBitmap(),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Icon(
-            imageVector = Icons.Filled.PhotoCamera,
-            contentDescription = "",
-            modifier = Modifier.fillMaxSize()
+            .size(200.dp)
         )
     }
 
@@ -144,8 +167,7 @@ fun VanInfos(
             },
             trailingIcon = {
                 if (isPlacaVanError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
+                    imageVector = Icons.Default.Warning, contentDescription = ""
                 )
             },
             isError = isPlacaVanError,
@@ -167,8 +189,7 @@ fun VanInfos(
             },
             trailingIcon = {
                 if (isModeloVanError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
+                    imageVector = Icons.Default.Warning, contentDescription = ""
                 )
             },
             isError = isModeloVanError,
@@ -189,8 +210,7 @@ fun VanInfos(
             },
             trailingIcon = {
                 if (isVagasVanError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
+                    imageVector = Icons.Default.Warning, contentDescription = ""
                 )
             },
             isError = isVagasVanError,
@@ -212,15 +232,13 @@ fun VanInfos(
             },
             trailingIcon = {
                 if (isPrecoVanError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
+                    imageVector = Icons.Default.Warning, contentDescription = ""
                 )
             },
             isError = isPrecoVanError,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
     }
-
 
 
     //BUTTON
@@ -232,22 +250,70 @@ fun VanInfos(
                 isVagasVanError = vagasVan.length == 0
                 isPrecoVanError = precoVan.length == 0
 
-                RegisterNewDriver(
-                    senha = senha,
-                    cnh = cnh, cpf = cpf,
-                    data_nascimento = data_nascimento,
-                    descricao = descricao,
-                    email = email,
-                    foto = "url_foto",
-                    inicio_carreira = inicio_carreira,
-                    nome = name,
-                    rg = rg,
-                    telefone = telefone,
-                    context = context
-                )
 
-            },
-            colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
+                val driverCallSave = GetFunctionsCall.getDriverCall().saveDriver(driver = driver)
+
+                driverCallSave.enqueue(object : Callback<String> {
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        if (response.isSuccessful) {
+
+                            val getDriverByCpf =
+                                GetFunctionsCall.getDriverCall().getDriverIdByCpf(driver.cpf)
+
+                            getDriverByCpf.enqueue(object : Callback<Int> {
+                                override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                                    if (response.isSuccessful) {
+
+                                        val driverGet = GetFunctionsCall.getDriverCall()
+                                            .getDriverById(response.body().toString())
+
+                                        driverGet.enqueue(object : Callback<Driver> {
+                                            override fun onResponse(
+                                                call: Call<Driver>,
+                                                response: Response<Driver>,
+                                            ) {
+                                                if (response.isSuccessful) {
+                                                    var postVan = PostPutVan(
+                                                        foto = "",
+                                                        id_modelo = 0,
+                                                        id_motorista = response.body()!!.id,
+                                                        placa = placaVan,
+                                                        quantidade_vagas = vagasVan,
+                                                        status_van = 1
+                                                    )
+                                                    RegisterNewDriver(
+                                                        postVan = postVan, context = context
+                                                    )
+
+                                                }
+                                            }
+
+                                            override fun onFailure(
+                                                call: Call<Driver>,
+                                                t: Throwable,
+                                            ) {
+                                                Log.i("ds3m", "onFailure: ${t.message}")
+                                            }
+                                        })
+
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<Int>, t: Throwable) {
+                                    Log.i("ds3m", "onFailure: ${t.message}")
+                                }
+                            })
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        Log.i("ds3m", "onFailure: ${t.message.toString()}")
+                    }
+                })
+
+
+            }, colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
         ) {
             Text(
