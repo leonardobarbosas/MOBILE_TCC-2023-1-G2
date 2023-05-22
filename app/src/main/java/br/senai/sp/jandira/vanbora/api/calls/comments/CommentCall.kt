@@ -5,11 +5,7 @@ import br.senai.sp.jandira.vanbora.model.comment.Comment
 import br.senai.sp.jandira.vanbora.model.comment.CommentPost
 import br.senai.sp.jandira.vanbora.model.contract.ResponseJson
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface CommentCall {
 
@@ -19,5 +15,8 @@ interface CommentCall {
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("comment")
     fun postComment(@Body comment: CommentPost): Call<ResponseJson>
+
+    @DELETE("comment/{id}")
+    fun deleteComment(@Path("id") id: Int): Call<String>
 
 }

@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,7 @@ import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.HeaderPerfil
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewComment
 import br.senai.sp.jandira.vanbora.model.comment.Comment
+import br.senai.sp.jandira.vanbora.model.comment.CommentX
 import br.senai.sp.jandira.vanbora.model.contract.EscolaDriver
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.user.User
@@ -451,24 +453,78 @@ fun Perfil() {
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
                                         LazyRow(
-                                            content = {
-                                                items(listOf(user)!!) { user ->
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(start = 16.dp, end = 16.dp),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            items(listOf(user)!!) { user ->
 
-                                                    Image(
-                                                        painter = rememberAsyncImagePainter(user?.foto),
-                                                        contentDescription = "user",
-                                                        modifier = Modifier.size(20.dp)
-                                                    )
-                                                    Text(
-                                                        text = user!!.nome,
-                                                        fontSize = 18.sp,
-                                                        color = Color(202, 149, 13, 255)
+                                                Image(
+                                                    painter = rememberAsyncImagePainter(user?.foto),
+                                                    contentDescription = "user",
+                                                    modifier = Modifier
+                                                        .size(34.dp)
+                                                        .clip(CircleShape)
+                                                        .border(1.dp, Color.Gray, CircleShape),
+                                                    contentScale = ContentScale.Crop,
+
                                                     )
 
+                                                Spacer(modifier = Modifier.padding(3.dp))
+
+                                                Text(
+                                                    text = user!!.nome,
+                                                    fontSize = 20.sp,
+                                                    color = Color(202, 149, 13, 255)
+                                                )
+
+                                                if (idUser.toString() == user!!.id.toString()) {
+                                                    Button(
+                                                        onClick = {
+                                                            val comment = CommentX(
+                                                                comments.comentario,
+                                                                comments.id,
+                                                                comments.id_usuario,
+                                                                comments.id_motorista
+                                                            )
+
+                                                            val callCommentDelete = GetFunctionsCall.getCommentCall().deleteComment(comment.id)
+                                                            callCommentDelete.enqueue(object: Callback<String> {
+                                                                override fun onResponse(
+                                                                    call: Call<String>, response: Response<String>
+                                                                ) {
+                                                                    Toast.makeText(context, "Commentário excluído com sucesso", Toast.LENGTH_SHORT).show()
+                                                                    simulateHotReload(context)
+
+                                                                }
+                                                                override fun onFailure(call: Call<String>, t: Throwable) {
+                                                                    Log.i("ds3m", "fali")
+                                                                }
+
+                                                            })
+
+
+                                                        }
+                                                    ) {
+                                                        Image(
+                                                            imageVector = Icons.Filled.Delete,
+                                                            contentDescription = ""
+                                                        )
+                                                    }
                                                 }
-                                            })
 
-                                        Text(text = comments.comentario, fontSize = 14.sp)
+                                            }
+                                        }
+
+                                        Spacer(modifier = Modifier.padding(2.dp))
+
+                                        Text(
+                                            text = comments.comentario,
+                                            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                                            fontSize = 12.sp,
+                                            fontWeight = FontWeight.ExtraLight
+                                        )
 
 
                                     }
