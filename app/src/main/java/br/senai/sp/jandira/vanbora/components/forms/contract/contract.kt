@@ -58,6 +58,7 @@ fun EnviarContrato() {
             mutableStateOf<User?>(null)
         }
         val idUser = intent.getStringExtra("id_usuario")
+
         val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
         userCall.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -65,7 +66,7 @@ fun EnviarContrato() {
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.i("ds3m", "onFailure $t")
+                Log.i("ds3m", "tttttttttttttttt $t")
             }
         })
 
@@ -216,9 +217,10 @@ fun EnviarContrato() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+            readOnly = true,
             label = {
                 Text(
-                    text = stringResource(id = R.string.nome_responsavel),
+                    text = usuario?.nome.toString(),
                     textAlign = TextAlign.Center,
                     style = TextStyle(
                         color = Color.Black,
@@ -357,6 +359,7 @@ fun EnviarContrato() {
                         mTextFieldSize = coordinates.size.toSize()
                     }
                     .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                readOnly = true,
                 label = {
                     Text(
                         "Tipo de transporte",
@@ -405,6 +408,7 @@ fun EnviarContrato() {
                         escolaTextFieldSize = coordinates.size.toSize()
                     }
                     .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                readOnly = true,
                 label = {
                     Text(
                         "Escola",
@@ -453,6 +457,7 @@ fun EnviarContrato() {
                         nTextFieldSize = coordinates.size.toSize()
                     }
                     .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                readOnly = true,
                 label = {
                     Text(
                         "Tipo de pagamento",
