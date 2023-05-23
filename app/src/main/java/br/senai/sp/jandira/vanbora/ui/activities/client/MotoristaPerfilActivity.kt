@@ -379,6 +379,14 @@ fun Perfil() {
 
                     ) {
 
+                        Image(
+                            imageVector = Icons.Filled.ArrowCircleUp,
+                            contentDescription = "",
+                            modifier = Modifier.clickable {
+                                expandState = false
+                            }
+                        )
+
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -394,24 +402,30 @@ fun Perfil() {
                                 modifier = Modifier.width(200.dp),
                                 label = {
                                     Text(text = "Insira um comentário")
-                                }
+                                },
+                                singleLine = true,
+                                maxLines = 1
                             )
 
                             Button(
                                 onClick = {
-                                    RegisterNewComment(
-                                        comentario = commentState,
-                                        motorista = idDriver.toString().toInt(),
-                                        usuario = idUser.toString().toInt()
-                                    )
+                                    if (commentState == ""){
+                                        Toast.makeText(context, "Campo não prenchido", Toast.LENGTH_SHORT).show()
+                                    }else{
+                                        RegisterNewComment(
+                                            comentario = commentState,
+                                            motorista = idDriver.toString().toInt(),
+                                            usuario = idUser.toString().toInt()
+                                        )
 
-                                    Toast.makeText(
-                                        context,
-                                        "Commentário enviado com sucesso!",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                        Toast.makeText(
+                                            context,
+                                            "Commentário enviado com sucesso!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
 
-                                    simulateHotReload(context)
+                                        simulateHotReload(context)
+                                    }
 
                                 },
                                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
@@ -423,45 +437,27 @@ fun Perfil() {
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(100.dp),
+                                .height(200.dp)
+                                .padding(top = 16.dp),
                             verticalArrangement = Arrangement.Center
                         ) {
                             items(comment.comentarios) { comments ->
 
-                                val userCall = GetFunctionsCall.getUserCall()
-                                    .getUserById(id = comments.id_usuario.toString())
-                                var user by remember {
-                                    mutableStateOf<User?>(null)
-                                }
-                                userCall.enqueue(object : Callback<User> {
-                                    override fun onResponse(
-                                        call: Call<User>,
-                                        response: Response<User>
-                                    ) {
-                                        user = response.body()!!
-                                        success = 1
-                                        Log.i("ds3m", "onResponse: $user")
-                                    }
 
-                                    override fun onFailure(call: Call<User>, t: Throwable) {
-                                        Log.i("ds3m", "onFailure $t")
-                                    }
-                                })
-
-                                if (success == 1){
                                     Column(
-                                        modifier = Modifier.fillMaxWidth()
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(bottom = 8.dp)
                                     ) {
-                                        LazyRow(
+                                        Row(
                                             modifier = Modifier
                                                 .fillMaxWidth()
                                                 .padding(start = 16.dp, end = 16.dp),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
-                                            items(listOf(user)!!) { user ->
 
                                                 Image(
-                                                    painter = rememberAsyncImagePainter(user?.foto),
+                                                    painter = rememberAsyncImagePainter(comments.user.foto),
                                                     contentDescription = "user",
                                                     modifier = Modifier
                                                         .size(34.dp)
@@ -474,19 +470,22 @@ fun Perfil() {
                                                 Spacer(modifier = Modifier.padding(3.dp))
 
                                                 Text(
-                                                    text = user!!.nome,
+                                                    text = comments.user.nome,
                                                     fontSize = 20.sp,
                                                     color = Color(202, 149, 13, 255)
                                                 )
 
-                                                if (idUser.toString() == user!!.id.toString()) {
+                                            Spacer(modifier = Modifier.padding(10.dp))
+
+
+                                            if (idUser.toString() == comments.user.id.toString()) {
                                                     Button(
                                                         onClick = {
                                                             val comment = CommentX(
                                                                 comments.comentario,
                                                                 comments.id,
-                                                                comments.id_usuario,
-                                                                comments.id_motorista
+                                                                comments.id_motorista,
+                                                                comments.user
                                                             )
 
                                                             val callCommentDelete = GetFunctionsCall.getCommentCall().deleteComment(comment.id)
@@ -506,19 +505,21 @@ fun Perfil() {
 
 
                                                         },
-                                                        colors = ButtonDefaults.buttonColors(Color.Red)
+                                                        shape = CircleShape,
+                                                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
                                                     ) {
                                                         Image(
                                                             imageVector = Icons.Filled.Delete,
-                                                            contentDescription = ""
+                                                            contentDescription = "",
+                                                            modifier = Modifier
+                                                                .clip(CircleShape)
+                                                                .height(16.dp)
                                                         )
                                                     }
                                                 }
 
                                             }
                                         }
-
-                                        Spacer(modifier = Modifier.padding(2.dp))
 
                                         Text(
                                             text = comments.comentario,
@@ -529,28 +530,12 @@ fun Perfil() {
 
 
                                     }
-                                }
+
                             }
                         }
 
 
 
-                        Row(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Button(
-                                onClick = {
-                                    expandState = false
-                                },
-                                colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
-                            ) {
-                                Text(
-                                    text = "Sair"
-                                )
-                            }
-
-                        }
                     }
                 }
             }
@@ -558,7 +543,7 @@ fun Perfil() {
 
         }
     }
-}
+
 
 @Composable
 fun Avaliacao() {
