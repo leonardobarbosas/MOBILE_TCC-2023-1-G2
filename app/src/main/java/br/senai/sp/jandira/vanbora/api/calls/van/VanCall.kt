@@ -2,6 +2,8 @@ package br.senai.sp.jandira.vanbora.api.calls.van
 
 
 import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
+import br.senai.sp.jandira.vanbora.model.driver.Driver
+import br.senai.sp.jandira.vanbora.model.driver.ModeloList
 import br.senai.sp.jandira.vanbora.model.driver.Van
 import br.senai.sp.jandira.vanbora.model.driver.VanList
 import br.senai.sp.jandira.vanbora.model.van.PostPutVan
@@ -27,4 +29,6 @@ interface VanCall {
     @DELETE("van/{id}")
     fun deleteVan(@Path("id") id: Int): Call<String>
 
+    @GET("models")
+    fun getAllModels(): Call<ModeloList>
 }
