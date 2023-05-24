@@ -1,27 +1,40 @@
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
+
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,13 +44,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.components.forms.user.getImageDisplayNameFromUri
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewDriver
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.IdMotorista
 import br.senai.sp.jandira.vanbora.model.driver.ModeloList
-import br.senai.sp.jandira.vanbora.model.driver.Van
 import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
-import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.model.van.PostPutVan
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.storage.FirebaseStorage
@@ -94,8 +106,7 @@ fun VanInfos(
 
             selectedImage = uri
 
-            val imageName =
-                br.senai.sp.jandira.vanbora.components.forms.user.getImageDisplayNameFromUri(
+            var imageName = getImageDisplayNameFromUri(
                     context,
                     selectedImage!!
                 )
