@@ -115,6 +115,8 @@ fun FormMainLogin(){
                 )
             },
             isError = isEmailError,
+            singleLine = true,
+            maxLines = 1,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0, 0, 0, 255),
                 unfocusedBorderColor = Color(0, 0, 0, 255)

@@ -1,15 +1,10 @@
 package br.senai.sp.jandira.vanbora.components.forms.driver
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,15 +12,17 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PhotoCamera
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,8 +30,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
+import br.senai.sp.jandira.vanbora.model.prices.AllPrices
 import br.senai.sp.jandira.vanbora.ui.activities.driver.VanComplements
-import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
+import coil.compose.rememberAsyncImagePainter
+import com.google.firebase.storage.FirebaseStorage
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun DriverInfos(name: String, email: String, senha: String) {
@@ -44,10 +49,6 @@ fun DriverInfos(name: String, email: String, senha: String) {
     }
 
     var cpfState by rememberSaveable() {
-        mutableStateOf("")
-    }
-
-    var cepState by rememberSaveable() {
         mutableStateOf("")
     }
 
@@ -71,16 +72,11 @@ fun DriverInfos(name: String, email: String, senha: String) {
     }
 
 
-
     var isRgError by remember() {
         mutableStateOf(false)
     }
 
     var isCpfError by remember() {
-        mutableStateOf(false)
-    }
-
-    var isCepError by remember() {
         mutableStateOf(false)
     }
 
@@ -102,19 +98,78 @@ fun DriverInfos(name: String, email: String, senha: String) {
         mutableStateOf(false)
     }
 
+    var context = LocalContext.current
 
+    var imageIcon by remember {
+        mutableStateOf<Painter?>(null)
+    }
+    var succesImg by remember {
+        mutableStateOf(1)
+    }
 
-    //image
-    var imageUri by remember {
+    var urlImage by remember {
+        mutableStateOf("")
+    }
+
+    var selectedImage by remember {
         mutableStateOf<Uri?>(null)
     }
-    var context = LocalContext.current
-    var bitmap = remember{
-        mutableStateOf<Bitmap?>(null)
+
+    val pricesCall = GetFunctionsCall.getPricesCall().getAllPrices()
+
+    var prices by remember {
+        mutableStateOf<AllPrices?>(null)
     }
 
-    val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()){ uri: Uri? ->
-        imageUri = uri
+    var isMenuExpanded by remember {
+        mutableStateOf(false)
+    }
+
+    pricesCall.enqueue(object : Callback<AllPrices>{
+        override fun onResponse(call: Call<AllPrices>, response: Response<AllPrices>) {
+            if(response.isSuccessful){
+                prices = response.body()!!
+            }
+        }
+
+        override fun onFailure(call: Call<AllPrices>, t: Throwable) {
+            Log.i("ds3m", "onFailure: ${t.message}")
+        }
+    })
+
+    var storage = FirebaseStorage.getInstance()
+
+    val gallerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            succesImg = 2
+
+            selectedImage = uri
+
+            val imageName =
+                br.senai.sp.jandira.vanbora.components.forms.user.getImageDisplayNameFromUri(
+                    context,
+                    selectedImage!!
+                )
+            Log.i("ds3m", "DriverInfos: ${imageName.toString()}")
+
+            val mountainsRef =
+                storage.reference.child("drivers-profile-picture/${imageName.toString()}")
+
+            val uploadTask = mountainsRef.putFile(selectedImage!!)
+
+            uploadTask.addOnSuccessListener {
+                mountainsRef.downloadUrl.addOnSuccessListener { url ->
+                    urlImage = url.toString()
+                }
+            }
+
+        })
+
+    if (succesImg == 1) {
+        imageIcon = painterResource(id = R.drawable.baseline_linked_camera_24_back)
+    } else if (succesImg == 2) {
+        imageIcon = rememberAsyncImagePainter(model = selectedImage)
     }
 
     //Main
@@ -128,34 +183,18 @@ fun DriverInfos(name: String, email: String, senha: String) {
         //image
         Column(
             modifier = Modifier
-                .height(100.dp)
-                .fillMaxWidth()
-                .clickable {
-                    launcher.launch("image/*")
-                }
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            imageUri?.let {
-                if (Build.VERSION.SDK_INT < 28){
-                    bitmap.value = MediaStore.Images.Media.getBitmap(context.contentResolver, it)
-                }
-                else{
-                    val source = ImageDecoder.createSource(context.contentResolver, it)
-                    bitmap.value = ImageDecoder.decodeBitmap(source)
-                }
-
-                bitmap.value?.let { btm ->
-                    Image(bitmap = btm.asImageBitmap(),
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            }
 
 
-            Icon(
-                imageVector = Icons.Filled.PhotoCamera,
-                contentDescription = "",
-                modifier = Modifier.fillMaxSize()
+
+            Icon(painter = imageIcon!!, contentDescription = "", modifier = Modifier
+                .clickable {
+                    gallerLauncher.launch("image/*")
+                }
+                .size(200.dp)
             )
         }
 
@@ -193,7 +232,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
-        if(isRgError){
+        if (isRgError) {
             Text(
                 text = stringResource(id = R.string.rg_error),
                 modifier = Modifier
@@ -239,55 +278,9 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
-        if(isCpfError){
+        if (isCpfError) {
             Text(
                 text = stringResource(id = R.string.cpf_error),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 52.dp),
-                color = Color.Red,
-                fontSize = 15.sp,
-                textAlign = TextAlign.End
-            )
-        }
-
-        //CEP
-        OutlinedTextField(
-            value = cepState, onValueChange = {
-                cepState = it
-
-                if (it == "" || it == null) {
-                    isCepError
-                }
-
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-            label = {
-                Text(
-                    text = stringResource(id = R.string.cep),
-                    style = TextStyle(
-                        color = Color.Black,
-                    )
-                )
-            },
-            trailingIcon = {
-                if (isCepError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )
-            },
-            isError = isCepError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0, 0, 0, 255),
-                unfocusedBorderColor = Color(0, 0, 0, 255)
-            )
-        )
-        if(isCepError){
-            Text(
-                text = stringResource(id = R.string.cep_error),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 52.dp),
@@ -331,7 +324,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
-        if(isCnhError){
+        if (isCnhError) {
             Text(
                 text = stringResource(id = R.string.cnh_error),
                 modifier = Modifier
@@ -377,7 +370,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
-        if(isTelefoneError){
+        if (isTelefoneError) {
             Text(
                 text = stringResource(id = R.string.telefone_error),
                 modifier = Modifier
@@ -423,7 +416,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
-        if(isDescricaoError){
+        if (isDescricaoError) {
             Text(
                 text = stringResource(id = R.string.inicio_carreira_error),
                 modifier = Modifier
@@ -469,7 +462,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
-        if(isInicioCarreiraError){
+        if (isInicioCarreiraError) {
             Text(
                 text = stringResource(id = R.string.inicio_carreira_error),
                 modifier = Modifier
@@ -516,7 +509,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
-        if(isDataNascimentoError){
+        if (isDataNascimentoError) {
             Text(
                 text = stringResource(id = R.string.data_nascimento_error),
                 modifier = Modifier
@@ -528,6 +521,64 @@ fun DriverInfos(name: String, email: String, senha: String) {
             )
         }
 
+        var priceState by remember {
+            mutableStateOf("")
+        }
+        var idPrice by remember {
+            mutableStateOf(0)
+        }
+
+        val icon = if (isMenuExpanded)
+            Icons.Filled.KeyboardArrowUp
+        else
+            Icons.Filled.KeyboardArrowDown
+
+        //Preço Serviço
+        Column() {
+            OutlinedTextField(
+                value = priceState, onValueChange = {
+                    priceState = it
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                readOnly = true,
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.faixa_preco),
+                        style = TextStyle(
+                            color = Color.Black,
+                        )
+                    )
+                },
+                trailingIcon = {
+                    Icon(icon, "contentDescription",
+                        Modifier.clickable { isMenuExpanded = !isMenuExpanded })
+                },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+
+            DropdownMenu(expanded = isMenuExpanded, onDismissRequest = {
+                isMenuExpanded = false
+            }) {
+                prices!!.prices.forEach { 
+                    DropdownMenuItem(onClick = {
+                        idPrice = it.id
+                        priceState = it.faixa_preco
+                        isMenuExpanded = false
+
+                    }) {
+                        Text(text = it.faixa_preco)
+                    }
+                }
+            }
+        }
+
+
         Spacer(
             modifier = Modifier.height(30.dp)
         )
@@ -536,16 +587,23 @@ fun DriverInfos(name: String, email: String, senha: String) {
             onClick = {
                 val intentSelect = Intent(context, VanComplements::class.java)
 
-                intentSelect.putExtra("name", name)
-                intentSelect.putExtra("email", email)
-                intentSelect.putExtra("senha", senha)
-                intentSelect.putExtra("rg", rgState)
-                intentSelect.putExtra("cpf", cpfState)
-                intentSelect.putExtra("cnh", cnhState)
-                intentSelect.putExtra("descricao", descricaoState)
-                intentSelect.putExtra("telefone", telefoneState)
-                intentSelect.putExtra("inicio_carreira", inicioCarreiraState)
-                intentSelect.putExtra("data_nascimento", dataNascimentoState)
+                val driverPost = DriverPost(
+                    avaliacao = 10,
+                    cnh = cnhState,
+                    cpf = cpfState,
+                    data_nascimento = dataNascimentoState,
+                    descricao = descricaoState,
+                    email = email,
+                    foto = urlImage,
+                    id_preco = idPrice,
+                    inicio_carreira = inicioCarreiraState,
+                    nome = name,
+                    rg = rgState,
+                    senha = senha,
+                    telefone = telefoneState
+                )
+
+                intentSelect.putExtra("driver", Gson().toJson(driverPost))
 
                 context.startActivity(intentSelect)
             },

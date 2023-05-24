@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1068230174634",
+    "project_id": "tcc-project-firebase",
+    "storage_bucket": "tcc-project-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068230174634:android:c6ba522050e47bafd1add3",
+        "android_client_info": {
+          "package_name": "br.senai.sp.jandira.vanbora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068230174634-dutbu8ro3ja2ro1li9jlfidmuler3ud5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMhbkMQM4FN-KZDSdkbHQO0oqNmIKg9Qc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068230174634-967l696inpq9fe329m5jv81b57b693db.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

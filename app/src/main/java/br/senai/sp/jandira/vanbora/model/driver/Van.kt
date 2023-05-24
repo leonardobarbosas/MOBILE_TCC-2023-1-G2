@@ -11,6 +11,6 @@ data class Van(
     val status_van: Int = 0
 ){
     override fun toString(): String {
-        return "User(id=$id, 'modelo=$modelo', 'foto=$foto', 'id_modelo=$id_modelo', 'id_motorista=$id_motorista', 'placa=$placa', 'quantidade_vagas=$quantidade_vagas', 'status_van=$status_van', "
+        return "Van(id=$id, 'modelo=$modelo', 'foto=$foto', 'id_modelo=$id_modelo', 'id_motorista=$id_motorista', 'placa=$placa', 'quantidade_vagas=$quantidade_vagas', 'status_van=$status_van', "
     }
 }
