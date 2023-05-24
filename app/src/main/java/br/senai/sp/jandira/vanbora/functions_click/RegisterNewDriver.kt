@@ -9,54 +9,31 @@ import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.Modelo
 import br.senai.sp.jandira.vanbora.model.driver.Van
+import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
 import br.senai.sp.jandira.vanbora.model.user.User
+import br.senai.sp.jandira.vanbora.model.van.PostPutVan
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun RegisterNewDriver (
-    senha: String,
-    email: String,
-    nome: String,
-    rg: String,
-    cpf: String,
-    cnh: String,
-    telefone: String,
-    data_nascimento: String,
-    inicio_carreira: String,
-    foto: String,
-    descricao: String,
-    context: Context
-){
+fun RegisterNewDriver(
+    postVan: PostPutVan,
+    context: Context,
+) {
 
-    val driver = Driver(
-        senha = senha,
-        email = email,
-        nome = nome,
-        rg = rg,
-        cpf = cpf,
-        cnh = cnh,
-        telefone = telefone,
-        data_nascimento = data_nascimento,
-        inicio_carreira = inicio_carreira,
-        foto = foto,
-        descricao = descricao
-    )
+    val postVanDriver = GetFunctionsCall.getVanCall().saveVan(postVan)
 
-    val driverCallSave = GetFunctionsCall.getDriverCall().saveDriver(driver)
-
-    driverCallSave.enqueue(object : Callback<Driver> {
-        override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
-            val teste = response.body()!!
-            Log.i("ds3m", "onResponse: ${teste.nome}")
-            Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show()
+    postVanDriver.enqueue(object : Callback<String> {
+        override fun onResponse(call: Call<String>, response: Response<String>) {
+            if(response.isSuccessful){
+                Toast.makeText(context, "Você foi cadastrado com sucesso", Toast.LENGTH_SHORT).show()
+                context.startActivity(Intent(context, MainActivity::class.java))
+            }
         }
 
-        override fun onFailure(call: Call<Driver>, t: Throwable) {
-            Log.i("ds3m", "onFailure: ${t.message.toString()}")
+        override fun onFailure(call: Call<String>, t: Throwable) {
+            Log.i("ds3m", "onFailure: ${t.message} van")
         }
     })
-
-    context.startActivity(Intent(context, MainActivity::class.java))
 
 }

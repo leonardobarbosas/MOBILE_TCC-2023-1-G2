@@ -28,6 +28,7 @@ import br.senai.sp.jandira.vanbora.components.confirm.Dialog
 import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.HeaderPerfil
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewContract
+import br.senai.sp.jandira.vanbora.model.contract.ContractPost
 import br.senai.sp.jandira.vanbora.model.contract.ContractX
 import br.senai.sp.jandira.vanbora.model.contract.Escola
 import br.senai.sp.jandira.vanbora.model.contract.TipoContrato
@@ -35,6 +36,7 @@ import br.senai.sp.jandira.vanbora.model.contract.TipoPagamento
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.ui.theme.VanboraTheme
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,18 +69,22 @@ fun Contrato(
 
     val intent = (context as ContratoActivity).intent
 
+    val contract = Gson().fromJson(intent.getStringExtra("contract"), ContractPost::class.java)
+
     var usuario by remember {
         mutableStateOf<User?>(null)
     }
-    val idUser = intent.getStringExtra("id_usuario").toString()
-    val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
+    val idUser = intent.getStringExtra("id_user").toString()
+    val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser)
     userCall.enqueue(object : Callback<User> {
         override fun onResponse(call: Call<User>, response: Response<User>) {
-            usuario = response.body()!!
+            if (response.isSuccessful){
+                usuario = response.body()!!
+            }
         }
 
         override fun onFailure(call: Call<User>, t: Throwable) {
-            Log.i("ds3m", "onFailure $t")
+            Log.i("ds3m", "onFailure  user: ${t.message}")
         }
     })
 
@@ -86,37 +92,25 @@ fun Contrato(
     var driver by remember {
         mutableStateOf<Driver?>(null)
     }
-    val idDriver = intent.getStringExtra("id_motorista").toString()
-    val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
+    val idDriver = intent.getStringExtra("id_driver").toString()
+    val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver)
     driverCall.enqueue(object : Callback<Driver> {
         override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
-            driver = response.body()!!
+            if (response.isSuccessful){
+                driver = response.body()!!
+            }
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
-            Log.i("ds3m", "onFailure driver")
+            Log.i("ds3m", "onFailure driver ${t.message}")
         }
     })
 
-    val idTipoPagamento = intent.getStringExtra("id_tipo_pagamento").toString()
-    val idTipoContrato = intent.getStringExtra("id_tipo_contrato").toString()
-    val idEscola = intent.getStringExtra("id_escola").toString()
+
+
     val escola = intent.getStringExtra("tipo_escola").toString()
     val tipoContrato = intent.getStringExtra("tipo_contrato").toString()
     val tipoPagamento = intent.getStringExtra("tipo_pagamento").toString()
-
-    val nomeResponsavel = intent.getStringExtra("nome_responsavel").toString()
-    val nomePassageiro = intent.getStringExtra("nome_passageiro").toString()
-    val idadePassageiro = intent.getStringExtra("idade_passageiro").toString()
-
-    Log.i("ds3m", "id nomePassageiro: $nomePassageiro")
-    Log.i("ds3m", "id idadePassageiro: $idadePassageiro")
-    Log.i("ds3m", "id idTipoPagamento: ${idTipoPagamento.toInt()}")
-    Log.i("ds3m", "id idTipoContrato: ${idTipoContrato.toInt()}")
-    Log.i("ds3m", "id idEscola: ${idEscola.toInt()}")
-    Log.i("ds3m", "id idUser: ${idUser.toInt()}")
-    Log.i("ds3m", "id idDriver: ${idDriver.toInt()}")
-
 
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -140,12 +134,13 @@ fun Contrato(
                 ) {
                     Text(text = "Verificar informações de contrato", fontSize = 22.sp)
 
-                    Text(text = "Nome do Responsável: $nomeResponsavel")
-                    Text(text = "Nome do Passageiro: $nomePassageiro")
-                    Text(text = "Idade do Passageiro: $idadePassageiro")
+                    Text(text = "Nome do Responsável: $idUser")
+                    Text(text = "Nome do Passageiro: ${contract.nome_passageiro}")
+                    Text(text = "Idade do Passageiro: ${contract.idade_passageiro}")
                     Text(text = "Tipo de Pagamento: $tipoPagamento")
                     Text(text = "Tipo de Contrato: $tipoContrato")
                     Text(text = "Escola: $escola")
+                    Text(text = "Preço: ${driver?.id_preco?.faixa_preco.toString()}")
 
                     Spacer(modifier = Modifier.padding(10.dp))
 
@@ -176,30 +171,9 @@ fun Contrato(
 
 
                                         RegisterNewContract(
-                                            nomePassageiro = nomePassageiro,
-                                            idadePassageiro = idadePassageiro,
-                                            statusContrato = 0,
-                                            tipoPagamento = idTipoPagamento.toInt(),
-                                            tipoTransporte =  idTipoContrato.toInt(),
-                                            escola = idEscola.toInt(),
-                                            usuario = idUser.toInt(),
-                                            motorista = idDriver.toInt(),
+                                            contract = contract,
                                             context = context
                                         )
-
-
-                                        Toast.makeText(
-                                            context,
-                                            "Contrato criado com sucesso!",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-
-                                        val intentSelect =
-                                            Intent(context, MotoristasActivity::class.java)
-
-                                        intentSelect.putExtra("id", idUser)
-
-                                        context.startActivity(intentSelect)
 
                                     }
                                 )

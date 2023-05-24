@@ -32,7 +32,7 @@ import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.ui.theme.VanboraTheme
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.Van
-import br.senai.sp.jandira.vanbora.model.posts.van.PostPutVan
+import br.senai.sp.jandira.vanbora.model.van.PostPutVan
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -80,7 +80,7 @@ fun EditarVan() {
     }
 
     var numeroVagasState by rememberSaveable() {
-        mutableStateOf(0)
+        mutableStateOf("")
     }
 
     var isNumeroVagasError by remember {
@@ -100,9 +100,10 @@ fun EditarVan() {
 
     val intent = (context as EditarDadosVan).intent
 
-    val idDriver = intent.getStringExtra("id")
+    val idDriver = intent.getStringExtra("id_motorista")
 
-    val idVan = intent.getStringExtra("id")
+
+    val idVan = intent.getStringExtra("id_van")
 
     val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
 
@@ -170,15 +171,7 @@ fun EditarVan() {
                 )
             },
             placeholder = {
-                van?.let {
-                    Text(
-                        text = it.placa,
-                        textAlign = TextAlign.Center,
-                        style = TextStyle(
-                            color = Color.Black
-                        )
-                    )
-                }
+//                Text(text = van!!.placa)
             },
             trailingIcon = {
                 if (isPlacaError) Icon(
@@ -211,21 +204,14 @@ fun EditarVan() {
             onValueChange = {
                 modeloVanState = it
             },
-//            onValueChange = { it ->
-//                modeloVanState = it
-//
-//                if (it == "" || it == null) {
-//                    isModeloError
-//                }
-//            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp, start = 52.dp, end = 52.dp),
             label = { Text(text = stringResource(id = R.string.modelo_van)) },
             placeholder = {
-                van?.modelo?.get(0).let {
-                    it?.modelo
-                }
+//                van?.modelo?.get(0).let {
+//                    it?.modelo
+//                }
             },
             trailingIcon = {
                 if (isModeloError) {
@@ -254,30 +240,27 @@ fun EditarVan() {
             )
         }
 
-        //Numero de Vagas
+        //NumeroVagas
         OutlinedTextField(
-            value = numeroVagasState.toString(),
+            value = numeroVagasState,
             onValueChange = {
-                numeroVagasState = it.toInt()
-
-                if (numeroVagasState == 0 || numeroVagasState == null) {
-                    isNumeroVagasError
-                }
+                numeroVagasState = it
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-            label = { Text(text = stringResource(id = R.string.numero_vagas)) },
+            label = { Text(text = stringResource(id = R.string.modelo_van)) },
             placeholder = {
-                Text(
-                    text = van!!.quantidade_vagas.toString(),
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(color = Color.Black)
-                )
+//                van?.modelo?.get(0).let {
+//                    it?.modelo
+//                }
             },
             trailingIcon = {
                 if (isNumeroVagasError) {
-                    Icon(imageVector = Icons.Default.Warning, contentDescription = "")
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = ""
+                    )
                 }
             },
             isError = isNumeroVagasError,
@@ -287,7 +270,6 @@ fun EditarVan() {
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
-
         if (isNumeroVagasError) {
             Text(
                 text = stringResource(id = R.string.isnumero_vans_error),
@@ -300,6 +282,7 @@ fun EditarVan() {
             )
         }
 
+
         Spacer(modifier = Modifier.padding(26.dp))
 
         Row(
@@ -308,54 +291,7 @@ fun EditarVan() {
         ) {
             Button(
                 onClick = {
-                    var vanPut = PostPutVan(
-                        foto = "https://firebasestorage.googleapis.com/v0/b/tcc-project-firebase.appspot.com/o/vans-profile-picture%2Fdownload%20(3).jpg?alt=media&token=1006e2bf-7988-4746-8e09-1ff58346f350",
-                        id_modelo = 2,
-                        id_motorista = idDriver.toString().toInt(),
-                        placa = placaState,
-                        quantidade_vagas = numeroVagasState.toString(),
-                        status_van = 1
-                    )
 
-                    var vanPutCall = GetFunctionsCall.getVanCall().putVan(van!!.id.toString(), vanPut)
-
-                    vanPutCall.enqueue(object : Callback<String>{
-                        override fun onResponse(call: Call<String>, response: Response<String>) {
-                            code = response.code().toString()
-                            message = response.body().toString()
-                        }
-
-                        override fun onFailure(call: Call<String>, t: Throwable) {
-                            Log.i("ds3m", "onFailure: $t")
-                        }
-                    })
-
-//                    vanPutCall.enqueue(object : Callback<String> {
-//                        override fun onResponse(call: Call<String>, response: Response<String>) {
-//                            code = response.code().toString()
-//                            message = response.body().toString()
-//                        }
-//
-//                        override fun onFailure(call: Call<String>, t: Throwable) {
-//                            Log.i("ds3m", "onFailure: $t")
-//                        }
-//                    })
-
-                    if (code == "201") {
-                        Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(
-                            context,
-                            "Van atualizada com sucesso",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-
-//                        if (van != null) {
-//                            val intentSelect = Intent(context, MotoristasActivity()::class.java)
-//                            intentSelect.putExtra("id", van.id.toString())
-//                        }
-                    }
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
             ) {
@@ -363,39 +299,6 @@ fun EditarVan() {
                     text = stringResource(id = R.string.save)
                 )
             }
-
-//            Button(
-//                onClick = {
-//                    var van = Van(
-//                        foto = "https://firebasestorage.googleapis.com/v0/b/tcc-project-firebase.appspot.com/o/vans-profile-picture%2Fdownload%20(3).jpg?alt=media&token=1006e2bf-7988-4746-8e09-1ff58346f350",
-//                        id_modelo = 2,
-//                        id_motorista = idDriver.toString().toInt(),
-//                        placa = placaState,
-//                        quantidade_vagas = numeroVagasState.toString().toInt(),
-//                        status_van = 1
-//                    )
-//
-//                    val callVanDelete = GetFunctionsCall.getVanCall().deleteVan(van.id)
-//                    callVanDelete.enqueue(object : Callback<String> {
-//                        override fun onResponse(call: Call<String>, response: Response<String>) {
-//                            Toast.makeText(context, "Van deletada com sucesso", Toast.LENGTH_SHORT)
-//                                .show()
-//                            val intentSelect = Intent(context, SuasVansActivity::class.java)
-//                            context.startActivity(intentSelect)
-//                        }
-//
-//                        override fun onFailure(call: Call<String>, t: Throwable) {
-//                            Log.i("ds3m", "onFailure: $t")
-//                        }
-//
-//                    })
-//                },
-//                colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
-//            ) {
-//                Text(
-//                    text = stringResource(id = R.string.delete)
-//                )
-//            }
 
         }
     }

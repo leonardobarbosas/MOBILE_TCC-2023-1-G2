@@ -22,7 +22,7 @@ interface ContractCall {
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("contract")
-    fun postContract(@Body contract: ContractPost): Call<ResponseJson>
+    fun postContract(@Body contract: ContractPost): Call<String>
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @PUT("contract/{id}")

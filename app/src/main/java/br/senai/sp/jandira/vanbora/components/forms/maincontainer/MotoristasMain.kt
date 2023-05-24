@@ -43,7 +43,7 @@ import retrofit2.Response
 @SuppressLint("RememberReturnType")
 @Composable
 fun MotoristasMain(
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
 ) {
 
     var context = LocalContext.current
@@ -153,9 +153,10 @@ fun MotoristasMain(
                 Spacer(modifier = Modifier.padding(6.dp))
 
                 Box(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .wrapContentSize(Alignment.TopEnd)
-                ){
+                ) {
                     IconButton(
                         onClick = { expanded = !expanded }
                     ) {
@@ -182,7 +183,7 @@ fun MotoristasMain(
                                     filterByName.enqueue(object : Callback<DriverList> {
                                         override fun onResponse(
                                             call: Call<DriverList>,
-                                            response: Response<DriverList>
+                                            response: Response<DriverList>,
                                         ) {
                                             driverByName = response.body()!!
 
@@ -191,7 +192,7 @@ fun MotoristasMain(
 
                                         override fun onFailure(
                                             call: Call<DriverList>,
-                                            t: Throwable
+                                            t: Throwable,
                                         ) {
                                             Log.i("ds3m", "onFailure: $t")
                                         }
@@ -199,7 +200,7 @@ fun MotoristasMain(
 
                                 }
                             }
-                        ){
+                        ) {
                             Text(text = "Nome")
                         }
                         DropdownMenuItem(
@@ -212,7 +213,7 @@ fun MotoristasMain(
                                     filterByName.enqueue(object : Callback<DriverList> {
                                         override fun onResponse(
                                             call: Call<DriverList>,
-                                            response: Response<DriverList>
+                                            response: Response<DriverList>,
                                         ) {
                                             driverByName = response.body()!!
 
@@ -221,7 +222,7 @@ fun MotoristasMain(
 
                                         override fun onFailure(
                                             call: Call<DriverList>,
-                                            t: Throwable
+                                            t: Throwable,
                                         ) {
                                             Log.i("ds3m", "onFailure: $t")
                                         }
@@ -229,7 +230,7 @@ fun MotoristasMain(
 
                                 }
                             }
-                        ){
+                        ) {
                             Text(text = "Escola")
                         }
                         DropdownMenuItem(
@@ -242,7 +243,7 @@ fun MotoristasMain(
                                     filterByName.enqueue(object : Callback<DriverList> {
                                         override fun onResponse(
                                             call: Call<DriverList>,
-                                            response: Response<DriverList>
+                                            response: Response<DriverList>,
                                         ) {
                                             driverByName = response.body()!!
 
@@ -251,7 +252,7 @@ fun MotoristasMain(
 
                                         override fun onFailure(
                                             call: Call<DriverList>,
-                                            t: Throwable
+                                            t: Throwable,
                                         ) {
                                             Log.i("ds3m", "onFailure: $t")
                                         }
@@ -259,7 +260,7 @@ fun MotoristasMain(
 
                                 }
                             }
-                        ){
+                        ) {
                             Text(text = "Preço")
                         }
                     }

@@ -35,6 +35,7 @@ import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.Van
 import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.*
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -58,6 +59,7 @@ fun EnviarContrato() {
             mutableStateOf<User?>(null)
         }
         val idUser = intent.getStringExtra("id_usuario")
+
         val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
         userCall.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
@@ -65,7 +67,7 @@ fun EnviarContrato() {
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.i("ds3m", "onFailure $t")
+                Log.i("ds3m", "tttttttttttttttt $t")
             }
         })
 
@@ -130,16 +132,16 @@ fun EnviarContrato() {
         })
 
         //Escola
-        val escolaCall = GetFunctionsCall.getEscolaCall().getAllSchools()
+        val escolaCall = GetFunctionsCall.getEscolaCall().getSchoolByDriver(id = idDriver.toString())
         var escolas by remember {
-            mutableStateOf(EscolaList(listOf()))
+            mutableStateOf(EscolaDriver(listOf()))
         }
-        escolaCall.enqueue(object : Callback<EscolaList> {
-            override fun onResponse(call: Call<EscolaList>, response: Response<EscolaList>) {
+        escolaCall.enqueue(object : Callback<EscolaDriver> {
+            override fun onResponse(call: Call<EscolaDriver>, response: Response<EscolaDriver>) {
                 escolas = response.body()!!
             }
 
-            override fun onFailure(call: Call<EscolaList>, t: Throwable) {
+            override fun onFailure(call: Call<EscolaDriver>, t: Throwable) {
                 Log.i("ds3m", "onFailure escolas: ${t.message}")
             }
         })
@@ -216,9 +218,10 @@ fun EnviarContrato() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+            readOnly = true,
             label = {
                 Text(
-                    text = stringResource(id = R.string.nome_responsavel),
+                    text = usuario?.nome.toString(),
                     textAlign = TextAlign.Center,
                     style = TextStyle(
                         color = Color.Black,
@@ -357,6 +360,7 @@ fun EnviarContrato() {
                         mTextFieldSize = coordinates.size.toSize()
                     }
                     .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                readOnly = true,
                 label = {
                     Text(
                         "Tipo de transporte",
@@ -405,6 +409,7 @@ fun EnviarContrato() {
                         escolaTextFieldSize = coordinates.size.toSize()
                     }
                     .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                readOnly = true,
                 label = {
                     Text(
                         "Escola",
@@ -432,11 +437,11 @@ fun EnviarContrato() {
             ) {
                 escolas.schools.map {
                     DropdownMenuItem(onClick = {
-                        idEscola = it.id
-                        escolaSelectedText = it.nome
+                        idEscola = it.id_escola
+                        escolaSelectedText = it.nome_escola
                         escolaState = false
                     }) {
-                        Text(text = it.nome)
+                        Text(text = it.nome_escola)
                     }
                 }
             }
@@ -453,6 +458,7 @@ fun EnviarContrato() {
                         nTextFieldSize = coordinates.size.toSize()
                     }
                     .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                readOnly = true,
                 label = {
                     Text(
                         "Tipo de pagamento",
@@ -498,23 +504,26 @@ fun EnviarContrato() {
 
         Button(
             onClick = {
-                Log.i("ds3m", "id idTipoPagamento: ${idTipoPagamento}")
-                Log.i("ds3m", "id idTipoContrato: ${idTipoContrato}")
-                Log.i("ds3m", "id idEscola: ${idEscola}")
+
+                var contract = ContractPost(
+                    id_escola = idEscola,
+                    id_motorista = idDriver.toString().toInt(),
+                    id_tipo_contrato = idTipoContrato,
+                    id_tipo_pagamento = idTipoPagamento,
+                    id_usuario = idUser.toString().toInt(),
+                    status_contrato = 0,
+                    idade_passageiro = idadePassageiroState,
+                    nome_passageiro = nomePassageiroState
+                )
 
                 val intentSelect = Intent(context, ContratoActivity::class.java)
 
-                intentSelect.putExtra("id_tipo_pagamento", idTipoPagamento.toString())
-                intentSelect.putExtra("tipo_pagamento", nSelectedText)
-                intentSelect.putExtra("id_tipo_contrato", idTipoContrato.toString())
-                intentSelect.putExtra("tipo_contrato", mSelectedText)
-                intentSelect.putExtra("id_escola", idEscola.toString())
+                intentSelect.putExtra("contract", Gson().toJson(contract))
                 intentSelect.putExtra("tipo_escola", escolaSelectedText)
-                intentSelect.putExtra("nome_responsavel", nomeResponsavelState)
-                intentSelect.putExtra("nome_passageiro", nomePassageiroState)
-                intentSelect.putExtra("idade_passageiro", idadePassageiroState)
-                intentSelect.putExtra("id_usuario", idUser)
-                intentSelect.putExtra("id_motorista", idDriver)
+                intentSelect.putExtra("tipo_contrato", mSelectedText)
+                intentSelect.putExtra("tipo_pagamento", nSelectedText)
+                intentSelect.putExtra("id_user", idUser)
+                intentSelect.putExtra("id_driver", idDriver)
 
                 context.startActivity(intentSelect)
 

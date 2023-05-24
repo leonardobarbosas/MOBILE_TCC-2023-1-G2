@@ -1,9 +1,11 @@
 package br.senai.sp.jandira.vanbora.api.calls.user
 
 import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
+import br.senai.sp.jandira.vanbora.model.contract.ResponseJson
 import br.senai.sp.jandira.vanbora.model.user.LoginUserClientJwtModel
 import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.model.user.UserList
+import br.senai.sp.jandira.vanbora.model.user.post.PostUser
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -28,7 +30,7 @@ interface UserCall {
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("user")
-    fun saveUser(@Body user: User): Call<User>
+    fun saveUser(@Body user: PostUser): Call<String>
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("user/login")

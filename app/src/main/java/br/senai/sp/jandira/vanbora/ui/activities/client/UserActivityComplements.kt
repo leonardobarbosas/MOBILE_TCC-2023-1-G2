@@ -69,8 +69,6 @@ fun DadosAdicionaisUser() {
         //Header
         HeaderSelect()
 
-        Log.i("ds3m", "DadosAdicionaisUser: $name, $email, $senha")
-
         //Main and Footer
         UserInfos(name, email, senha)
     }
