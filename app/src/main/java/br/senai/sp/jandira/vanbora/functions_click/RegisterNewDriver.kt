@@ -32,7 +32,7 @@ fun RegisterNewDriver(
         }
 
         override fun onFailure(call: Call<String>, t: Throwable) {
-            Log.i("ds3m", "onFailure: ${t.message}")
+            Log.i("ds3m", "onFailure: ${t.message} van")
         }
     })
 

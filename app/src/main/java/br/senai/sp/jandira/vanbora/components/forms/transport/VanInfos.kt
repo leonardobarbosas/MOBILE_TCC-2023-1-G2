@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
@@ -24,12 +26,15 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewDriver
 import br.senai.sp.jandira.vanbora.model.driver.Driver
+import br.senai.sp.jandira.vanbora.model.driver.IdMotorista
+import br.senai.sp.jandira.vanbora.model.driver.ModeloList
 import br.senai.sp.jandira.vanbora.model.driver.Van
 import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
 import br.senai.sp.jandira.vanbora.model.user.User
@@ -48,26 +53,14 @@ fun VanInfos(
     var placaVan by rememberSaveable {
         mutableStateOf("")
     }
-    var modeloVan by rememberSaveable {
-        mutableStateOf("")
-    }
     var vagasVan by rememberSaveable {
-        mutableStateOf("")
-    }
-    var precoVan by rememberSaveable {
         mutableStateOf("")
     }
 
     var isPlacaVanError by rememberSaveable {
         mutableStateOf(false)
     }
-    var isModeloVanError by rememberSaveable {
-        mutableStateOf(false)
-    }
     var isVagasVanError by rememberSaveable {
-        mutableStateOf(false)
-    }
-    var isPrecoVanError by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -121,13 +114,30 @@ fun VanInfos(
 
         })
 
+
+    var isMenuExpanded by remember {
+        mutableStateOf(false)
+    }
+
+    val modeloCall = GetFunctionsCall.getVanCall().getAllModels()
+
+    var modeloList by remember {
+        mutableStateOf(ModeloList(listOf()))
+    }
+
+    var idModelo by remember {
+        mutableStateOf(0)
+    }
+    var modeloState by remember {
+        mutableStateOf("")
+    }
+
+
     if (succesImg == 1) {
         imageIcon = painterResource(id = R.drawable.baseline_linked_camera_24_back)
     } else if (succesImg == 2) {
         imageIcon = rememberAsyncImagePainter(model = selectedImage)
     }
-
-
 
 
     //IMAGE
@@ -173,28 +183,7 @@ fun VanInfos(
             isError = isPlacaVanError,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
-        OutlinedTextField(
-            value = modeloVan,
-            onValueChange = {
-                modeloVan = it
-                if (it == "" || it == null) {
-                    isModeloVanError
-                }
-            },
-            modifier = Modifier.padding(bottom = 20.dp),
-            label = {
-                Text(
-                    text = stringResource(id = R.string.modelo_van)
-                )
-            },
-            trailingIcon = {
-                if (isModeloVanError) Icon(
-                    imageVector = Icons.Default.Warning, contentDescription = ""
-                )
-            },
-            isError = isModeloVanError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
+
         OutlinedTextField(
             value = vagasVan,
             onValueChange = {
@@ -217,27 +206,68 @@ fun VanInfos(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
 
-        OutlinedTextField(
-            value = precoVan,
-            onValueChange = {
-                precoVan = it
-                if (it == "" || it == null) {
-                    isPrecoVanError
+        Column() {
+
+
+            modeloCall.enqueue(object : Callback<ModeloList> {
+                override fun onResponse(call: Call<ModeloList>, response: Response<ModeloList>) {
+                    if (response.isSuccessful) {
+                        modeloList = response.body()!!
+                    }
                 }
-            },
-            label = {
-                Text(
-                    text = stringResource(id = R.string.preco_van)
+
+                override fun onFailure(call: Call<ModeloList>, t: Throwable) {
+                    Log.i("ds3m", "onFailure: ${t.message}")
+                }
+            })
+
+            val icon = if (isMenuExpanded)
+                Icons.Filled.KeyboardArrowUp
+            else
+                Icons.Filled.KeyboardArrowDown
+
+            OutlinedTextField(
+                value = modeloState, onValueChange = {
+                    modeloState = it
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                readOnly = true,
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.faixa_preco),
+                        style = TextStyle(
+                            color = Color.Black,
+                        )
+                    )
+                },
+                trailingIcon = {
+                    Icon(icon, "contentDescription",
+                        Modifier.clickable { isMenuExpanded = !isMenuExpanded })
+                },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
-            },
-            trailingIcon = {
-                if (isPrecoVanError) Icon(
-                    imageVector = Icons.Default.Warning, contentDescription = ""
-                )
-            },
-            isError = isPrecoVanError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
+            )
+
+            DropdownMenu(expanded = isMenuExpanded, onDismissRequest = {
+                isMenuExpanded = false
+            }) {
+                modeloList.models.forEach {
+                    DropdownMenuItem(onClick = {
+                        idModelo = it.id
+                        modeloState = it.modelo
+                        isMenuExpanded = false
+
+                    }) {
+                        Text(text = it.modelo)
+                    }
+                }
+            }
+        }
     }
 
 
@@ -246,9 +276,7 @@ fun VanInfos(
         Button(
             onClick = {
                 isPlacaVanError = placaVan.length == 0
-                isModeloVanError = modeloVan.length == 0
                 isVagasVanError = vagasVan.length == 0
-                isPrecoVanError = precoVan.length == 0
 
 
                 val driverCallSave = GetFunctionsCall.getDriverCall().saveDriver(driver = driver)
@@ -260,12 +288,12 @@ fun VanInfos(
                             val getDriverByCpf =
                                 GetFunctionsCall.getDriverCall().getDriverIdByCpf(driver.cpf)
 
-                            getDriverByCpf.enqueue(object : Callback<Int> {
-                                override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                            getDriverByCpf.enqueue(object : Callback<IdMotorista> {
+                                override fun onResponse(call: Call<IdMotorista>, response: Response<IdMotorista>) {
                                     if (response.isSuccessful) {
 
                                         val driverGet = GetFunctionsCall.getDriverCall()
-                                            .getDriverById(response.body().toString())
+                                            .getDriverById(response.body()!!.id.toString())
 
                                         driverGet.enqueue(object : Callback<Driver> {
                                             override fun onResponse(
@@ -274,12 +302,11 @@ fun VanInfos(
                                             ) {
                                                 if (response.isSuccessful) {
                                                     var postVan = PostPutVan(
-                                                        foto = "",
-                                                        id_modelo = 0,
+                                                        foto = urlImage,
+                                                        id_modelo = idModelo,
                                                         id_motorista = response.body()!!.id,
                                                         placa = placaVan,
-                                                        quantidade_vagas = vagasVan,
-                                                        status_van = 1
+                                                        quantidade_vagas = vagasVan
                                                     )
                                                     RegisterNewDriver(
                                                         postVan = postVan, context = context
@@ -292,15 +319,15 @@ fun VanInfos(
                                                 call: Call<Driver>,
                                                 t: Throwable,
                                             ) {
-                                                Log.i("ds3m", "onFailure: ${t.message}")
+                                                Log.i("ds3m", "onFailure: ${t.message} motorista")
                                             }
                                         })
 
                                     }
                                 }
 
-                                override fun onFailure(call: Call<Int>, t: Throwable) {
-                                    Log.i("ds3m", "onFailure: ${t.message}")
+                                override fun onFailure(call: Call<IdMotorista>, t: Throwable) {
+                                    Log.i("ds3m", "onFailure: ${t.message} post")
                                 }
                             })
                         }
@@ -308,7 +335,7 @@ fun VanInfos(
                     }
 
                     override fun onFailure(call: Call<String>, t: Throwable) {
-                        Log.i("ds3m", "onFailure: ${t.message.toString()}")
+                        Log.i("ds3m", "onFailure: ${t.message.toString()} ")
                     }
                 })
 

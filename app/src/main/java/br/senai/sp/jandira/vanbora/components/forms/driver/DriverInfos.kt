@@ -12,6 +12,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -28,11 +30,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
+import br.senai.sp.jandira.vanbora.model.prices.AllPrices
 import br.senai.sp.jandira.vanbora.ui.activities.driver.VanComplements
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun DriverInfos(name: String, email: String, senha: String) {
@@ -42,10 +49,6 @@ fun DriverInfos(name: String, email: String, senha: String) {
     }
 
     var cpfState by rememberSaveable() {
-        mutableStateOf("")
-    }
-
-    var cepState by rememberSaveable() {
         mutableStateOf("")
     }
 
@@ -74,10 +77,6 @@ fun DriverInfos(name: String, email: String, senha: String) {
     }
 
     var isCpfError by remember() {
-        mutableStateOf(false)
-    }
-
-    var isCepError by remember() {
         mutableStateOf(false)
     }
 
@@ -115,6 +114,28 @@ fun DriverInfos(name: String, email: String, senha: String) {
     var selectedImage by remember {
         mutableStateOf<Uri?>(null)
     }
+
+    val pricesCall = GetFunctionsCall.getPricesCall().getAllPrices()
+
+    var prices by remember {
+        mutableStateOf<AllPrices?>(null)
+    }
+
+    var isMenuExpanded by remember {
+        mutableStateOf(false)
+    }
+
+    pricesCall.enqueue(object : Callback<AllPrices>{
+        override fun onResponse(call: Call<AllPrices>, response: Response<AllPrices>) {
+            if(response.isSuccessful){
+                prices = response.body()!!
+            }
+        }
+
+        override fun onFailure(call: Call<AllPrices>, t: Throwable) {
+            Log.i("ds3m", "onFailure: ${t.message}")
+        }
+    })
 
     var storage = FirebaseStorage.getInstance()
 
@@ -163,7 +184,8 @@ fun DriverInfos(name: String, email: String, senha: String) {
         Column(
             modifier = Modifier
                 .fillMaxWidth(),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
 
@@ -259,52 +281,6 @@ fun DriverInfos(name: String, email: String, senha: String) {
         if (isCpfError) {
             Text(
                 text = stringResource(id = R.string.cpf_error),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 52.dp),
-                color = Color.Red,
-                fontSize = 15.sp,
-                textAlign = TextAlign.End
-            )
-        }
-
-        //CEP
-        OutlinedTextField(
-            value = cepState, onValueChange = {
-                cepState = it
-
-                if (it == "" || it == null) {
-                    isCepError
-                }
-
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-            label = {
-                Text(
-                    text = stringResource(id = R.string.cep),
-                    style = TextStyle(
-                        color = Color.Black,
-                    )
-                )
-            },
-            trailingIcon = {
-                if (isCepError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )
-            },
-            isError = isCepError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0, 0, 0, 255),
-                unfocusedBorderColor = Color(0, 0, 0, 255)
-            )
-        )
-        if (isCepError) {
-            Text(
-                text = stringResource(id = R.string.cep_error),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 52.dp),
@@ -545,6 +521,64 @@ fun DriverInfos(name: String, email: String, senha: String) {
             )
         }
 
+        var priceState by remember {
+            mutableStateOf("")
+        }
+        var idPrice by remember {
+            mutableStateOf(0)
+        }
+
+        val icon = if (isMenuExpanded)
+            Icons.Filled.KeyboardArrowUp
+        else
+            Icons.Filled.KeyboardArrowDown
+
+        //Preço Serviço
+        Column() {
+            OutlinedTextField(
+                value = priceState, onValueChange = {
+                    priceState = it
+
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                readOnly = true,
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.faixa_preco),
+                        style = TextStyle(
+                            color = Color.Black,
+                        )
+                    )
+                },
+                trailingIcon = {
+                    Icon(icon, "contentDescription",
+                        Modifier.clickable { isMenuExpanded = !isMenuExpanded })
+                },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0, 0, 0, 255),
+                    unfocusedBorderColor = Color(0, 0, 0, 255)
+                )
+            )
+
+            DropdownMenu(expanded = isMenuExpanded, onDismissRequest = {
+                isMenuExpanded = false
+            }) {
+                prices!!.prices.forEach { 
+                    DropdownMenuItem(onClick = {
+                        idPrice = it.id
+                        priceState = it.faixa_preco
+                        isMenuExpanded = false
+
+                    }) {
+                        Text(text = it.faixa_preco)
+                    }
+                }
+            }
+        }
+
+
         Spacer(
             modifier = Modifier.height(30.dp)
         )
@@ -561,7 +595,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
                     descricao = descricaoState,
                     email = email,
                     foto = urlImage,
-                    id_preco = 0,
+                    id_preco = idPrice,
                     inicio_carreira = inicioCarreiraState,
                     nome = name,
                     rg = rgState,
@@ -569,10 +603,6 @@ fun DriverInfos(name: String, email: String, senha: String) {
                     telefone = telefoneState
                 )
 
-//                intentSelect.putExtra("descricao", descricaoState)
-//                intentSelect.putExtra("telefone", telefoneState)
-//                intentSelect.putExtra("inicio_carreira", inicioCarreiraState)
-//                intentSelect.putExtra("data_nascimento", dataNascimentoState)
                 intentSelect.putExtra("driver", Gson().toJson(driverPost))
 
                 context.startActivity(intentSelect)
