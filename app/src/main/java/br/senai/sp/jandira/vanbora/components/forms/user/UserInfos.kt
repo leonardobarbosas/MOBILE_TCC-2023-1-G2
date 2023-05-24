@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.vanbora.components.forms.user
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -104,9 +105,7 @@ fun UserInfos(
 
 
     var imageIcon by remember {
-
         mutableStateOf<Painter?>(null)
-
     }
 
     var succesImg by remember {
@@ -458,6 +457,7 @@ fun UserInfos(
 }
 
 
+@SuppressLint("Range")
 fun getImageDisplayNameFromUri(context: Context, uri: Uri): String? {
     val contentResolver = context.contentResolver
     val cursor = contentResolver.query(uri, null, null, null, null)

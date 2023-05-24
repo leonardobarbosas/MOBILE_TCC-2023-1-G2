@@ -142,6 +142,8 @@ fun FormMainCadastro(){
                 .fillMaxWidth()
                 .padding(top = 4.dp, start = 52.dp, end = 52.dp)
                 .focusRequester(senhaFocusRequester),
+            singleLine = true,
+            maxLines = 1,
             label = {
                 Text(
                     text = stringResource(id = R.string.email),
