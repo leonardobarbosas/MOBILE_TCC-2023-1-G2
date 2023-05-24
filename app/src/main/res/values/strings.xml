@@ -108,5 +108,6 @@
     <string name="ispreco_servico_error">Preço inválido</string>
     <string name="preco_servico">Preço do Serviço</string>
     <string name="tipo_contrato">Tipo de Contrato:</string>
+    <string name="title_activity_editar_perfil_driver">EditarPerfilDriver</string>
 
 </resources>

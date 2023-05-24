@@ -127,11 +127,9 @@ fun Perfil() {
     var comment by remember {
         mutableStateOf(Comment(listOf()))
     }
-    Log.i("ds3m", "Perfil: $comment")
     commentCall.enqueue(object : Callback<Comment> {
         override fun onResponse(call: Call<Comment>, response: Response<Comment>) {
             comment = response.body()!!
-            Log.i("ds3m", "onResponse: $comment")
         }
 
         override fun onFailure(call: Call<Comment>, t: Throwable) {
