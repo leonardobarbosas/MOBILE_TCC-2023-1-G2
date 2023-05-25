@@ -23,9 +23,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.LoginDriverClient
 import br.senai.sp.jandira.vanbora.functions_click.LoginUserCLient
+import br.senai.sp.jandira.vanbora.model.DataStore.DataStoreAppData
+import br.senai.sp.jandira.vanbora.model.dto.AuthDTO
 
 @Composable
-fun FormMainLogin(){
+fun FormMainLogin() {
+
+    var context = LocalContext.current
 
     var emailState by rememberSaveable() {
         mutableStateOf("")
@@ -70,7 +74,8 @@ fun FormMainLogin(){
 
     val emailFocusRequester = FocusRequester()
 
-    var context = LocalContext.current
+    val dataStore = DataStoreAppData(context)
+    val scope = rememberCoroutineScope()
 
 
     Column(
@@ -91,8 +96,7 @@ fun FormMainLogin(){
 
                 if (it == "" || it == null) {
                     isEmailError
-                }
-                else if (it !== "@"){
+                } else if (it !== "@") {
                     isEmailErrorArroba
                 }
             },
@@ -122,7 +126,7 @@ fun FormMainLogin(){
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
-        if(isEmailError){
+        if (isEmailError) {
             Text(
                 text = stringResource(id = R.string.email_error),
                 modifier = Modifier
@@ -133,7 +137,7 @@ fun FormMainLogin(){
                 textAlign = TextAlign.End
             )
         }
-        if(isEmailErrorArroba){
+        if (isEmailErrorArroba) {
             Text(
                 text = stringResource(id = R.string.arroba_error),
                 modifier = Modifier
@@ -183,7 +187,7 @@ fun FormMainLogin(){
                 unfocusedBorderColor = Color(0, 0, 0, 255)
             )
         )
-        if(isSenhaError){
+        if (isSenhaError) {
             Text(
                 text = stringResource(id = R.string.senha_error),
                 modifier = Modifier
@@ -233,14 +237,17 @@ fun FormMainLogin(){
                 )
             Button(
                 onClick = {
-                    isEmailError = emailState.length == 0
-                    isSenhaError = senhaState.length == 0
+                    val authDTO = AuthDTO(emailState, senhaState)
 
-                    if (checkedStateDriver.value){
-                        LoginDriverClient(emailProps = emailState,  senhaProps = senhaState, context = context)
-                    }else if (checkedStateUser.value){
-                        LoginUserCLient(emailProps = emailState,  senhaProps = senhaState, context = context)
-                    }
+
+//                    isEmailError = emailState.length == 0
+//                    isSenhaError = senhaState.length == 0
+//
+//                    if (checkedStateDriver.value){
+//                        LoginDriverClient(emailProps = emailState,  senhaProps = senhaState, context = context)
+//                    }else if (checkedStateUser.value){
+//                        LoginUserCLient(emailProps = emailState,  senhaProps = senhaState, context = context)
+//                    }
                 },
                 colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
 
