@@ -21,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import br.senai.sp.jandira.vanbora.R
+import br.senai.sp.jandira.vanbora.api.retrofit.RetrofitApi
 import br.senai.sp.jandira.vanbora.functions_click.LoginDriverClient
 import br.senai.sp.jandira.vanbora.functions_click.LoginUserCLient
 import br.senai.sp.jandira.vanbora.model.DataStore.DataStoreAppData
@@ -238,7 +239,7 @@ fun FormMainLogin() {
             Button(
                 onClick = {
                     val authDTO = AuthDTO(emailState, senhaState)
-
+                    val call = RetrofitApi.retrofitServiceAuth().login(authDTO)
 
 //                    isEmailError = emailState.length == 0
 //                    isSenhaError = senhaState.length == 0
