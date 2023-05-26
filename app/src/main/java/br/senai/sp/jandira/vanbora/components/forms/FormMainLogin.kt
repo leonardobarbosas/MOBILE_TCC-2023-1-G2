@@ -1,6 +1,7 @@
 package br.senai.sp.jandira.vanbora.components
 
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

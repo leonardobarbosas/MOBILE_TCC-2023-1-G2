@@ -21,7 +21,6 @@ class DataStoreAppData(private val  context: Context) {
         val NAME_REGISTER = stringPreferencesKey("name_register")
         val EMAIL_REGISTER = stringPreferencesKey("email_user")
         val PASSWORD_REGISTER = stringPreferencesKey("password_register")
-        val GENDER_REGISTER = stringPreferencesKey("gender_register")
     }
 
     //Pegar Token
@@ -29,28 +28,24 @@ class DataStoreAppData(private val  context: Context) {
         preferences[TOKEN] ?: ""
     }
 
-    val getGenderRegister: Flow<String?> = context.dataStore.data.map { preferences ->
-        preferences[GENDER_REGISTER] ?: ""
-    }
-
     val getNameRegister: Flow<String?> = context.dataStore.data.map { preferences ->
         preferences[NAME_REGISTER] ?: ""
     }
 
     val getEmailRegister: Flow<String?> = context.dataStore.data.map { preferences ->
-        preferences[EMAIL_REGISTER]
+        preferences[EMAIL_REGISTER] ?: ""
     }
 
     val getPasswordRegister: Flow<String?> = context.dataStore.data.map { preferences ->
-        preferences[PASSWORD_REGISTER]
+        preferences[PASSWORD_REGISTER] ?: ""
     }
 
     val getNameUser: Flow<String?> = context.dataStore.data.map { preferences ->
-        preferences[NAME_USER]
+        preferences[NAME_USER] ?: ""
     }
 
     val getIdUSer: Flow<String?> = context.dataStore.data.map { preferences ->
-        preferences[ID_USER]
+        preferences[ID_USER] ?: ""
     }
 
     val getType: Flow<String?> = context.dataStore.data.map { preferences ->
@@ -60,12 +55,6 @@ class DataStoreAppData(private val  context: Context) {
     suspend fun saveIdUser(idUser: String) {
         context.dataStore.edit {preferences ->
             preferences[ID_USER] = idUser
-        }
-    }
-
-    suspend fun saveGenderRegister(genderId: String) {
-        context.dataStore.edit {preferences ->
-            preferences[GENDER_REGISTER] = genderId
         }
     }
 
