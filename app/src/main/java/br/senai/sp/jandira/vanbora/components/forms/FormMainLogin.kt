@@ -1,34 +1,66 @@
 package br.senai.sp.jandira.vanbora.components
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import android.content.Intent
+import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.api.retrofit.RetrofitApi
-import br.senai.sp.jandira.vanbora.functions_click.LoginDriverClient
-import br.senai.sp.jandira.vanbora.functions_click.LoginUserCLient
 import br.senai.sp.jandira.vanbora.model.DataStore.DataStoreAppData
 import br.senai.sp.jandira.vanbora.model.dto.AuthDTO
+import br.senai.sp.jandira.vanbora.model.dto.LoginResponse
+import br.senai.sp.jandira.vanbora.ui.activities.global.SelectActivity
+import com.auth0.android.jwt.JWT
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun FormMainLogin() {
+
+    var token by remember {
+        mutableStateOf("")
+    }
 
     var context = LocalContext.current
 
@@ -238,8 +270,50 @@ fun FormMainLogin() {
                 )
             Button(
                 onClick = {
+                    if (token.isNotEmpty()) {
+                        scope.launch {
+                            dataStore.deleteToken()
+                        }
+                    }
                     val authDTO = AuthDTO(emailState, senhaState)
                     val call = RetrofitApi.retrofitServiceAuth().login(authDTO)
+
+                    call.enqueue(object : Callback<LoginResponse> {
+                        override fun onResponse(
+                            call: Call<LoginResponse>, response: Response<LoginResponse>
+                        ) {
+                            if (response.isSuccessful) {
+                                val jwt = JWT(response.body()!!.token)
+
+                                scope.launch {
+                                    dataStore.saveToken(response.body()!!.token)
+                                    dataStore.saveIdUser(jwt.getClaim("id").asString().toString())
+                                    dataStore.saveType(jwt.getClaim("type").asString().toString())
+                                    dataStore.saveName(response.body()!!.data.nome)
+                                    dataStore.saveEmailRegister(response.body()!!.data.email)
+                                    dataStore.savePasswordRegister(response.body()!!.data.senha)
+                                }
+
+                                if (response.body()?.token?.isNotEmpty() == true) {
+                                    val intent = Intent(
+                                        context,
+                                        SelectActivity::class.java
+                                    ).putExtra("token", response.body()!!.token)
+                                    startActivity(context, intent, null)
+                                } else {
+                                    Toast.makeText(context, "Usuário ou senha incorretos! Tente novamente.", Toast.LENGTH_SHORT).show()
+                                }
+
+                            }else {
+                                Toast.makeText(context, "Algum dado está incorreto", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                            Toast.makeText(context, "Tente mais tarde", Toast.LENGTH_SHORT).show()
+                        }
+
+                    })
 
 //                    isEmailError = emailState.length == 0
 //                    isSenhaError = senhaState.length == 0

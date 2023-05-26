@@ -31,6 +31,8 @@ fun getToken (context: Context, authDTO: AuthDTO, onComplete: (String) -> Unit){
                 dataStore.saveType(jwt.getClaim("type").asString().toString())
                 dataStore.saveIdUser(jwt.getClaim("id").asString().toString())
                 dataStore.saveName(response.body()!!.data.nome)
+                dataStore.saveEmailRegister(response.body()!!.data.email)
+                dataStore.savePasswordRegister(response.body()!!.data.senha)
             }
 
             onComplete.invoke(response.body()!!.token)
