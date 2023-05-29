@@ -1,7 +1,7 @@
 package br.senai.sp.jandira.vanbora.model.driver
 
 data class Driver(
-    val avaliacao: Int = 0,
+    val avaliacao: Double = 0.0,
     val cnh: String = "",
     val cpf: String = "",
     val data_nascimento: String = "",

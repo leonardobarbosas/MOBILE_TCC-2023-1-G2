@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.vanbora.call_functions
 
+import br.senai.sp.jandira.vanbora.api.calls.avaliacoes.AvaliacaoCall
 import br.senai.sp.jandira.vanbora.api.calls.comments.CommentCall
 import br.senai.sp.jandira.vanbora.api.calls.contracts.ContractCall
 import br.senai.sp.jandira.vanbora.api.calls.contracts.EscolaCall
@@ -37,6 +38,12 @@ class GetFunctionsCall {
             val escolaCall = retrofit.create(EscolaCall::class.java)
 
             return escolaCall
+        }
+
+        fun getAvaliacaoCall(): AvaliacaoCall {
+            val avaliacaoCall = retrofit.create(AvaliacaoCall::class.java)
+
+            return avaliacaoCall
         }
 
         fun getTipoPagamentoCall(): TipoPagamentoCall {
