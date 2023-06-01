@@ -24,13 +24,17 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
+import br.senai.sp.jandira.vanbora.components.forms.user.DateTransformation
 import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
 import br.senai.sp.jandira.vanbora.model.prices.AllPrices
 import br.senai.sp.jandira.vanbora.ui.activities.driver.VanComplements
@@ -43,6 +47,8 @@ import retrofit2.Response
 
 @Composable
 fun DriverInfos(name: String, email: String, senha: String) {
+
+    var maxChar = 8
 
     var rgState by rememberSaveable() {
         mutableStateOf("")
@@ -202,6 +208,9 @@ fun DriverInfos(name: String, email: String, senha: String) {
             value = rgState, onValueChange = {
                 rgState = it
 
+                val cleanInput = it.replace("\\D".toRegex(), "")
+                rgState = formatRG(cleanInput)
+
                 if (it == "" || it == null) {
                     isRgError
                 }
@@ -248,6 +257,9 @@ fun DriverInfos(name: String, email: String, senha: String) {
         OutlinedTextField(
             value = cpfState, onValueChange = {
                 cpfState = it
+
+                val cleanInput = it.replace("\\D".toRegex(), "")
+                cpfState = formatCPF(cleanInput)
 
                 if (it == "" || it == null) {
                     isCpfError
@@ -341,6 +353,9 @@ fun DriverInfos(name: String, email: String, senha: String) {
             value = telefoneState, onValueChange = {
                 telefoneState = it
 
+                val cleanInput = it.replace("\\D".toRegex(), "")
+                telefoneState = formatPhone(cleanInput)
+
                 if (it == "" || it == null) {
                     isTelefoneError
                 }
@@ -431,7 +446,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
         //INICIO CARREIRA
         OutlinedTextField(
             value = inicioCarreiraState, onValueChange = {
-                inicioCarreiraState = it
+                if (it.length <= maxChar) inicioCarreiraState = it
 
                 if (it == "" || it == null) {
                     isInicioCarreiraError
@@ -456,7 +471,9 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 )
             },
             isError = isInicioCarreiraError,
+            visualTransformation = DateTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0, 0, 0, 255),
                 unfocusedBorderColor = Color(0, 0, 0, 255)
@@ -478,7 +495,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
         //DATA NASCIMENTO
         OutlinedTextField(
             value = dataNascimentoState, onValueChange = {
-                dataNascimentoState = it
+                if (it.length <= maxChar) dataNascimentoState = it
 
                 if (it == "" || it == null) {
                     isDataNascimentoError
@@ -503,7 +520,9 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 )
             },
             isError = isDataNascimentoError,
+            visualTransformation = DateTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0, 0, 0, 255),
                 unfocusedBorderColor = Color(0, 0, 0, 255)
@@ -616,4 +635,52 @@ fun DriverInfos(name: String, email: String, senha: String) {
         }
 
     }
+}
+
+fun dateFilter(text: AnnotatedString): TransformedText {
+
+    val trimmed = if (text.text.length >= 8) text.text.substring(0..7) else text.text
+    var out = ""
+    for (i in trimmed.indices) {
+        out += trimmed[i]
+        if (i % 2 == 1 && i < 4) out += "/"
+    }
+
+    val numberOffsetTranslator = object : OffsetMapping {
+        override fun originalToTransformed(offset: Int): Int {
+            if (offset <= 1) return offset
+            if (offset <= 3) return offset +1
+            if (offset <= 8) return offset +2
+            return 10
+        }
+
+        override fun transformedToOriginal(offset: Int): Int {
+            if (offset <=2) return offset
+            if (offset <=5) return offset -1
+            if (offset <=10) return offset -2
+            return 8
+        }
+    }
+
+    return TransformedText(AnnotatedString(out), numberOffsetTranslator)
+}
+
+fun formatPhone(phoneNumber: String): String {
+    val phoneRegex = "(\\d{2})(\\d{5})(\\d{4})".toRegex()
+    return phoneRegex.replace(phoneNumber, "($1) $2-$3")
+}
+
+fun formatCPF(cpf: String): String {
+    val cpfRegex = "(\\d{3})(\\d{3})(\\d{3})(\\d{2})".toRegex()
+    return cpfRegex.replace(cpf, "$1.$2.$3-$4")
+}
+
+fun formatRG(rg: String): String {
+    val rgRegex = "(\\d{2})(\\d{3})(\\d{3})(\\d{1})".toRegex()
+    return rgRegex.replace(rg, "$1.$2.$3-$4")
+}
+
+fun formatCEP(cep: String): String {
+    val cepRegex = "(\\d{5})(\\d{3})".toRegex()
+    return cepRegex.replace(cep, "$1-$2")
 }

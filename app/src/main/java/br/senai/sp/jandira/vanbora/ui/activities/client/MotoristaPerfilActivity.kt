@@ -248,7 +248,7 @@ fun Perfil(
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                RatingBar(   
+                RatingBar(
                     value = rating,
                     onValueChange = { rating = it },
                     onRatingChanged = {
@@ -383,6 +383,7 @@ fun Perfil(
                     .padding(start = 16.dp, end = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Spacer(modifier = Modifier.padding(10.dp))
                 Text(text = "${driver?.descricao}", fontSize = 14.sp, textAlign = TextAlign.Center)
             }
 
