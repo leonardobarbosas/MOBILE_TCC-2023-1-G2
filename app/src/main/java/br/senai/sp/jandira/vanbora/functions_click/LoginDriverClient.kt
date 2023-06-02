@@ -44,6 +44,7 @@ fun LoginDriverClient(emailProps: String, senhaProps: String, context: Context) 
             }
 
 
+
         }
 
         override fun onFailure(call: Call<LoginDriverClientJwtModel>, t: Throwable) {

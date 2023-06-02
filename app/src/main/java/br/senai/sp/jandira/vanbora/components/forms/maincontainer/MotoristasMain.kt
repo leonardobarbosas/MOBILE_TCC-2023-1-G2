@@ -342,7 +342,7 @@ fun MotoristasMain(
 
                                             Spacer(modifier = Modifier.padding(2.dp))
 
-                                            if (driver.avaliacao == 10) {
+                                            if (driver?.avaliacao!! == 5.0) {
                                                 Row {
                                                     Icon(
                                                         imageVector = Icons.Filled.Star,
@@ -370,7 +370,7 @@ fun MotoristasMain(
                                                         tint = Color(238, 179, 31, 255)
                                                     )
                                                 }
-                                            } else if (driver.avaliacao == 9) {
+                                            } else if (driver?.avaliacao!! == 4.5) {
                                                 Row {
                                                     Icon(
                                                         imageVector = Icons.Filled.Star,
@@ -398,8 +398,8 @@ fun MotoristasMain(
                                                         tint = Color(238, 179, 31, 255)
                                                     )
                                                 }
-                                            } else if (driver.avaliacao == 8) {
-                                                Row {
+                                            } else if (driver?.avaliacao!! == 4.0) {
+                                                Row() {
                                                     Icon(
                                                         imageVector = Icons.Filled.Star,
                                                         contentDescription = "",
@@ -426,8 +426,8 @@ fun MotoristasMain(
                                                         tint = Color(238, 179, 31, 255)
                                                     )
                                                 }
-                                            } else if (driver.avaliacao == 7) {
-                                                Row {
+                                            } else if (driver?.avaliacao!! == 3.5) {
+                                                Row() {
                                                     Icon(
                                                         imageVector = Icons.Filled.Star,
                                                         contentDescription = "",
@@ -454,7 +454,7 @@ fun MotoristasMain(
                                                         tint = Color(238, 179, 31, 255)
                                                     )
                                                 }
-                                            } else if (driver.avaliacao == 6) {
+                                            } else if (driver?.avaliacao!! == 3.0) {
                                                 Row {
                                                     Icon(
                                                         imageVector = Icons.Filled.Star,
@@ -482,8 +482,8 @@ fun MotoristasMain(
                                                         tint = Color(238, 179, 31, 255)
                                                     )
                                                 }
-                                            } else if (driver.avaliacao == 5) {
-                                                Row {
+                                            } else if (driver?.avaliacao!! == 2.5) {
+                                                Row() {
                                                     Icon(
                                                         imageVector = Icons.Filled.Star,
                                                         contentDescription = "",
@@ -510,8 +510,8 @@ fun MotoristasMain(
                                                         tint = Color(238, 179, 31, 255)
                                                     )
                                                 }
-                                            } else if (driver.avaliacao == 4) {
-                                                Row {
+                                            } else if (driver?.avaliacao!! == 2.0) {
+                                                Row() {
                                                     Icon(
                                                         imageVector = Icons.Filled.Star,
                                                         contentDescription = "",
@@ -538,8 +538,8 @@ fun MotoristasMain(
                                                         tint = Color(238, 179, 31, 255)
                                                     )
                                                 }
-                                            } else if (driver.avaliacao == 3) {
-                                                Row {
+                                            } else if (driver?.avaliacao!! == 1.5) {
+                                                Row() {
                                                     Icon(
                                                         imageVector = Icons.Filled.Star,
                                                         contentDescription = "",
@@ -566,8 +566,8 @@ fun MotoristasMain(
                                                         tint = Color(238, 179, 31, 255)
                                                     )
                                                 }
-                                            } else if (driver.avaliacao == 2) {
-                                                Row {
+                                            } else if (driver?.avaliacao!! == 1.0) {
+                                                Row() {
                                                     Icon(
                                                         imageVector = Icons.Filled.Star,
                                                         contentDescription = "",
@@ -595,7 +595,7 @@ fun MotoristasMain(
                                                     )
                                                 }
                                             } else {
-                                                Row {
+                                                Row() {
                                                     Icon(
                                                         imageVector = Icons.Filled.StarHalf,
                                                         contentDescription = "",

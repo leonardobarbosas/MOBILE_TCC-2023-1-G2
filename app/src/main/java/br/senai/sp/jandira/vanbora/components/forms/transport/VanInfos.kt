@@ -248,7 +248,7 @@ fun VanInfos(
                 readOnly = true,
                 label = {
                     Text(
-                        text = stringResource(id = R.string.faixa_preco),
+                        text = stringResource(id = R.string.modelo_van),
                         style = TextStyle(
                             color = Color.Black,
                         )

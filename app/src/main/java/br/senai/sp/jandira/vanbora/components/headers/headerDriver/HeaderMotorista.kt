@@ -22,6 +22,7 @@ import br.senai.sp.jandira.vanbora.components.headers.Logo
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.EditarPerfilActivity
+import br.senai.sp.jandira.vanbora.ui.activities.driver.EditarPerfilDriver
 import br.senai.sp.jandira.vanbora.ui.activities.driver.SuasVansActivity
 import coil.compose.rememberAsyncImagePainter
 import retrofit2.Call
@@ -50,7 +51,7 @@ fun HeaderMotorista() {
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
-            Log.i("ds3m", "onFailure")
+            Log.i("ds3m", "onFailure jheader motorista")
         }
 
     })
@@ -78,11 +79,11 @@ fun HeaderMotorista() {
                 .border(2.dp, Color.Gray, CircleShape)
                 .clickable {
 
-                    val intentSelect = Intent(context, EditarPerfilActivity::class.java)
+                    val intentSelect = Intent(context, EditarPerfilDriver::class.java)
 
                     intentSelect.putExtra("id", login?.id.toString())
 
-                    login?.id.toString() to EditarPerfilActivity::class.java
+                    login?.id.toString() to EditarPerfilDriver::class.java
 
                     context.startActivity(intentSelect)
 

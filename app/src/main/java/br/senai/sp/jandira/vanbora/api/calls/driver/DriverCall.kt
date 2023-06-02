@@ -29,6 +29,10 @@ interface DriverCall {
     fun saveDriver(@Body driver: DriverPost): Call<String>
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
+    @PUT("driver/{id}")
+    fun putDriver(@Path("id") id: String, @Body driver: Driver): Call<String>
+
+    @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("driver/login")
     fun loginDriverClient(@Body driver: Driver): Call<LoginDriverClientJwtModel>
 

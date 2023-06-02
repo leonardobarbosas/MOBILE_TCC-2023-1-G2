@@ -618,8 +618,7 @@ fun EditarPerfil() {
                         )
 
 
-                        var perfilPutCall =
-                            GetFunctionsCall.getUserCall().putUser(user.id.toString(), user)
+                        var perfilPutCall = GetFunctionsCall.getUserCall().putUser(user.id.toString(), user)
 
                         perfilPutCall.enqueue(object : Callback<String> {
                             override fun onResponse(
@@ -639,9 +638,7 @@ fun EditarPerfil() {
                             Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(
-                                context,
-                                "Perfil atualizado com sucesso",
-                                Toast.LENGTH_SHORT
+                                context, "Perfil atualizado com sucesso", Toast.LENGTH_SHORT
                             )
                                 .show()
 
