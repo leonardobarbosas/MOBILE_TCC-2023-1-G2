@@ -1,11 +1,9 @@
 package br.senai.sp.jandira.vanbora.ui.activities.driver
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -13,7 +11,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -60,15 +57,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
 import br.senai.sp.jandira.vanbora.components.forms.user.getImageDisplayNameFromUri
 import br.senai.sp.jandira.vanbora.components.headers.headerDriver.HeaderPerfilDriver
 import br.senai.sp.jandira.vanbora.model.driver.Driver
-import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
 import br.senai.sp.jandira.vanbora.model.prices.AllPrices
-import br.senai.sp.jandira.vanbora.model.user.User
-import br.senai.sp.jandira.vanbora.ui.activities.client.EditarPerfilActivity
-import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.storage.FirebaseStorage
@@ -294,7 +286,7 @@ fun EditarDriver() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Icon(painter = imageIcon!!, contentDescription = "", modifier = Modifier
+        Icon(painter = imageIcon!!, contentDescription = "", tint = Color.Unspecified, modifier = Modifier
             .clickable {
                 gallerLauncher.launch("image/*")
             }

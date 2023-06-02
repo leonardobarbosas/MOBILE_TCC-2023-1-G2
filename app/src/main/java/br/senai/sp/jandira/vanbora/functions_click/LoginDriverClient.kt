@@ -8,8 +8,6 @@ import androidx.compose.runtime.simulateHotReload
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.LoginDriverClientJwtModel
-import br.senai.sp.jandira.vanbora.model.driver.Van
-import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import br.senai.sp.jandira.vanbora.ui.activities.driver.SuasVansActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,6 +25,8 @@ fun LoginDriverClient(emailProps: String, senhaProps: String, context: Context) 
             call: Call<LoginDriverClientJwtModel>,
             response: Response<LoginDriverClientJwtModel>
         ) {
+
+            Log.i("ds3m", "onResponse: ${response.code()}")
 
             if (response.code() == 404) {
                 simulateHotReload(context)
