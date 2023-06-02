@@ -9,7 +9,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -236,13 +235,13 @@ fun EditarVan() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.15f)
-                    .padding(start = 80.dp, end = 80.dp)
-                    .background(Color(156, 156, 156, 0)),
+                    .padding(start = 80.dp, end = 80.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(painter = imageIcon!!,
                     contentDescription = "",
+                    tint = Color.Unspecified,
                     modifier = Modifier
                         .clickable { gallerLauncher.launch("image/*") }
                         .size(200.dp))
