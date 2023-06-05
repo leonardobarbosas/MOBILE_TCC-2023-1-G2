@@ -5,20 +5,39 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.simulateHotReload
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -37,8 +56,6 @@ import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.headerDriver.HeaderMotorista
 import br.senai.sp.jandira.vanbora.functions_click.RegiterNewSchool
 import br.senai.sp.jandira.vanbora.model.contract.EscolaDriver
-import br.senai.sp.jandira.vanbora.model.contract.EscolaList
-import br.senai.sp.jandira.vanbora.model.contract.ResponseJson
 import br.senai.sp.jandira.vanbora.model.contract.SchoolPost
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.ui.activities.driver.SuasVansActivity
@@ -100,7 +117,13 @@ fun SuasEscolas() {
         }
         escolaCall.enqueue(object : Callback<EscolaDriver> {
             override fun onResponse(call: Call<EscolaDriver>, response: Response<EscolaDriver>) {
-                escolas = response.body()!!
+                if (response.isSuccessful){
+                    escolas = response.body()!!
+                }else{
+                    escolas = EscolaDriver(emptyList())
+                    Toast.makeText(context, "Nenhuma escola cadastrada", Toast.LENGTH_SHORT).show()
+                }
+
             }
 
             override fun onFailure(call: Call<EscolaDriver>, t: Throwable) {
@@ -159,87 +182,81 @@ fun SuasEscolas() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                if (escolas.schools.isEmpty()) {
-                    Toast.makeText(context, "Nenhuma escola cadastrada", Toast.LENGTH_SHORT).show()
-                } else {
-                    Log.i("ds3m", "SuasEscolas: teste")
+                escolas?.let {
+                    items(it.schools) { escola ->
 
-                    escolas?.let {
-                        items(it.schools) { escola ->
-
-                            Card(
-                                modifier = Modifier
-                                    .width(250.dp)
-                                    .padding(top = 10.dp),
-                                backgroundColor = Color(255, 227, 148, 255),
-                                border = BorderStroke(1.dp, Color.Black)
+                        Card(
+                            modifier = Modifier
+                                .width(250.dp)
+                                .padding(top = 10.dp),
+                            backgroundColor = Color(255, 227, 148, 255),
+                            border = BorderStroke(1.dp, Color.Black)
+                        ) {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceAround,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.SpaceAround,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(text = escola.nome_escola)
+                                Text(text = escola.nome_escola)
 
-                                    Spacer(modifier = Modifier.padding(5.dp))
+                                Spacer(modifier = Modifier.padding(5.dp))
 
-                                    Button(
-                                        onClick = {
+                                Button(
+                                    onClick = {
 
-                                            val escola = SchoolPost(
+                                        val escola = SchoolPost(
+                                            escola.id_escola,
+                                            idDriver.toString().toInt()
+                                        )
+
+
+                                        val callEscolaDelete = GetFunctionsCall.getEscolaCall()
+                                            .deleteDriverSchool(
                                                 escola.id_escola,
-                                                idDriver.toString().toInt()
+                                                escola.id_motorista
                                             )
 
+                                        callEscolaDelete.enqueue(object : Callback<SchoolPost> {
+                                            override fun onResponse(
+                                                call: Call<SchoolPost>,
+                                                response: Response<SchoolPost>
+                                            ) {
+                                                Toast.makeText(
+                                                    context,
+                                                    "Escola deletada com sucesso",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                simulateHotReload(context)
+                                            }
 
-                                            val callEscolaDelete = GetFunctionsCall.getEscolaCall()
-                                                .deleteDriverSchool(
-                                                    escola.id_escola,
-                                                    escola.id_motorista
-                                                )
+                                            override fun onFailure(
+                                                call: Call<SchoolPost>,
+                                                t: Throwable
+                                            ) {
+                                                Log.i("ds3m", "$t")
+                                            }
+                                        })
 
-                                            callEscolaDelete.enqueue(object : Callback<SchoolPost> {
-                                                override fun onResponse(
-                                                    call: Call<SchoolPost>,
-                                                    response: Response<SchoolPost>
-                                                ) {
-                                                    Toast.makeText(
-                                                        context,
-                                                        "Escola deletada com sucesso",
-                                                        Toast.LENGTH_SHORT
-                                                    ).show()
-                                                    simulateHotReload(context)
-                                                }
-
-                                                override fun onFailure(
-                                                    call: Call<SchoolPost>,
-                                                    t: Throwable
-                                                ) {
-                                                    Log.i("ds3m", "$t")
-                                                }
-                                            })
-
-                                            Toast.makeText(
-                                                context,
-                                                "Escola deletada com sucesso!",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            simulateHotReload(context)
+                                        Toast.makeText(
+                                            context,
+                                            "Escola deletada com sucesso!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        simulateHotReload(context)
 
 
-                                        },
-                                        shape = CircleShape,
-                                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
-                                    ) {
-                                        Image(
-                                            imageVector = Icons.Filled.Delete,
-                                            contentDescription = "",
-                                            modifier = Modifier.height(20.dp)
-                                        )
-                                    }
+                                    },
+                                    shape = CircleShape,
+                                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)
+                                ) {
+                                    Image(
+                                        imageVector = Icons.Filled.Delete,
+                                        contentDescription = "",
+                                        modifier = Modifier.height(20.dp)
+                                    )
                                 }
                             }
-
                         }
+
                     }
                 }
 
@@ -306,10 +323,6 @@ fun SuasEscolas() {
                             motorista = escolas.schools[0].id_motorista,
                         )
 
-                        Toast.makeText(context, "Escola criada com sucesso!", Toast.LENGTH_SHORT)
-                            .show()
-
-//                        simulateHotReload(SuasVansActivity::class.java)
                     },
                     colors = ButtonDefaults.buttonColors(Color(251, 211, 69, 255))
                 ) {
