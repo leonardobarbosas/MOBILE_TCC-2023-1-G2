@@ -49,7 +49,7 @@ fun HeaderMotorista() {
     val loginCall = GetFunctionsCall.getDriverCall().getDriverById(id = idLogin.toString())
 
     var login by remember {
-        mutableStateOf<Driver?>(null)
+        mutableStateOf(Driver())
     }
 
     loginCall.enqueue(object : Callback<Driver> {
@@ -79,7 +79,7 @@ fun HeaderMotorista() {
 
 
         Image(
-            painter = rememberAsyncImagePainter(model =login?.foto),
+            painter = rememberAsyncImagePainter(model =login.foto),
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
