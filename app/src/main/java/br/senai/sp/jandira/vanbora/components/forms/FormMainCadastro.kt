@@ -229,17 +229,6 @@ fun FormMainCadastro(){
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Button(
-                onClick = {
-                    context.startActivity(Intent(context, MainActivity::class.java))
-                },
-                colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
-
-            ) {
-                Text(
-                    text = stringResource(id = R.string.google)
-                )
-            }
 
             Button(
                 onClick = {
