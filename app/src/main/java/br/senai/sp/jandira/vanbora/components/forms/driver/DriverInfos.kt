@@ -41,11 +41,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,6 +57,7 @@ import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.DateFormat
 
 @Composable
 fun DriverInfos(name: String, email: String, senha: String) {
@@ -140,7 +138,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
     val pricesCall = GetFunctionsCall.getPricesCall().getAllPrices()
 
     var prices by remember {
-        mutableStateOf<AllPrices?>(null)
+        mutableStateOf(AllPrices(listOf()))
     }
 
     var isMenuExpanded by remember {
@@ -459,10 +457,16 @@ fun DriverInfos(name: String, email: String, senha: String) {
             )
         }
 
+        val date = DateFormat.getDateInstance()
         //INICIO CARREIRA
         OutlinedTextField(
             value = inicioCarreiraState, onValueChange = {
                 if (it.length <= maxChar) inicioCarreiraState = it
+
+
+
+
+
 
                 if (it == "" || it == null) {
                     isInicioCarreiraError
@@ -598,7 +602,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
             DropdownMenu(expanded = isMenuExpanded, onDismissRequest = {
                 isMenuExpanded = false
             }) {
-                prices!!.prices.forEach { 
+                prices.prices.forEach {
                     DropdownMenuItem(onClick = {
                         idPrice = it.id
                         priceState = it.faixa_preco
@@ -678,6 +682,7 @@ fun DriverInfos(name: String, email: String, senha: String) {
 //
 //    return TransformedText(AnnotatedString(out), numberOffsetTranslator)
 //}
+
 
 fun formatPhone(phoneNumber: String): String {
     val phoneRegex = "(\\d{2})(\\d{5})(\\d{4})".toRegex()

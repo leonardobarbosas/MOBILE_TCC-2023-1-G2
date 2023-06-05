@@ -98,7 +98,7 @@ fun EditarVan() {
     val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
 
     var driver by remember {
-        mutableStateOf<Driver?>(null)
+        mutableStateOf(Driver())
     }
 
     driverCall.enqueue(object : Callback<Driver> {
@@ -422,9 +422,7 @@ fun EditarVan() {
                                 if (response.isSuccessful) {
                                     val intentSelect = Intent(context, SuasVansActivity::class.java)
 
-                                    intentSelect.putExtra("id", driver?.id)
-
-                                    driver?.id.toString() to SuasVansActivity::class.java
+                                    intentSelect.putExtra("id", driver.id.toString())
 
                                     context.startActivity(intentSelect)
 

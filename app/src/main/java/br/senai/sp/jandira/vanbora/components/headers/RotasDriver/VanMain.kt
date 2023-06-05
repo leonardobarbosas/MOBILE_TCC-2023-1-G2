@@ -59,10 +59,12 @@ fun VanMain() {
 
     val idDriver = intent.getStringExtra("id")
 
+    Log.i("ds3m", "VanMain: $idDriver")
+
     val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
 
     var drivers by remember {
-        mutableStateOf<Driver?>(null)
+        mutableStateOf(Driver())
     }
 
     var vans by remember {
@@ -72,7 +74,7 @@ fun VanMain() {
     driverCall.enqueue(object : Callback<Driver> {
         override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
             drivers = response.body()!!
-            vans = drivers!!.van!!
+            vans = drivers.van!!
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
@@ -129,6 +131,7 @@ fun VanMain() {
             modifier = Modifier.fillMaxSize()
         ) {
             items(vans) { van ->
+                Log.i("ds3m", "VanMain: $van")
                 Card(
                     modifier = Modifier
                         .fillMaxSize()

@@ -3,7 +3,6 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -156,13 +155,12 @@ fun VanInfos(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.15f)
-            .padding(start = 80.dp, end = 80.dp)
-            .background(Color(156, 156, 156, 0)),
+            .padding(start = 80.dp, end = 80.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Icon(painter = imageIcon!!, contentDescription = "", modifier = Modifier
+        Icon(painter = imageIcon!!, tint = Color.Unspecified, contentDescription = "", modifier = Modifier
             .clickable {
                 gallerLauncher.launch("image/*")
             }
@@ -330,7 +328,8 @@ fun VanInfos(
                                                         id_modelo = idModelo,
                                                         id_motorista = response.body()!!.id,
                                                         placa = placaVan,
-                                                        quantidade_vagas = vagasVan
+                                                        quantidade_vagas = vagasVan,
+                                                        status_van = 1
                                                     )
                                                     RegisterNewDriver(
                                                         postVan = postVan, context = context
