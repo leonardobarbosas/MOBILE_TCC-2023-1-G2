@@ -220,16 +220,10 @@ fun FormMainLogin(){
 
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier.fillMaxWidth().padding(start = 48.dp, end = 48.dp),
+            horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = stringResource(id = R.string.my_password),
-                color = Color.Black,
-                fontSize = 10.sp,
-
-                )
             Button(
                 onClick = {
                     isEmailError = emailState.length == 0

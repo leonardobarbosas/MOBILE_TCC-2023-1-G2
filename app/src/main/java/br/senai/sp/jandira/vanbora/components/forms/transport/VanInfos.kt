@@ -171,7 +171,10 @@ fun VanInfos(
     }
 
     //OUTLINED
-    Column(modifier = Modifier.verticalScroll(scrollState)) {
+    Column(
+        modifier = Modifier.verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         OutlinedTextField(
             value = placaVan,
             onValueChange = {
@@ -192,7 +195,12 @@ fun VanInfos(
                 )
             },
             isError = isPlacaVanError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0, 0, 0, 255),
+                unfocusedBorderColor = Color(0, 0, 0, 255)
+            )
+
         )
 
         OutlinedTextField(
@@ -214,7 +222,12 @@ fun VanInfos(
                 )
             },
             isError = isVagasVanError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color(0, 0, 0, 255),
+                unfocusedBorderColor = Color(0, 0, 0, 255)
+            )
+
         )
 
         Column() {
