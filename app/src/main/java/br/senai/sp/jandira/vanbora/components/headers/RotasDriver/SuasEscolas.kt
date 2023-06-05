@@ -320,7 +320,7 @@ fun SuasEscolas() {
 
                         RegiterNewSchool(
                             escola = saveState,
-                            motorista = escolas.schools[0].id_motorista,
+                            motorista = driver!!.id,
                         )
 
                     },
