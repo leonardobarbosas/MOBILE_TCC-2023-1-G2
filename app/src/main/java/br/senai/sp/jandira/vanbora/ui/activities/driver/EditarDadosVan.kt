@@ -420,14 +420,16 @@ fun EditarVan() {
                                 response: Response<String>,
                             ) {
                                 if (response.isSuccessful) {
-                                    Toast.makeText(
-                                        context, "Van atualizada com sucesso", Toast.LENGTH_SHORT
-                                    ).show()
-                                    context.startActivity(
-                                        Intent(
-                                            context, SuasVansActivity::class.java
-                                        )
-                                    )
+                                    val intentSelect = Intent(context, SuasVansActivity::class.java)
+
+                                    intentSelect.putExtra("id", driver?.id)
+
+                                    driver?.id.toString() to SuasVansActivity::class.java
+
+                                    context.startActivity(intentSelect)
+
+                                    Toast.makeText(context, "Van atualizada com sucesso", Toast.LENGTH_SHORT).show()
+
                                 }
                             }
 
