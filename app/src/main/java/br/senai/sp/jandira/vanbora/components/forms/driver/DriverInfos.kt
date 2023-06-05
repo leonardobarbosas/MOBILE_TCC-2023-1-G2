@@ -51,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
-import br.senai.sp.jandira.vanbora.components.forms.user.DateTransformation
 import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
 import br.senai.sp.jandira.vanbora.model.prices.AllPrices
 import br.senai.sp.jandira.vanbora.ui.activities.driver.VanComplements
@@ -65,7 +64,7 @@ import retrofit2.Response
 @Composable
 fun DriverInfos(name: String, email: String, senha: String) {
 
-    var maxChar = 8
+    var maxChar = 10
 
     var rgState by rememberSaveable() {
         mutableStateOf("")
@@ -488,7 +487,6 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 )
             },
             isError = isInicioCarreiraError,
-            visualTransformation = DateTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -537,7 +535,6 @@ fun DriverInfos(name: String, email: String, senha: String) {
                 )
             },
             isError = isDataNascimentoError,
-            visualTransformation = DateTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -654,33 +651,33 @@ fun DriverInfos(name: String, email: String, senha: String) {
     }
 }
 
-fun dateFilter(text: AnnotatedString): TransformedText {
-
-    val trimmed = if (text.text.length >= 8) text.text.substring(0..7) else text.text
-    var out = ""
-    for (i in trimmed.indices) {
-        out += trimmed[i]
-        if (i % 2 == 1 && i < 4) out += "/"
-    }
-
-    val numberOffsetTranslator = object : OffsetMapping {
-        override fun originalToTransformed(offset: Int): Int {
-            if (offset <= 1) return offset
-            if (offset <= 3) return offset +1
-            if (offset <= 8) return offset +2
-            return 10
-        }
-
-        override fun transformedToOriginal(offset: Int): Int {
-            if (offset <=2) return offset
-            if (offset <=5) return offset -1
-            if (offset <=10) return offset -2
-            return 8
-        }
-    }
-
-    return TransformedText(AnnotatedString(out), numberOffsetTranslator)
-}
+//fun dateFilter(text: AnnotatedString): TransformedText {
+//
+//    val trimmed = if (text.text.length >= 8) text.text.substring(0..7) else text.text
+//    var out = ""
+//    for (i in trimmed.indices) {
+//        out += trimmed[i]
+//        if (i % 2 == 1 && i < 4) out += "/"
+//    }
+//
+//    val numberOffsetTranslator = object : OffsetMapping {
+//        override fun originalToTransformed(offset: Int): Int {
+//            if (offset <= 1) return offset
+//            if (offset <= 3) return offset +1
+//            if (offset <= 8) return offset +2
+//            return 10
+//        }
+//
+//        override fun transformedToOriginal(offset: Int): Int {
+//            if (offset <=2) return offset
+//            if (offset <=5) return offset -1
+//            if (offset <=10) return offset -2
+//            return 8
+//        }
+//    }
+//
+//    return TransformedText(AnnotatedString(out), numberOffsetTranslator)
+//}
 
 fun formatPhone(phoneNumber: String): String {
     val phoneRegex = "(\\d{2})(\\d{5})(\\d{4})".toRegex()

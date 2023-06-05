@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -44,7 +46,7 @@ fun UserInfos(
     senha: String,
 ) {
 
-    var maxChar = 8
+    var maxChar = 10
     var maxCharNmrCasa = 5
     var maxCharCpf = 11
     var maxCharTelefone = 15
@@ -396,7 +398,6 @@ fun UserInfos(
                 )
             },
             isError = isDataNascimentoError,
-            visualTransformation = DateTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -490,39 +491,39 @@ fun getImageDisplayNameFromUri(context: Context, uri: Uri): String? {
     return null
 }
 
-class DateTransformation() : VisualTransformation {
-    override fun filter(text: AnnotatedString): TransformedText {
-        return dateFilter(text)
-    }
-}
+//class DateTransformation() : VisualTransformation {
+//    override fun filter(text: AnnotatedString): TransformedText {
+//        return dateFilter(text)
+//    }
+//}
 
-fun dateFilter(text: AnnotatedString): TransformedText {
-
-    val trimmed = if (text.text.length >= 8) text.text.substring(0..7) else text.text
-    var out = ""
-    for (i in trimmed.indices) {
-        out += trimmed[i]
-        if (i % 2 == 1 && i < 4) out += "/"
-    }
-
-    val numberOffsetTranslator = object : OffsetMapping {
-        override fun originalToTransformed(offset: Int): Int {
-            if (offset <= 1) return offset
-            if (offset <= 3) return offset +1
-            if (offset <= 8) return offset +2
-            return 10
-        }
-
-        override fun transformedToOriginal(offset: Int): Int {
-            if (offset <=2) return offset
-            if (offset <=5) return offset -1
-            if (offset <=10) return offset -2
-            return 8
-        }
-    }
-
-    return TransformedText(AnnotatedString(out), numberOffsetTranslator)
-}
+//fun dateFilter(text: AnnotatedString): TransformedText {
+//
+//    val trimmed = if (text.text.length >= 8) text.text.substring(0..7) else text.text
+//    var out = ""
+//    for (i in trimmed.indices) {
+//        out += trimmed[i]
+//        if (i % 2 == 1 && i < 4) out += "/"
+//    }
+//
+//    val numberOffsetTranslator = object : OffsetMapping {
+//        override fun originalToTransformed(offset: Int): Int {
+//            if (offset <= 1) return offset
+//            if (offset <= 3) return offset +1
+//            if (offset <= 8) return offset +2
+//            return 10
+//        }
+//
+//        override fun transformedToOriginal(offset: Int): Int {
+//            if (offset <=2) return offset
+//            if (offset <=5) return offset -1
+//            if (offset <=10) return offset -2
+//            return 8
+//        }
+//    }
+//
+//    return TransformedText(AnnotatedString(out), numberOffsetTranslator)
+//}
 
 fun formatPhone(phoneNumber: String): String {
     val phoneRegex = "(\\d{2})(\\d{5})(\\d{4})".toRegex()
