@@ -48,34 +48,22 @@ fun RegisterNewUser(
             override fun onResponse(call: Call<String>, response: Response<String>) {
 
                 if (response.isSuccessful) {
-                    Toast.makeText(context, "Perfil cadastrado com sucesso", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(context, "Perfil cadastrado com sucesso", Toast.LENGTH_SHORT).show()
                     context.startActivity(Intent(context, MainActivity::class.java))
                 } else {
-                    Toast.makeText(
-                        context,
-                        "Não foi possivel efetuar o cadastro",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    Toast.makeText(context, "Else: Não foi possivel efetuar o cadastro", Toast.LENGTH_SHORT).show()
                     context.startActivity(Intent(context, MainActivity::class.java))
                 }
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Toast.makeText(context, "Não foi possivel efetuar o cadastro", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(context, "OnFailure: Não foi possivel efetuar o cadastro", Toast.LENGTH_SHORT).show()
                 context.startActivity(Intent(context, MainActivity::class.java))
             }
 
         })
     } else {
-        Toast.makeText(
-            context,
-            "Você não preencheu todas as informações necessárias",
-            Toast.LENGTH_SHORT
-        )
-            .show()
+        Toast.makeText(context, "Você não preencheu todas as informações necessárias", Toast.LENGTH_SHORT).show()
         context.startActivity(Intent(context, RegisterActivity::class.java))
     }
 
