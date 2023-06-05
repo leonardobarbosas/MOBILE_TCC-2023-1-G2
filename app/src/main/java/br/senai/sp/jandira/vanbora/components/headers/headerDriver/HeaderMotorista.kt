@@ -6,9 +6,18 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,8 +29,6 @@ import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.Logo
 import br.senai.sp.jandira.vanbora.model.driver.Driver
-import br.senai.sp.jandira.vanbora.model.user.User
-import br.senai.sp.jandira.vanbora.ui.activities.client.EditarPerfilActivity
 import br.senai.sp.jandira.vanbora.ui.activities.driver.EditarPerfilDriver
 import br.senai.sp.jandira.vanbora.ui.activities.driver.SuasVansActivity
 import coil.compose.rememberAsyncImagePainter
@@ -47,7 +54,10 @@ fun HeaderMotorista() {
 
     loginCall.enqueue(object : Callback<Driver> {
         override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
-            login = response.body()!!
+            if (response.isSuccessful){
+                login = response.body()!!
+            }
+
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
@@ -69,7 +79,7 @@ fun HeaderMotorista() {
 
 
         Image(
-            painter = rememberAsyncImagePainter(login?.foto),
+            painter = rememberAsyncImagePainter(model =login?.foto),
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
