@@ -1,9 +1,8 @@
 package br.senai.sp.jandira.vanbora.components.forms.maincontainer
 
-import android.util.Log
-import android.widget.Toast
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
@@ -31,7 +29,6 @@ import br.senai.sp.jandira.vanbora.components.confirm.MainViewModel
 import br.senai.sp.jandira.vanbora.components.headers.Header
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
 import br.senai.sp.jandira.vanbora.model.user.User
-import br.senai.sp.jandira.vanbora.ui.activities.client.EnviarContratoActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristaPerfilActivity
 import br.senai.sp.jandira.vanbora.ui.activities.client.MotoristasActivity
 import coil.compose.rememberAsyncImagePainter
@@ -284,8 +281,9 @@ fun MotoristasMain(
                                 val intentSelect =
                                     Intent(context, MotoristaPerfilActivity::class.java)
 
+
                                 intentSelect.putExtra("id_motorista", driver.id.toString())
-                                intentSelect.putExtra("id_usuario", idUser.toString())
+                                intentSelect.putExtra("id_usuario", user!!.id)
 
                                 context.startActivity(intentSelect)
                             },
