@@ -55,11 +55,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.forms.user.getImageDisplayNameFromUri
 import br.senai.sp.jandira.vanbora.components.headers.headerDriver.HeaderPerfilDriver
 import br.senai.sp.jandira.vanbora.model.driver.Driver
+import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
+import br.senai.sp.jandira.vanbora.model.driver.post.DriverPut
 import br.senai.sp.jandira.vanbora.model.prices.AllPrices
 import br.senai.sp.jandira.vanbora.ui.activities.driver.ui.theme.VanboraTheme
 import coil.compose.rememberAsyncImagePainter
@@ -805,8 +808,9 @@ fun EditarDriver() {
             Button(
                 onClick = {
 
-                    val driver = Driver(
-                        perfil!!.avaliacao,
+                    val driver = DriverPut(
+                        perfil!!.id,
+                        perfil!!.avaliacao.toInt(),
                         cnhState,
                         cpfState,
                         dataNascimentoState,
@@ -818,7 +822,8 @@ fun EditarDriver() {
                         nomeState,
                         rgState,
                         senhaState,
-                        telefoneState.toInt()
+                        telefoneState,
+                        status_motorista = 1
                     )
 
                     var perfilPutCall = GetFunctionsCall.getDriverCall().putDriver(driver.id.toString(), driver)
@@ -834,12 +839,10 @@ fun EditarDriver() {
                         }
                     })
 
-                    if (code == "201") {
+                    if (code == "500") {
                         Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(
-                            context, "Perfil atualizado com sucesso", Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(context, "Perfil atualizado com sucesso", Toast.LENGTH_SHORT).show()
 
                         if (driver != null) {
                             val intentSelect = Intent(context, SuasVansActivity::class.java)
@@ -855,7 +858,38 @@ fun EditarDriver() {
             }
             Button(
                 onClick = {
+                    val driver = DriverPut(
+                        perfil!!.id,
+                        perfil!!.avaliacao.toInt(),
+                        cnhState,
+                        cpfState,
+                        dataNascimentoState,
+                        descricaoState,
+                        emailState,
+                        urlImage,
+                        idPrice,
+                        inicioCarreiraState,
+                        nomeState,
+                        rgState,
+                        senhaState,
+                        telefoneState,
+                        status_motorista = 1
+                    )
 
+                    val callDriverDelete = GetFunctionsCall.getDriverCall().deleteDriver(driver.id)
+                    callDriverDelete.enqueue(object: Callback<String>{
+                        override fun onResponse(
+                            call: Call<String>, response: Response<String>
+                        ) {
+                            Toast.makeText(context, "Usuário deletado com sucesso", Toast.LENGTH_SHORT).show()
+                            val intentSelect = Intent(context, MainActivity::class.java)
+                            context.startActivity(intentSelect)
+                        }
+                        override fun onFailure(call: Call<String>, t: Throwable) {
+                            Log.i("ds3m", "onFailure: $t")
+                        }
+
+                    })
                 },
                 colors = ButtonDefaults.buttonColors(Color(251, 211, 69, 255))
             ) {
