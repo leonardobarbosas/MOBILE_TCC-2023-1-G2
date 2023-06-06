@@ -222,9 +222,6 @@ fun DriverInfos(name: String, email: String, senha: String) {
             value = rgState, onValueChange = {
                 rgState = it
 
-                val cleanInput = it.replace("\\D".toRegex(), "")
-                rgState = formatRG(cleanInput)
-
                 if (it == "" || it == null) {
                     isRgError
                 }
@@ -692,11 +689,6 @@ fun formatPhone(phoneNumber: String): String {
 fun formatCPF(cpf: String): String {
     val cpfRegex = "(\\d{3})(\\d{3})(\\d{3})(\\d{2})".toRegex()
     return cpfRegex.replace(cpf, "$1.$2.$3-$4")
-}
-
-fun formatRG(rg: String): String {
-    val rgRegex = "(\\d{2})(\\d{3})(\\d{3})(\\d{1})".toRegex()
-    return rgRegex.replace(rg, "$1.$2.$3-$4")
 }
 
 fun formatCEP(cep: String): String {

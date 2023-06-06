@@ -164,6 +164,7 @@ fun Perfil(
 
 
     val idUser = intent.getStringExtra("id_usuario")
+    Log.i("ds3m", "Perfil: $idUser")
     val userCall = GetFunctionsCall.getUserCall().getUserById(id = idUser.toString())
     var user by remember {
         mutableStateOf<User?>(null)

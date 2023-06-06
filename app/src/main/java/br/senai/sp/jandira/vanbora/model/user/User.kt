@@ -1,16 +1,16 @@
 package br.senai.sp.jandira.vanbora.model.user
 
 data class User(
-    val cep: String= "",
-    val cpf: String= "",
+    var cep: String= "",
+    var cpf: String= "",
     val data_nascimento: String = "",
-    val email: String = "",
+    var email: String = "",
     val foto: String = "",
     val id: Int = 0,
-    val nome: String = "",
-    val rg: String = "",
+    var nome: String = "",
+    var rg: String = "",
     val senha: String = "",
-    val telefone: String = "",
+    var telefone: String = "",
     val status_usuario: Int = 1
 ){
     override fun toString(): String {

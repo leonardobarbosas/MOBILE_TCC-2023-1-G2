@@ -266,6 +266,7 @@ fun MotoristasMain(
 
             }
 
+
             Spacer(modifier = Modifier.padding(10.dp))
 
             LazyColumn(
@@ -280,7 +281,6 @@ fun MotoristasMain(
                             .clickable {
                                 val intentSelect =
                                     Intent(context, MotoristaPerfilActivity::class.java)
-
 
                                 intentSelect.putExtra("id_motorista", driver.id.toString())
                                 intentSelect.putExtra("id_usuario", user!!.id)
@@ -308,6 +308,7 @@ fun MotoristasMain(
 
                             Card(
                                 modifier = Modifier
+
                                     .fillMaxWidth()
                                     .fillMaxHeight(1f),
                                 backgroundColor = Color(247, 233, 194, 255)

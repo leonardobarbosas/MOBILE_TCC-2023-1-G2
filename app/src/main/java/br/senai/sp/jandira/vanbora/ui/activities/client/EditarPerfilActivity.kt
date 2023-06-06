@@ -1,13 +1,19 @@
 package br.senai.sp.jandira.vanbora.ui.activities.client
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -17,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,9 +38,12 @@ import br.senai.sp.jandira.vanbora.MainActivity
 import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.HeaderSelectDriverComplement
+import br.senai.sp.jandira.vanbora.components.forms.user.getImageDisplayNameFromUri
 import br.senai.sp.jandira.vanbora.components.functions.MaskTransformationCep
 import br.senai.sp.jandira.vanbora.components.headers.Rotas.ui.theme.VanboraTheme
 import br.senai.sp.jandira.vanbora.model.user.User
+import coil.compose.rememberAsyncImagePainter
+import com.google.firebase.storage.FirebaseStorage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -58,6 +68,9 @@ class EditarPerfilActivity : ComponentActivity() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun EditarPerfil() {
+
+    val scrollState = rememberScrollState()
+
 
     var nomeState by rememberSaveable() {
         mutableStateOf("")
@@ -124,10 +137,11 @@ fun EditarPerfil() {
         mutableStateOf(false)
     }
 
-
-    val localizeMain by remember {
-        mutableStateOf(MotoristasActivity::class.java)
+    var userEdit by remember {
+        mutableStateOf(User())
     }
+
+
 
 
     val context = LocalContext.current
@@ -136,10 +150,11 @@ fun EditarPerfil() {
 
     val idPerfil = intent.getStringExtra("id")
 
+
     val perfilCall = GetFunctionsCall.getUserCall().getUserById(id = idPerfil.toString())
 
     var perfil by remember {
-        mutableStateOf<User?>(null)
+        mutableStateOf(User())
     }
 
     var code by remember {
@@ -152,13 +167,61 @@ fun EditarPerfil() {
 
     perfilCall.enqueue(object : Callback<User> {
         override fun onResponse(call: Call<User>, response: Response<User>) {
-            perfil = response.body()!!
+            if (response.isSuccessful){
+                perfil = response.body()!!
+            }
         }
 
         override fun onFailure(call: Call<User>, t: Throwable) {
             Log.i("ds3m", "onFailure")
         }
     })
+
+    var storage = FirebaseStorage.getInstance()
+
+    var selectedImage by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    var imageIcon by remember {
+        mutableStateOf<Painter?>(null)
+    }
+
+    var succesImg by remember {
+        mutableStateOf(1)
+    }
+
+    var urlImage by remember {
+        mutableStateOf("")
+    }
+
+    val gallerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            succesImg = 2
+
+            selectedImage = uri
+
+            val imageName = getImageDisplayNameFromUri(context, selectedImage!!)
+
+
+            val mountainsRef =
+                storage.reference.child("users-profile-picture/${imageName.toString()}")
+
+            val uploadTask = mountainsRef.putFile(selectedImage!!)
+
+            uploadTask.addOnSuccessListener {
+                mountainsRef.downloadUrl.addOnSuccessListener { url ->
+                    urlImage = url.toString()
+                }
+            }
+
+        })
+    if (succesImg == 1) {
+        imageIcon = painterResource(id = R.drawable.baseline_linked_camera_24_back)
+    } else if (succesImg == 2) {
+        imageIcon = rememberAsyncImagePainter(model = selectedImage)
+    }
 
     Column {
 
@@ -171,31 +234,34 @@ fun EditarPerfil() {
                 .paint(
                     painter = painterResource(id = R.drawable.background2),
                     contentScale = ContentScale.Crop
-                ),
+                )
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Icon(painter = imageIcon!!, contentDescription = "", tint = Color.Unspecified, modifier = Modifier
+                .clickable {
+                    gallerLauncher.launch("image/*")
+                }
+                .size(200.dp)
+            )
 
             //Nome
             OutlinedTextField(
                 value = nomeState, onValueChange = {
                     nomeState = it
-
-                    if (it == "" || it == null) {
-                        isNomeError
-                    }
-
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 4.dp, start = 52.dp, end = 52.dp),
                 label = {
-                    Text(text = stringResource(id = R.string.nome_passageiro))
+                    Text(text = stringResource(id = R.string.name))
                 },
                 placeholder = {
                     perfil?.let {
                         Text(
-                            text = it.nome,
+                            text = perfil.nome,
                             textAlign = TextAlign.Center,
                             style = TextStyle(
                                 color = Color.Black,
@@ -203,40 +269,17 @@ fun EditarPerfil() {
                         )
                     }
                 },
-                trailingIcon = {
-                    if (isNomeError) Icon(
-                        imageVector = Icons.Default.Warning,
-                        contentDescription = ""
-                    )
-                },
-                isError = isNomeError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color(0, 0, 0, 255),
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isNomeError) {
-                Text(
-                    text = stringResource(id = R.string.nome_passageiro_error),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 52.dp),
-                    color = Color.Red,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.End
-                )
-            }
 
             //Email
             OutlinedTextField(
                 value = emailState, onValueChange = {
                     emailState = it
-
-                    if (it == "" || it == null) {
-                        isEmailError
-                    }
-
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -247,7 +290,7 @@ fun EditarPerfil() {
                 placeholder = {
                     perfil?.let {
                         Text(
-                            text = it.email,
+                            text = perfil.email,
                             textAlign = TextAlign.Center,
                             style = TextStyle(
                                 color = Color.Black,
@@ -255,30 +298,12 @@ fun EditarPerfil() {
                         )
                     }
                 },
-                trailingIcon = {
-                    if (isEmailError) Icon(
-                        imageVector = Icons.Default.Warning,
-                        contentDescription = ""
-                    )
-                },
-                isError = isEmailError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color(0, 0, 0, 255),
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isEmailError) {
-                Text(
-                    text = stringResource(id = R.string.email_error),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 52.dp),
-                    color = Color.Red,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.End
-                )
-            }
 
             //Senha
             OutlinedTextField(
@@ -336,11 +361,6 @@ fun EditarPerfil() {
             OutlinedTextField(
                 value = rgState, onValueChange = {
                     rgState = it
-
-                    if (it == "" || it == null) {
-                        isRgError
-                    }
-
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -351,7 +371,7 @@ fun EditarPerfil() {
                 placeholder = {
                     perfil?.let {
                         Text(
-                            text = it.rg,
+                            text = perfil.rg,
                             textAlign = TextAlign.Center,
                             style = TextStyle(
                                 color = Color.Black,
@@ -359,40 +379,17 @@ fun EditarPerfil() {
                         )
                     }
                 },
-                trailingIcon = {
-                    if (isRgError) Icon(
-                        imageVector = Icons.Default.Warning,
-                        contentDescription = ""
-                    )
-                },
-                isError = isRgError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color(0, 0, 0, 255),
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isRgError) {
-                Text(
-                    text = stringResource(id = R.string.rg_error),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 52.dp),
-                    color = Color.Red,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.End
-                )
-            }
 
             //CPF
             OutlinedTextField(
                 value = cpfState, onValueChange = {
                     cpfState = it
-
-                    if (it == "" || it == null) {
-                        isCpfError
-                    }
-
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -403,7 +400,7 @@ fun EditarPerfil() {
                 placeholder = {
                     perfil?.let {
                         Text(
-                            text = it.cpf,
+                            text = perfil.cpf,
                             textAlign = TextAlign.Center,
                             style = TextStyle(
                                 color = Color.Black,
@@ -411,40 +408,17 @@ fun EditarPerfil() {
                         )
                     }
                 },
-                trailingIcon = {
-                    if (isCpfError) Icon(
-                        imageVector = Icons.Default.Warning,
-                        contentDescription = ""
-                    )
-                },
-                isError = isCpfError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color(0, 0, 0, 255),
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isCpfError) {
-                Text(
-                    text = stringResource(id = R.string.cpf_error),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 52.dp),
-                    color = Color.Red,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.End
-                )
-            }
 
             //CEP
             OutlinedTextField(
                 value = cepState, onValueChange = {
-                    cepState = it
-
-                    if (it == "" || it == null) {
-                        cepState
-                    }
-
+                    cepState
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -455,7 +429,7 @@ fun EditarPerfil() {
                 placeholder = {
                     perfil?.let {
                         Text(
-                            text = it.cep,
+                            text = perfil.cep,
                             textAlign = TextAlign.Center,
                             style = TextStyle(
                                 color = Color.Black,
@@ -463,13 +437,6 @@ fun EditarPerfil() {
                         )
                     }
                 },
-                trailingIcon = {
-                    if (isCepError) Icon(
-                        imageVector = Icons.Default.Warning,
-                        contentDescription = ""
-                    )
-                },
-                isError = isCepError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 visualTransformation = MaskTransformationCep(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -477,27 +444,11 @@ fun EditarPerfil() {
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isCepError) {
-                Text(
-                    text = stringResource(id = R.string.cep_error),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 52.dp),
-                    color = Color.Red,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.End
-                )
-            }
 
             //TELEFONE
             OutlinedTextField(
                 value = telefoneState, onValueChange = {
                     telefoneState = it
-
-                    if (it == "" || it == null) {
-                        isTelefoneError
-                    }
-
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -508,7 +459,7 @@ fun EditarPerfil() {
                 placeholder = {
                     perfil?.let {
                         Text(
-                            text = it.telefone,
+                            text = perfil.telefone,
                             textAlign = TextAlign.Center,
                             style = TextStyle(
                                 color = Color.Black,
@@ -516,40 +467,17 @@ fun EditarPerfil() {
                         )
                     }
                 },
-                trailingIcon = {
-                    if (isTelefoneError) Icon(
-                        imageVector = Icons.Default.Warning,
-                        contentDescription = ""
-                    )
-                },
-                isError = isTelefoneError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color(0, 0, 0, 255),
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isTelefoneError) {
-                Text(
-                    text = stringResource(id = R.string.telefone_error),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 52.dp),
-                    color = Color.Red,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.End
-                )
-            }
 
             //Data de Nascimento
             OutlinedTextField(
                 value = dataNascimentoState, onValueChange = {
                     dataNascimentoState = it
-
-                    if (it == "" || it == null) {
-                        isDataNascimentoError
-                    }
-
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -560,7 +488,7 @@ fun EditarPerfil() {
                 placeholder = {
                     perfil?.let {
                         Text(
-                            text = it.data_nascimento,
+                            text = perfil.data_nascimento,
                             textAlign = TextAlign.Center,
                             style = TextStyle(
                                 color = Color.Black,
@@ -568,31 +496,12 @@ fun EditarPerfil() {
                         )
                     }
                 },
-                trailingIcon = {
-                    if (isDataNascimentoError) Icon(
-                        imageVector = Icons.Default.Warning,
-                        contentDescription = ""
-                    )
-                },
-                isError = isDataNascimentoError,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Color(0, 0, 0, 255),
                     unfocusedBorderColor = Color(0, 0, 0, 255)
                 )
             )
-            if (isDataNascimentoError) {
-                Text(
-                    text = stringResource(id = R.string.data_nascimento_error),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 52.dp),
-                    color = Color.Red,
-                    fontSize = 15.sp,
-                    textAlign = TextAlign.End
-                )
-            }
-
             Spacer(modifier = Modifier.padding(26.dp))
 
             Row(
@@ -602,13 +511,38 @@ fun EditarPerfil() {
 
                 Button(
                     onClick = {
+                        if (nomeState == ""){
+                            nomeState = perfil.nome
+                        }
+                        if (emailState == ""){
+                            emailState = perfil.email
+                        }
+                        if (rgState == ""){
+                            rgState = perfil.rg
+                        }
+                        if (cpfState == ""){
+                            cpfState = perfil.cpf
+                        }
+                        if (cepState == ""){
+                            cepState = perfil.cep
+                        }
+                        if (telefoneState == ""){
+                            telefoneState = perfil.telefone
+                        }
+                        if (dataNascimentoState == ""){
+                            dataNascimentoState = perfil.data_nascimento
+                        }
+                        if (urlImage == ""){
+                            urlImage = perfil.foto
+                        }
+                        isSenhaError = senhaState.length == 0
 
                         var user = User(
                             cepState,
                             cpfState,
                             dataNascimentoState,
                             emailState,
-                            perfil!!.foto,
+                            urlImage,
                             perfil!!.id,
                             nomeState,
                             rgState,
@@ -634,8 +568,8 @@ fun EditarPerfil() {
                             }
                         })
 
-                        if (code == "201") {
-                            Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show()
+                        if (code != "201") {
+                            Toast.makeText(context, "Verifique os dados e envie!", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(
                                 context, "Perfil atualizado com sucesso", Toast.LENGTH_SHORT
@@ -664,7 +598,7 @@ fun EditarPerfil() {
                             cpfState,
                             dataNascimentoState,
                             emailState,
-                            perfil!!.foto,
+                            urlImage,
                             perfil!!.id,
                             nomeState,
                             rgState,
@@ -701,3 +635,4 @@ fun EditarPerfil() {
 
     }
 }
+
