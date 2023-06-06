@@ -4,12 +4,26 @@ import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -45,10 +59,12 @@ fun VanMain() {
 
     val idDriver = intent.getStringExtra("id")
 
+    Log.i("ds3m", "VanMain: $idDriver")
+
     val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
 
     var drivers by remember {
-        mutableStateOf<Driver?>(null)
+        mutableStateOf(Driver())
     }
 
     var vans by remember {
@@ -58,7 +74,7 @@ fun VanMain() {
     driverCall.enqueue(object : Callback<Driver> {
         override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
             drivers = response.body()!!
-            vans = drivers!!.van!!
+            vans = drivers.van!!
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
@@ -115,6 +131,7 @@ fun VanMain() {
             modifier = Modifier.fillMaxSize()
         ) {
             items(vans) { van ->
+                Log.i("ds3m", "VanMain: $van")
                 Card(
                     modifier = Modifier
                         .fillMaxSize()
@@ -124,6 +141,7 @@ fun VanMain() {
                             val vanSelect = Intent(context, EditarDadosVan::class.java)
                             vanSelect.putExtra("id_motorista", idDriver)
                             vanSelect.putExtra("id_van", van.id.toString())
+                            vanSelect.putExtra("url_img_van", van.foto)
                             context.startActivity(vanSelect)
                         },
                     shape = RoundedCornerShape(

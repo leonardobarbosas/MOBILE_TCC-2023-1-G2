@@ -142,6 +142,8 @@ fun FormMainCadastro(){
                 .fillMaxWidth()
                 .padding(top = 4.dp, start = 52.dp, end = 52.dp)
                 .focusRequester(senhaFocusRequester),
+            singleLine = true,
+            maxLines = 1,
             label = {
                 Text(
                     text = stringResource(id = R.string.email),
@@ -227,17 +229,6 @@ fun FormMainCadastro(){
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Button(
-                onClick = {
-                    context.startActivity(Intent(context, MainActivity::class.java))
-                },
-                colors = ButtonDefaults.buttonColors(Color(250, 210, 69, 255))
-
-            ) {
-                Text(
-                    text = stringResource(id = R.string.google)
-                )
-            }
 
             Button(
                 onClick = {

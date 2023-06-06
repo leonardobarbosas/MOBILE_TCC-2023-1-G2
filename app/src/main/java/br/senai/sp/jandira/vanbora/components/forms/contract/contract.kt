@@ -35,6 +35,7 @@ import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.Van
 import br.senai.sp.jandira.vanbora.model.user.User
 import br.senai.sp.jandira.vanbora.ui.activities.client.*
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -436,7 +437,7 @@ fun EnviarContrato() {
             ) {
                 escolas.schools.map {
                     DropdownMenuItem(onClick = {
-                        idEscola = it.id
+                        idEscola = it.id_escola
                         escolaSelectedText = it.nome_escola
                         escolaState = false
                     }) {
@@ -503,23 +504,26 @@ fun EnviarContrato() {
 
         Button(
             onClick = {
-                Log.i("ds3m", "id idTipoPagamento: ${idTipoPagamento}")
-                Log.i("ds3m", "id idTipoContrato: ${idTipoContrato}")
-                Log.i("ds3m", "id idEscola: ${idEscola}")
+
+                var contract = ContractPost(
+                    id_escola = idEscola,
+                    id_motorista = idDriver.toString().toInt(),
+                    id_tipo_contrato = idTipoContrato,
+                    id_tipo_pagamento = idTipoPagamento,
+                    id_usuario = idUser.toString().toInt(),
+                    status_contrato = 0,
+                    idade_passageiro = idadePassageiroState,
+                    nome_passageiro = nomePassageiroState
+                )
 
                 val intentSelect = Intent(context, ContratoActivity::class.java)
 
-                intentSelect.putExtra("id_tipo_pagamento", idTipoPagamento.toString())
-                intentSelect.putExtra("tipo_pagamento", nSelectedText)
-                intentSelect.putExtra("id_tipo_contrato", idTipoContrato.toString())
-                intentSelect.putExtra("tipo_contrato", mSelectedText)
-                intentSelect.putExtra("id_escola", idEscola.toString())
+                intentSelect.putExtra("contract", Gson().toJson(contract))
                 intentSelect.putExtra("tipo_escola", escolaSelectedText)
-                intentSelect.putExtra("nome_responsavel", nomeResponsavelState)
-                intentSelect.putExtra("nome_passageiro", nomePassageiroState)
-                intentSelect.putExtra("idade_passageiro", idadePassageiroState)
-                intentSelect.putExtra("id_usuario", idUser)
-                intentSelect.putExtra("id_motorista", idDriver)
+                intentSelect.putExtra("tipo_contrato", mSelectedText)
+                intentSelect.putExtra("tipo_pagamento", nSelectedText)
+                intentSelect.putExtra("id_user", idUser)
+                intentSelect.putExtra("id_driver", idDriver)
 
                 context.startActivity(intentSelect)
 

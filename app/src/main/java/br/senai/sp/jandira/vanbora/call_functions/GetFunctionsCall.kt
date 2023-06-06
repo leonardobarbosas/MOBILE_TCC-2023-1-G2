@@ -1,11 +1,13 @@
 package br.senai.sp.jandira.vanbora.call_functions
 
+import br.senai.sp.jandira.vanbora.api.calls.avaliacoes.AvaliacaoCall
 import br.senai.sp.jandira.vanbora.api.calls.comments.CommentCall
 import br.senai.sp.jandira.vanbora.api.calls.contracts.ContractCall
 import br.senai.sp.jandira.vanbora.api.calls.contracts.EscolaCall
 import br.senai.sp.jandira.vanbora.api.calls.contracts.TipoPagamentoCall
 import br.senai.sp.jandira.vanbora.api.calls.contracts.TipoTransporteCall
 import br.senai.sp.jandira.vanbora.api.calls.driver.DriverCall
+import br.senai.sp.jandira.vanbora.api.calls.prices.PricesCall
 import br.senai.sp.jandira.vanbora.api.calls.user.UserCall
 import br.senai.sp.jandira.vanbora.api.calls.van.VanCall
 import br.senai.sp.jandira.vanbora.api.retrofit.RetrofitApi
@@ -38,6 +40,12 @@ class GetFunctionsCall {
             return escolaCall
         }
 
+        fun getAvaliacaoCall(): AvaliacaoCall {
+            val avaliacaoCall = retrofit.create(AvaliacaoCall::class.java)
+
+            return avaliacaoCall
+        }
+
         fun getTipoPagamentoCall(): TipoPagamentoCall {
             val tipoPagamentoCall = retrofit.create(TipoPagamentoCall::class.java)
 
@@ -61,6 +69,12 @@ class GetFunctionsCall {
             val vanCall = retrofit.create(VanCall::class.java)
 
             return vanCall
+        }
+
+        fun getPricesCall(): PricesCall{
+            val pricesCall = retrofit.create(PricesCall::class.java)
+
+            return pricesCall
         }
     }
 

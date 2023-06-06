@@ -58,8 +58,6 @@ fun VanInfosActivity(){
 
     val driver =Gson().fromJson(name.toString(), DriverPost::class.java)
 
-    Log.i("ds3m", "VanInfosActivity: $driver")
-
 
     Column(
         modifier = Modifier

@@ -3,8 +3,10 @@ package br.senai.sp.jandira.vanbora.api.calls.driver
 import br.senai.sp.jandira.vanbora.api.constants.ConstantsApi
 import br.senai.sp.jandira.vanbora.model.driver.Driver
 import br.senai.sp.jandira.vanbora.model.driver.DriverList
+import br.senai.sp.jandira.vanbora.model.driver.IdMotorista
 import br.senai.sp.jandira.vanbora.model.driver.LoginDriverClientJwtModel
 import br.senai.sp.jandira.vanbora.model.driver.post.DriverPost
+import br.senai.sp.jandira.vanbora.model.driver.post.DriverPut
 import br.senai.sp.jandira.vanbora.model.user.LoginUserClientJwtModel
 import br.senai.sp.jandira.vanbora.model.user.User
 import retrofit2.Call
@@ -17,7 +19,7 @@ interface DriverCall {
     fun getDriverById(@Path("id")id: String): Call<Driver>
 
     @GET("driver/id/{cpf}")
-    fun getDriverIdByCpf(@Path("cpf") cpf: String): Call<Int>
+    fun getDriverIdByCpf(@Path("cpf") cpf: String): Call<IdMotorista>
 
     //GET ALL USERS
     @GET("drivers")
@@ -26,6 +28,10 @@ interface DriverCall {
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("driver")
     fun saveDriver(@Body driver: DriverPost): Call<String>
+
+    @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
+    @PUT("driver/{id}")
+    fun putDriver(@Path("id") id: String, @Body driver: DriverPut): Call<String>
 
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("driver/login")
@@ -42,6 +48,9 @@ interface DriverCall {
     @Headers("Content-type: ${ConstantsApi.CONTENT_TYPE}")
     @POST("filter-drivers/")
     fun filterByPrice(@Query("price")price: String): Call<DriverList>
+
+    @DELETE("driver/{id}")
+    fun deleteDriver(@Path("id") id: Int): Call<String>
 
 
 }

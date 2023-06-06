@@ -37,7 +37,8 @@
     <string name="contract">Contrato</string>
     <string name="localize">Localize-se</string>
     <string name="drivers">Motoristas</string>
-    <string name="comments">Ver comentários do perfil</string>
+    <string name="comments">Ver comentários</string>
+    <string name="avaliations">Ver avaliações</string>
     <string name="contrac">Contratar</string>
 
     <string name="rg">RG</string>
@@ -48,6 +49,7 @@
     <string name="cnh">CNH</string>
     <string name="telefone">Telefone</string>
     <string name="data_nascimento">Data de nascimento</string>
+    <string name="faixa_preco">Faixa de preço</string>
     <string name="numero_casa">Número da Casa</string>
     <string name="inicio_carreira">Inicio da carreira</string>
     <string name="descricao">Descricao</string>
@@ -108,5 +110,6 @@
     <string name="ispreco_servico_error">Preço inválido</string>
     <string name="preco_servico">Preço do Serviço</string>
     <string name="tipo_contrato">Tipo de Contrato:</string>
+    <string name="title_activity_editar_perfil_driver">EditarPerfilDriver</string>
 
 </resources>

@@ -1,21 +1,20 @@
 package br.senai.sp.jandira.vanbora.components.forms.user
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -23,12 +22,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,6 +45,11 @@ fun UserInfos(
     email: String,
     senha: String,
 ) {
+
+    var maxChar = 10
+    var maxCharNmrCasa = 5
+    var maxCharCpf = 11
+    var maxCharTelefone = 15
 
     var rgState by rememberSaveable() {
         mutableStateOf("")
@@ -104,9 +111,7 @@ fun UserInfos(
 
 
     var imageIcon by remember {
-
         mutableStateOf<Painter?>(null)
-
     }
 
     var succesImg by remember {
@@ -155,7 +160,7 @@ fun UserInfos(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Icon(painter = imageIcon!!, contentDescription = "", modifier = Modifier
+        Icon(painter = imageIcon!!, contentDescription = "",tint = Color.Unspecified, modifier = Modifier
             .clickable {
                 gallerLauncher.launch("image/*")
             }
@@ -165,6 +170,9 @@ fun UserInfos(
         OutlinedTextField(
             value = rgState, onValueChange = {
                 rgState = it
+
+                val cleanInput = it.replace("\\D".toRegex(), "")
+                rgState = formatRG(cleanInput)
 
                 if (it == "" || it == null) {
                     isRgError
@@ -211,7 +219,11 @@ fun UserInfos(
         //CPF
         OutlinedTextField(
             value = cpfState, onValueChange = {
-                cpfState = it
+
+                if (it.length <= maxCharCpf) cpfState = it
+
+                val cleanInput = it.replace("\\D".toRegex(), "")
+                cpfState = formatCPF(cleanInput)
 
                 if (it == "" || it == null) {
                     isCpfError
@@ -260,6 +272,9 @@ fun UserInfos(
             value = cepState, onValueChange = {
                 cepState = it
 
+                val cleanInput = it.replace("\\D".toRegex(), "")
+                cepState = formatCEP(cleanInput)
+
                 if (it == "" || it == null) {
                     isCepError
                 }
@@ -305,7 +320,12 @@ fun UserInfos(
         //TELEFONE
         OutlinedTextField(
             value = telefoneState, onValueChange = {
-                telefoneState = it
+
+                if (it.length <= maxCharTelefone) telefoneState = it
+
+                val cleanInput = it.replace("\\D".toRegex(), "")
+                telefoneState = formatPhone(cleanInput)
+
 
                 if (it == "" || it == null) {
                     isTelefoneError
@@ -352,7 +372,7 @@ fun UserInfos(
         //DATA NASCIMENTO
         OutlinedTextField(
             value = dataNascimentoState, onValueChange = {
-                dataNascimentoState = it
+                if (it.length <= maxChar) dataNascimentoState = it
 
                 if (it == "" || it == null) {
                     isDataNascimentoError
@@ -379,6 +399,7 @@ fun UserInfos(
             },
             isError = isDataNascimentoError,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color(0, 0, 0, 255),
                 unfocusedBorderColor = Color(0, 0, 0, 255)
@@ -399,7 +420,7 @@ fun UserInfos(
         //Numero Casa
         OutlinedTextField(
             value = numeroCasaState, onValueChange = {
-                numeroCasaState = it
+                if (it.length <= maxCharNmrCasa) numeroCasaState = it
 
                 if (it == "" || it == null) {
                     isNumeroCasaError
@@ -458,6 +479,7 @@ fun UserInfos(
 }
 
 
+@SuppressLint("Range")
 fun getImageDisplayNameFromUri(context: Context, uri: Uri): String? {
     val contentResolver = context.contentResolver
     val cursor = contentResolver.query(uri, null, null, null, null)
@@ -467,4 +489,58 @@ fun getImageDisplayNameFromUri(context: Context, uri: Uri): String? {
         }
     }
     return null
+}
+
+//class DateTransformation() : VisualTransformation {
+//    override fun filter(text: AnnotatedString): TransformedText {
+//        return dateFilter(text)
+//    }
+//}
+
+//fun dateFilter(text: AnnotatedString): TransformedText {
+//
+//    val trimmed = if (text.text.length >= 8) text.text.substring(0..7) else text.text
+//    var out = ""
+//    for (i in trimmed.indices) {
+//        out += trimmed[i]
+//        if (i % 2 == 1 && i < 4) out += "/"
+//    }
+//
+//    val numberOffsetTranslator = object : OffsetMapping {
+//        override fun originalToTransformed(offset: Int): Int {
+//            if (offset <= 1) return offset
+//            if (offset <= 3) return offset +1
+//            if (offset <= 8) return offset +2
+//            return 10
+//        }
+//
+//        override fun transformedToOriginal(offset: Int): Int {
+//            if (offset <=2) return offset
+//            if (offset <=5) return offset -1
+//            if (offset <=10) return offset -2
+//            return 8
+//        }
+//    }
+//
+//    return TransformedText(AnnotatedString(out), numberOffsetTranslator)
+//}
+
+fun formatPhone(phoneNumber: String): String {
+    val phoneRegex = "(\\d{2})(\\d{5})(\\d{4})".toRegex()
+    return phoneRegex.replace(phoneNumber, "($1) $2-$3")
+}
+
+fun formatCPF(cpf: String): String {
+    val cpfRegex = "(\\d{3})(\\d{3})(\\d{3})(\\d{2})".toRegex()
+    return cpfRegex.replace(cpf, "$1.$2.$3-$4")
+}
+
+fun formatRG(rg: String): String {
+    val rgRegex = "(\\d{2})(\\d{3})(\\d{3})(\\d{1})".toRegex()
+    return rgRegex.replace(rg, "$1.$2.$3-$4")
+}
+
+fun formatCEP(cep: String): String {
+    val cepRegex = "(\\d{5})(\\d{3})".toRegex()
+    return cepRegex.replace(cep, "$1-$2")
 }
