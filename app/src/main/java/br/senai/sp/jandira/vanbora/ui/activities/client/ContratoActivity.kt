@@ -143,7 +143,7 @@ fun Contrato(
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround
+                            horizontalArrangement = Arrangement.Center
                         ) {
                             Button(
                                 onClick = {
@@ -172,14 +172,6 @@ fun Contrato(
                                 )
                             }
 
-
-
-                            Button(
-                                onClick = { /*TODO*/ },
-                                colors = ButtonDefaults.buttonColors(Color(251, 211, 69, 255))
-                            ) {
-                                Text(text = stringResource(R.string.download_contract))
-                            }
                         }
 
                     }
