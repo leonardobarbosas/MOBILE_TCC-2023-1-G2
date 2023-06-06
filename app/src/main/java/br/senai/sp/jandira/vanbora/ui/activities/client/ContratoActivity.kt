@@ -91,7 +91,6 @@ fun Contrato(
     driverCall.enqueue(object : Callback<Driver> {
         override fun onResponse(call: Call<Driver>, response: Response<Driver>) {
             driver = response.body()!!
-            Log.i("ds3m", "onResponse: $driver")
         }
 
         override fun onFailure(call: Call<Driver>, t: Throwable) {
