@@ -283,7 +283,7 @@ fun MotoristasMain(
                                     Intent(context, MotoristaPerfilActivity::class.java)
 
                                 intentSelect.putExtra("id_motorista", driver.id.toString())
-                                intentSelect.putExtra("id_usuario", user!!.id)
+                                intentSelect.putExtra("id_usuario", idUser)
 
                                 context.startActivity(intentSelect)
                             },

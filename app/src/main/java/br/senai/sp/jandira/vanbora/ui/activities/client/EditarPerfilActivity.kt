@@ -9,14 +9,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -44,6 +54,10 @@ import br.senai.sp.jandira.vanbora.components.headers.Rotas.ui.theme.VanboraThem
 import br.senai.sp.jandira.vanbora.model.user.User
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.storage.FirebaseStorage
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -65,6 +79,7 @@ class EditarPerfilActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun EditarPerfil() {
@@ -141,8 +156,13 @@ fun EditarPerfil() {
         mutableStateOf(User())
     }
 
-
-
+    var fisicoClick by remember {
+        mutableStateOf(true)
+    }
+    val calendarState = rememberSheetState()
+    var birthdayState by rememberSaveable {
+        mutableStateOf("Ano-Mes-Dia")
+    }
 
     val context = LocalContext.current
 
@@ -474,34 +494,71 @@ fun EditarPerfil() {
                 )
             )
 
-            //Data de Nascimento
-            OutlinedTextField(
-                value = dataNascimentoState, onValueChange = {
-                    dataNascimentoState = it
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-                label = {
-                    Text(text = stringResource(id = R.string.data_nascimento))
-                },
-                placeholder = {
-                    perfil?.let {
-                        Text(
-                            text = perfil.data_nascimento,
-                            textAlign = TextAlign.Center,
-                            style = TextStyle(
-                                color = Color.Black,
-                            )
+            Spacer(modifier = Modifier.height(10.dp))
+
+            //Data Nascimento
+            AnimatedVisibility(
+                visible = fisicoClick,
+                enter = scaleIn() + expandVertically(expandFrom = Alignment.CenterVertically),
+                exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
+            ) {
+                Column {
+                    CalendarDialog(
+                        state = calendarState,
+                        config = CalendarConfig(
+                            yearSelection = true
+                        ),
+                        selection = CalendarSelection.Date { birthdate ->
+                            birthdayState = birthdate.toString()
+                            dataNascimentoState = birthdayState
+                        }
+                    )
+
+                    androidx.compose.material3.Button(
+                        onClick = {
+                            calendarState.show()
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 50.dp, end = 50.dp),
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            Color(231, 175, 64, 255)
+                        ),
+                        shape = RoundedCornerShape(
+                            topStart = 10.dp,
+                            topEnd = 10.dp,
+                            bottomStart = 0.dp,
+                            bottomEnd = 0.dp
+                        ),
+                        border = BorderStroke(1.dp, Color.Black)
+                    ) {
+                        androidx.compose.material3.Text(
+                            text = "Selecione a data de nascimento",
+                            color = Color.White,
+                            fontSize = 16.sp
                         )
                     }
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0, 0, 0, 255),
-                    unfocusedBorderColor = Color(0, 0, 0, 255)
-                )
-            )
+                    androidx.compose.material3.Text(
+                        text = birthdayState,
+                        modifier = Modifier
+                            .padding(start = 50.dp, end = 50.dp)
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(
+                                    topStart = 0.dp,
+                                    topEnd = 0.dp,
+                                    bottomStart = 10.dp,
+                                    bottomEnd = 10.dp
+                                )
+                            )
+                            .height(30.dp)
+                            .fillMaxWidth(),
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+
             Spacer(modifier = Modifier.padding(26.dp))
 
             Row(
@@ -528,6 +585,9 @@ fun EditarPerfil() {
                         }
                         if (telefoneState == ""){
                             telefoneState = perfil.telefone
+                        }
+                        if (birthdayState == ""){
+                            birthdayState = perfil.data_nascimento
                         }
                         if (dataNascimentoState == ""){
                             dataNascimentoState = perfil.data_nascimento
@@ -569,7 +629,7 @@ fun EditarPerfil() {
                         })
 
                         if (code != "201") {
-                            Toast.makeText(context, "Verifique os dados e envie!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Verifique os dados e envie novamente!", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(
                                 context, "Perfil atualizado com sucesso", Toast.LENGTH_SHORT

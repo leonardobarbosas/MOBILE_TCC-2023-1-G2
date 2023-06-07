@@ -5,6 +5,14 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +22,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
@@ -28,6 +37,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,11 +64,16 @@ import br.senai.sp.jandira.vanbora.ui.activities.driver.VanComplements
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.DateFormat
 
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DriverInfos(name: String, email: String, senha: String) {
 
@@ -116,6 +131,21 @@ fun DriverInfos(name: String, email: String, senha: String) {
     }
     var isDescricaoError by remember() {
         mutableStateOf(false)
+    }
+
+    var fisicoClick by remember {
+        mutableStateOf(true)
+    }
+    var inicioClick by remember {
+        mutableStateOf(true)
+    }
+    val calendarState = rememberSheetState()
+    val calendarStateInicio = rememberSheetState()
+    var birthdayState by rememberSaveable {
+        mutableStateOf("Ano-Mes-Dia")
+    }
+    var inicioState by rememberSaveable {
+        mutableStateOf("Ano-Mes-Dia")
     }
 
     var context = LocalContext.current
@@ -454,105 +484,135 @@ fun DriverInfos(name: String, email: String, senha: String) {
             )
         }
 
-        val date = DateFormat.getDateInstance()
-        //INICIO CARREIRA
-        OutlinedTextField(
-            value = inicioCarreiraState, onValueChange = {
-                if (it.length <= maxChar) inicioCarreiraState = it
+        Spacer(modifier = Modifier.height(10.dp))
 
+        //inicio Carreira
+        AnimatedVisibility(
+            visible = inicioClick,
+            enter = scaleIn() + expandVertically(expandFrom = Alignment.CenterVertically),
+            exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
+        ) {
+            Column {
+                CalendarDialog(
+                    state = calendarStateInicio,
+                    config = CalendarConfig(
+                        yearSelection = true
+                    ),
+                    selection = CalendarSelection.Date { iniciodate ->
+                        inicioState = iniciodate.toString()
+                        inicioCarreiraState = inicioState
+                    }
+                )
 
-
-
-
-
-                if (it == "" || it == null) {
-                    isInicioCarreiraError
-                }
-
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-            label = {
-                Text(
-                    text = stringResource(id = R.string.inicio_carreira),
-                    style = TextStyle(
-                        color = Color.Black,
+                androidx.compose.material3.Button(
+                    onClick = {
+                        calendarStateInicio.show()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 50.dp, end = 50.dp),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                        Color(231, 175, 64, 255)
+                    ),
+                    shape = RoundedCornerShape(
+                        topStart = 10.dp,
+                        topEnd = 10.dp,
+                        bottomStart = 0.dp,
+                        bottomEnd = 0.dp
+                    ),
+                    border = BorderStroke(1.dp, Color.Black)
+                ) {
+                    androidx.compose.material3.Text(
+                        text = "Selecione o inicio de carreira",
+                        color = Color.White,
+                        fontSize = 16.sp
                     )
+                }
+                androidx.compose.material3.Text(
+                    text = inicioState,
+                    modifier = Modifier
+                        .padding(start = 50.dp, end = 50.dp)
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(
+                                topStart = 0.dp,
+                                topEnd = 0.dp,
+                                bottomStart = 10.dp,
+                                bottomEnd = 10.dp
+                            )
+                        )
+                        .height(30.dp)
+                        .fillMaxWidth(),
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center
                 )
-            },
-            trailingIcon = {
-                if (isInicioCarreiraError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )
-            },
-            isError = isInicioCarreiraError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            singleLine = true,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0, 0, 0, 255),
-                unfocusedBorderColor = Color(0, 0, 0, 255)
-            )
-        )
-        if (isInicioCarreiraError) {
-            Text(
-                text = stringResource(id = R.string.inicio_carreira_error),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 52.dp),
-                color = Color.Red,
-                fontSize = 15.sp,
-                textAlign = TextAlign.End
-            )
+            }
         }
 
 
-        //DATA NASCIMENTO
-        OutlinedTextField(
-            value = dataNascimentoState, onValueChange = {
-                if (it.length <= maxChar) dataNascimentoState = it
+        Spacer(modifier = Modifier.height(10.dp))
 
-                if (it == "" || it == null) {
-                    isDataNascimentoError
-                }
+        //Data Nascimento
+        AnimatedVisibility(
+            visible = fisicoClick,
+            enter = scaleIn() + expandVertically(expandFrom = Alignment.CenterVertically),
+            exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
+        ) {
+            Column {
+                CalendarDialog(
+                    state = calendarState,
+                    config = CalendarConfig(
+                        yearSelection = true
+                    ),
+                    selection = CalendarSelection.Date { birthdate ->
+                        birthdayState = birthdate.toString()
+                        dataNascimentoState = birthdayState
+                    }
+                )
 
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-            label = {
-                Text(
-                    text = stringResource(id = R.string.data_nascimento),
-                    style = TextStyle(
-                        color = Color.Black,
+                androidx.compose.material3.Button(
+                    onClick = {
+                        calendarState.show()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 50.dp, end = 50.dp),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                        Color(231, 175, 64, 255)
+                    ),
+                    shape = RoundedCornerShape(
+                        topStart = 10.dp,
+                        topEnd = 10.dp,
+                        bottomStart = 0.dp,
+                        bottomEnd = 0.dp
+                    ),
+                    border = BorderStroke(1.dp, Color.Black)
+                ) {
+                    androidx.compose.material3.Text(
+                        text = "Selecione a data de nascimento",
+                        color = Color.White,
+                        fontSize = 16.sp
                     )
+                }
+                androidx.compose.material3.Text(
+                    text = birthdayState,
+                    modifier = Modifier
+                        .padding(start = 50.dp, end = 50.dp)
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(
+                                topStart = 0.dp,
+                                topEnd = 0.dp,
+                                bottomStart = 10.dp,
+                                bottomEnd = 10.dp
+                            )
+                        )
+                        .height(30.dp)
+                        .fillMaxWidth(),
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center
                 )
-            },
-            trailingIcon = {
-                if (isDataNascimentoError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )
-            },
-            isError = isDataNascimentoError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            singleLine = true,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0, 0, 0, 255),
-                unfocusedBorderColor = Color(0, 0, 0, 255)
-            )
-        )
-        if (isDataNascimentoError) {
-            Text(
-                text = stringResource(id = R.string.data_nascimento_error),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 52.dp),
-                color = Color.Red,
-                fontSize = 15.sp,
-                textAlign = TextAlign.End
-            )
+            }
         }
 
         var priceState by remember {

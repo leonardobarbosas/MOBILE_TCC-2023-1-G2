@@ -8,14 +8,24 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -38,7 +48,12 @@ import br.senai.sp.jandira.vanbora.R
 import br.senai.sp.jandira.vanbora.functions_click.RegisterNewUser
 import coil.compose.rememberAsyncImagePainter
 import com.google.firebase.storage.FirebaseStorage
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun UserInfos(
     name: String,
@@ -121,6 +136,15 @@ fun UserInfos(
     var urlImage by remember {
         mutableStateOf("")
     }
+
+    var fisicoClick by remember {
+        mutableStateOf(true)
+    }
+    val calendarState = rememberSheetState()
+    var birthdayState by rememberSaveable {
+        mutableStateOf("Ano-Mes-Dia")
+    }
+
 
 
     val gallerLauncher = rememberLauncherForActivityResult(
@@ -367,52 +391,69 @@ fun UserInfos(
             )
         }
 
-        //DATA NASCIMENTO
-        OutlinedTextField(
-            value = dataNascimentoState, onValueChange = {
-                if (it.length <= maxChar) dataNascimentoState = it
+        Spacer(modifier = Modifier.padding(10.dp))
 
-                if (it == "" || it == null) {
-                    isDataNascimentoError
-                }
+        //Data Nascimento
+        AnimatedVisibility(
+            visible = fisicoClick,
+            enter = scaleIn() + expandVertically(expandFrom = Alignment.CenterVertically),
+            exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
+        ) {
+            Column {
+                CalendarDialog(
+                    state = calendarState,
+                    config = CalendarConfig(
+                        yearSelection = true
+                    ),
+                    selection = CalendarSelection.Date { birthdate ->
+                        birthdayState = birthdate.toString()
+                        dataNascimentoState = birthdayState
+                    }
+                )
 
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp, start = 52.dp, end = 52.dp),
-            label = {
-                Text(
-                    text = stringResource(id = R.string.data_nascimento),
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(
-                        color = Color.Black,
+                androidx.compose.material3.Button(
+                    onClick = {
+                        calendarState.show()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 50.dp, end = 50.dp),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                        Color(231, 175, 64, 255)
+                    ),
+                    shape = RoundedCornerShape(
+                        topStart = 10.dp,
+                        topEnd = 10.dp,
+                        bottomStart = 0.dp,
+                        bottomEnd = 0.dp
+                    ),
+                    border = BorderStroke(1.dp, Color.Black)
+                ) {
+                    androidx.compose.material3.Text(
+                        text = "Selecione a data de nascimento",
+                        color = Color.White,
+                        fontSize = 16.sp
                     )
+                }
+                androidx.compose.material3.Text(
+                    text = birthdayState,
+                    modifier = Modifier
+                        .padding(start = 50.dp, end = 50.dp)
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(
+                                topStart = 0.dp,
+                                topEnd = 0.dp,
+                                bottomStart = 10.dp,
+                                bottomEnd = 10.dp
+                            )
+                        )
+                        .height(30.dp)
+                        .fillMaxWidth(),
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center
                 )
-            },
-            trailingIcon = {
-                if (isDataNascimentoError) Icon(
-                    imageVector = Icons.Default.Warning,
-                    contentDescription = ""
-                )
-            },
-            isError = isDataNascimentoError,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            singleLine = true,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0, 0, 0, 255),
-                unfocusedBorderColor = Color(0, 0, 0, 255)
-            )
-        )
-        if (isDataNascimentoError) {
-            Text(
-                text = stringResource(id = R.string.data_nascimento_error),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 52.dp),
-                color = Color.Red,
-                fontSize = 15.sp,
-                textAlign = TextAlign.End
-            )
+            }
         }
 
         //Numero Casa
