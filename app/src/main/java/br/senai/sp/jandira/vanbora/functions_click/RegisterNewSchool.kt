@@ -43,24 +43,50 @@ fun RegiterNewSchool(
                             responseDriver: Response<ResponseJson>
                         ) {
                             if (responseDriver.isSuccessful) {
-                                Log.i("ds3m", "onResponse: ${responseDriver.body()!!.message}")
+                                Log.i("ds3m", "onResponsezzzzz: ${responseDriver.body()!!.message}")
                             } else {
                                 Log.i("ds3m", "onResponse  ttttttt: ${responseDriver.code()}")
                             }
                         }
 
                         override fun onFailure(call: Call<ResponseJson>, t: Throwable) {
-                            Log.i("ds3m", "onResponse: ${t.message}")
+                            Log.i("ds3m", "onResponse teste: ${t.message}")
                         }
                     })
                 }
             } else {
-                Log.i("ds3m", "onResponse: ${response.message()}  ${response.code()}")
+                if (response.code() == 401){
+                    val escolaDriverPost = SchoolPost(
+                        id_motorista = motorista,
+                        id_escola = response.body()!!.id
+                    )
+
+                    val escolaDriverPostCall =
+                        GetFunctionsCall.getEscolaCall().postDriverSchool(escola = escolaDriverPost)
+
+                    escolaDriverPostCall.enqueue(object : Callback<ResponseJson> {
+                        override fun onResponse(
+                            call: Call<ResponseJson>,
+                            responseDriver: Response<ResponseJson>
+                        ) {
+                            if (responseDriver.isSuccessful) {
+                                Log.i("ds3m", "onResponsezzzzz: ${responseDriver.body()!!.message}")
+                            } else {
+                                Log.i("ds3m", "onResponse  ttttttt: ${responseDriver.code()}")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResponseJson>, t: Throwable) {
+                            Log.i("ds3m", "onResponse teste: ${t.message}")
+                        }
+                    })
+                }
+                Log.i("ds3m", "onResponse testee: ${response.message()}  ${response.code()}")
             }
         }
 
         override fun onFailure(call: Call<SchoolReturnPost>, t: Throwable) {
-            Log.i("ds3m", "onResponse: ${t.message}")
+            Log.i("ds3m", "onFailure: ${t.message}")
         }
     })
 

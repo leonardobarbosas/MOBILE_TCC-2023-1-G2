@@ -59,7 +59,6 @@ fun VanMain() {
 
     val idDriver = intent.getStringExtra("id")
 
-    Log.i("ds3m", "VanMain: $idDriver")
 
     val driverCall = GetFunctionsCall.getDriverCall().getDriverById(id = idDriver.toString())
 
@@ -131,7 +130,6 @@ fun VanMain() {
             modifier = Modifier.fillMaxSize()
         ) {
             items(vans) { van ->
-                Log.i("ds3m", "VanMain: $van")
                 Card(
                     modifier = Modifier
                         .fillMaxSize()
