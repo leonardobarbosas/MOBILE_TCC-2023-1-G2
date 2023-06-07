@@ -127,7 +127,7 @@ fun Contrato(
                 ) {
                     Text(text = "Verificar informações de contrato", fontSize = 22.sp)
 
-                    Text(text = "Nome do Responsável: $idUser")
+                    Text(text = "Nome do Responsável: ${usuario!!.nome}")
                     Text(text = "Nome do Passageiro: ${contract.nome_passageiro}")
                     Text(text = "Idade do Passageiro: ${contract.idade_passageiro}")
                     Text(text = "Tipo de Pagamento: $tipoPagamento")

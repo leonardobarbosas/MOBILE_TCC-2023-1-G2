@@ -138,7 +138,9 @@ fun EnviarContrato() {
         }
         escolaCall.enqueue(object : Callback<EscolaDriver> {
             override fun onResponse(call: Call<EscolaDriver>, response: Response<EscolaDriver>) {
-                escolas = response.body()!!
+                if (response.isSuccessful){
+                    escolas = response.body()!!
+                }
             }
 
             override fun onFailure(call: Call<EscolaDriver>, t: Throwable) {
