@@ -15,6 +15,9 @@ interface EscolaCall {
     @GET("schools")
     fun getAllSchools(): Call<EscolaList>
 
+    @GET("school/{id}")
+    fun getSchoolById(@Path("id")id: String): Call<EscolaList>
+
     @GET("driverSchools/{id}")
     fun getSchoolByDriver(@Path("id")id: String): Call<EscolaDriver>
 

@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
@@ -27,6 +30,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -56,8 +61,10 @@ import br.senai.sp.jandira.vanbora.call_functions.GetFunctionsCall
 import br.senai.sp.jandira.vanbora.components.headers.headerDriver.HeaderMotorista
 import br.senai.sp.jandira.vanbora.functions_click.RegiterNewSchool
 import br.senai.sp.jandira.vanbora.model.contract.EscolaDriver
+import br.senai.sp.jandira.vanbora.model.contract.EscolaList
 import br.senai.sp.jandira.vanbora.model.contract.SchoolPost
 import br.senai.sp.jandira.vanbora.model.driver.Driver
+import br.senai.sp.jandira.vanbora.model.prices.AllPrices
 import br.senai.sp.jandira.vanbora.ui.activities.driver.SuasVansActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -128,6 +135,28 @@ fun SuasEscolas() {
 
             override fun onFailure(call: Call<EscolaDriver>, t: Throwable) {
                 Log.i("ds3m", "onFailure escolas: ${t.message}")
+            }
+        })
+
+        val schoolCall = GetFunctionsCall.getEscolaCall().getAllSchools()
+
+        var school by remember {
+            mutableStateOf(EscolaList(listOf()))
+        }
+
+        var isMenuExpanded by remember {
+            mutableStateOf(false)
+        }
+
+        schoolCall.enqueue(object : Callback<EscolaList>{
+            override fun onResponse(call: Call<EscolaList>, response: Response<EscolaList>) {
+                if(response.isSuccessful){
+                    school = response.body()!!
+                }
+            }
+
+            override fun onFailure(call: Call<EscolaList>, t: Throwable) {
+                Log.i("ds3m", "onFailure: ${t.message}")
             }
         })
 
@@ -265,11 +294,19 @@ fun SuasEscolas() {
 
             Spacer(modifier = Modifier.padding(20.dp))
 
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            var schoolState by remember {
+                mutableStateOf("")
+            }
+            var idSchool by remember {
+                mutableStateOf(0)
+            }
 
+            val icon = if (isMenuExpanded)
+                Icons.Filled.KeyboardArrowUp
+            else
+                Icons.Filled.KeyboardArrowDown
+
+            Column() {
                 OutlinedTextField(
                     value = saveState, onValueChange = {
                         saveState = it
@@ -283,6 +320,7 @@ fun SuasEscolas() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 4.dp, start = 52.dp, end = 52.dp),
+                    readOnly = false,
                     label = {
                         Text(
                             text = "Adicionar escola",
@@ -292,10 +330,8 @@ fun SuasEscolas() {
                         )
                     },
                     trailingIcon = {
-                        if (isSaveError) Icon(
-                            imageVector = Icons.Default.Warning,
-                            contentDescription = ""
-                        )
+                        Icon(icon, "contentDescription",
+                            Modifier.clickable { isMenuExpanded = !isMenuExpanded })
                     },
                     isError = isSaveError,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -315,20 +351,42 @@ fun SuasEscolas() {
                     )
                 }
 
-                Button(
-                    onClick = {
+                DropdownMenu(expanded = isMenuExpanded, onDismissRequest = {
+                    isMenuExpanded = false
+                }) {
+                    school.schools.forEach() {
+                        DropdownMenuItem(onClick = {
+                            idSchool = it.id
+                            saveState = it.nome
+                            isMenuExpanded = false
 
-                        RegiterNewSchool(
-                            escola = saveState,
-                            motorista = driver!!.id,
-                        )
-
-                    },
-                    colors = ButtonDefaults.buttonColors(Color(251, 211, 69, 255))
-                ) {
-                    Text(text = stringResource(R.string.save))
+                        }) {
+                            Text(text = it.nome)
+                        }
+                    }
                 }
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Button(
+                        onClick = {
+
+                            RegiterNewSchool(
+                                escola = saveState,
+                                motorista = driver!!.id,
+                            )
+
+                        },
+                        colors = ButtonDefaults.buttonColors(Color(251, 211, 69, 255))
+                    ) {
+                        Text(text = stringResource(R.string.save))
+                    }
+                }
+
             }
+
         }
 
     }
